@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 61 61" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-miterlimit:1.5;">
+    <rect id="circle-foreground" x="0.312" y="0.773" width="60" height="60" style="fill:none;"/>
+    <g>
+        <ellipse cx="30.312" cy="30.513" rx="23.643" ry="23.509" style="fill:#00f;stroke:#f00;stroke-width:2px;"/>
+        <ellipse cx="30.312" cy="30.943" rx="18.364" ry="18.26" style="fill:#0f0;"/>
+        <path d="M53.962,30.513C53.962,40.794 42.137,49.613 30.326,49.613C19.965,49.613 12.574,40.815 12.574,30.513C12.574,21.681 21.443,12.273 30.326,12.273" style="fill:none;stroke:#f00;stroke-width:1px;"/>
+        <path d="M6.662,31.373C6.662,21.092 18.487,12.273 30.298,12.273C40.659,12.273 48.049,21.071 48.049,31.373C48.049,40.205 39.181,49.613 30.298,49.613" style="fill:none;stroke:#f00;stroke-width:1px;"/>
+        <path d="M46.729,14.011C54.041,21.281 51.95,35.83 43.598,44.135C36.272,51.419 24.79,50.394 17.464,43.11C11.183,36.865 10.764,23.977 17.045,17.732" style="fill:none;stroke:#f00;stroke-width:1px;"/>
+        <path d="M13.895,47.875C6.583,40.605 8.673,26.055 17.025,17.751C24.351,10.467 35.834,11.491 43.16,18.776C49.441,25.021 49.86,37.909 43.579,44.154" style="fill:none;stroke:#f00;stroke-width:1px;"/>
+        <path d="M29.879,7.427C40.22,7.427 49.088,19.185 49.088,30.929C49.088,41.231 40.24,48.58 29.879,48.58C20.997,48.58 11.536,39.761 11.536,30.929" style="fill:none;stroke:#f00;stroke-width:1px;"/>
+        <path d="M30.744,54.459C20.404,54.459 11.536,42.701 11.536,30.957C11.536,20.655 20.384,13.306 30.744,13.306C39.627,13.306 49.088,22.125 49.088,30.957" style="fill:none;stroke:#f00;stroke-width:1px;"/>
+        <path d="M13.283,14.619C20.595,7.349 35.227,9.427 43.579,17.732C50.905,25.016 49.874,36.434 42.548,43.718C36.268,49.963 23.306,50.38 17.025,44.135" style="fill:none;stroke:#f00;stroke-width:1px;"/>
+        <path d="M47.341,47.267C40.029,54.537 25.397,52.459 17.045,44.154C9.719,36.87 10.749,25.452 18.075,18.168C24.356,11.923 37.318,11.506 43.598,17.751" style="fill:none;stroke:#f00;stroke-width:1px;"/>
+    </g>
+</svg>

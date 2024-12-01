@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 61 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-miterlimit:1.5;">
+    <rect id="card-foreground" x="0.454" y="0.825" width="60" height="27" style="fill:none;"/>
+    <path d="M10.454,24.325L50.454,24.325" style="fill:none;stroke:#f00;stroke-width:1px;"/>
+    <path d="M15.454,26.325L45.454,26.325" style="fill:none;stroke:#f00;stroke-width:1px;"/>
+    <path d="M59.454,1.825L1.454,1.825L1.454,11.825C4.214,11.825 6.454,14.066 6.454,16.825L54.454,16.825C54.454,14.066 56.695,11.825 59.454,11.825L59.454,1.825Z" style="fill:#00f;"/>
+    <path d="M59.454,1.825L59.454,11.825C56.695,11.825 54.454,14.066 54.454,16.825L6.454,16.825C6.454,14.066 4.214,11.825 1.454,11.825L1.454,1.825L59.454,1.825ZM58.454,2.825L2.454,2.825L2.454,9.825C2.454,9.825 2.454,10.908 2.454,10.908C4.965,11.33 6.949,13.314 7.371,15.825L45.454,15.825C45.454,15.825 53.537,15.825 53.537,15.825C53.959,13.314 55.943,11.33 58.454,10.908L58.454,2.825Z" style="fill:#f00;"/>
+    <rect x="4.954" y="1.825" width="51" height="21" style="fill:#0f0;"/>
+    <path d="M55.954,1.825L55.954,22.825L4.954,22.825L4.954,1.825L55.954,1.825ZM54.954,2.825L5.954,2.825C5.954,2.825 5.954,21.825 5.954,21.825L54.954,21.825L54.954,2.825Z" style="fill:#f00;"/>
+</svg>

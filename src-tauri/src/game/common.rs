@@ -40,13 +40,13 @@ pub struct Difficulties {
     pub deadly: u32,
 }
 
-const XP_PER_CR: &'static [u32; 34] = &[
+pub const XP_PER_CR: &'static [u32; 34] = &[
     10, 25, 50, 100, 200, 450, 700, 1100, 1800, 2300, 2900, 3900, 5000, 5900, 7200, 8400, 10000,
     11500, 13000, 15000, 18000, 20000, 22000, 25000, 33000, 41000, 50000, 62000, 75000, 90000,
     105000, 120000, 135000, 155000,
 ];
 
-const DIFFICULTIES_PER_LEVEL: &'static [Difficulties; 20] = &[
+pub const DIFFICULTIES_PER_LEVEL: &'static [Difficulties; 20] = &[
     Difficulties {
         easy: 25,
         medium: 50,
@@ -203,12 +203,14 @@ pub fn cr_string(cr: u32) -> String {
 pub fn adjusted_xp(crs: &[u32]) -> u32 {
     let total: u32 = crs.iter().map(|cr| XP_PER_CR[*cr as usize]).sum();
 
-    ((total as f32) * match crs.len() {
-        1 => 1.0,
-        2 => 1.5,
-        3 | 4 | 5 | 6 => 2.0,
-        7 | 8 | 9 | 10 => 2.5,
-        11 | 12 | 13 | 14 => 3.0,
-        _ => 4.0
-    }).ceil() as u32
+    ((total as f32)
+        * match crs.len() {
+            1 => 1.0,
+            2 => 1.5,
+            3 | 4 | 5 | 6 => 2.0,
+            7 | 8 | 9 | 10 => 2.5,
+            11 | 12 | 13 | 14 => 3.0,
+            _ => 4.0,
+        })
+    .ceil() as u32
 }

@@ -1,0 +1,334 @@
+@import "button.scss";
+@import "card.scss";
+@import "checkbox.scss";
+@import "fonts.scss";
+@import "game.scss";
+@import "globals.scss";
+@import "scrollbar.scss";
+@import "select.scss";
+@import "textinput.scss";
+@import "toolbar.scss";
+
+* {
+    box-sizing: border-box;
+    --titlebar-height: 26px;
+}
+
+.titlebar {
+    display: grid;
+    height: var(--titlebar-height);
+    width: 100vw;
+    padding: 0;
+    position: fixed;
+}
+
+:root {
+    --vertical-gap: 0.5rem;
+    --horizontal-gap: 0.5rem;
+
+    font-family: var(--base-font);
+    font-size: var(--base-font-size);
+    transition: background-color 0.1s, color 0.1s, border-color 0.1s, box-shadow 0.1s;
+    overflow: hidden;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+@media (max-width: $x-narrow-breakpoint) {
+    :root {
+        font-stretch: condensed;
+        --horizontal-gap: 0.42rem;
+    }
+}
+
+::selection {
+    background-color: var(--selection-background);
+
+    &:not(:focus) {
+        background-color: var(--dim-selection-background);
+    }
+}
+
+body {
+    color: var(--primary-foreground);
+    padding: 0;
+    margin: 0;
+    line-height: var(--base-line-height);
+    background-attachment: fixed;
+    background-repeat: repeat;
+    background-blend-mode: multiply, soft-light, soft-light, soft-light;
+    background-color: var(--card-background);
+    background-image:
+        url("/uniform-noise.png"),
+        radial-gradient(circle at top left, var(--chrome), transparent),
+        radial-gradient(circle at top right, var(--page-background), transparent),
+        radial-gradient(ellipse at bottom center, var(--chrome-dim), transparent);
+    border: solid var(--window-border-width) var(--chrome);
+    width: 100vw;
+    height: 100vh;
+}
+
+div {
+    margin: 0;
+    padding: 0;
+}
+
+dt {
+    font-weight: bold;
+    color: var(--dim-foreground);
+
+    &::after {
+        content: ":";
+    }
+}
+
+dd {
+    margin: 0 0 1rem 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: var(--base-font-size);
+    font-weight: bold;
+    color: var(--dim-foreground);
+}
+
+h1,
+h2,
+h3 {
+    margin: var(--base-font-size) 0 var(--base-font-size) 0;
+    text-transform: uppercase;
+}
+
+h1 {
+    text-align: center;
+    color: var(--chrome-foreground);
+}
+
+p {
+    margin: 0 0 1rem 0;
+}
+
+hr {
+    border: none;
+    border-top: var(--ui-border-width) solid var(--dim-foreground);
+    margin: 2rem auto;
+    padding: 0;
+    width: 40%;
+}
+
+a {
+    color: var(--link);
+    text-decoration: 1.5px underline;
+    font-weight: 700;
+    border-radius: var(--ui-border-radius);
+
+    &:hover {
+        color: var(--link-hover);
+        background-color: var(--card-background-transparent);
+    }
+
+    &:active {
+        color: var(--link-active);
+        background-color: var(--card-background-transparent);
+    }
+
+    &:disabled {
+        color: var(--link-disabled);
+    }
+
+    &:focus-visible {
+        color: var(--hover-link);
+        background-color: var(--card-background-transparent);
+        box-shadow: 0px 0px 8px var(--hover-link);
+        outline: solid var(--ui-border-width) var(--hover-link);
+    }
+}
+
+.accent-link {
+    color: var(--accent-control-link);
+
+    &:hover {
+        color: var(--accent-hover-link);
+    }
+
+    &:active {
+        color: var(--accent-active-link);
+    }
+
+    &:disabled {
+        color: var(--accent-disabled-link);
+    }
+}
+
+dl {
+    margin: 1rem 0;
+}
+
+dt {
+    float: left;
+    margin-right: var(--horizontal-gap);
+
+    &::after {
+        content: ":";
+    }
+}
+
+dd {
+    grid-column: 2;
+}
+
+blockquote {
+    background: var(--card-background-transparent);
+    border-left: 2px solid var(--dim-foreground);
+    border-right: 2px solid var(--dim-foreground);
+    border-radius: var(--ui-border-radius);
+    padding: 0.5rem 1rem;
+    margin: 1rem 4rem;
+    font-style: italic;
+}
+
+footer {
+    font-style: normal;
+    color: var(--dim-foreground);
+}
+
+pre {
+    background-color: var(--card-background-transparent);
+    color: var(--primary-foreground);
+    border-color: var(--dim-foreground) var(--dim-foreground) var(--dim-foreground) var(--chrome);
+    border-style: solid;
+    border-width: 1px 1px 1px 4px;
+    padding: 0.5rem 1rem;
+    overflow: auto;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 1rem auto;
+}
+
+td {
+    padding: 0 calc(var(--horizontal-gap) * 0.5);
+    min-width: 6rem;
+}
+
+th {
+    padding: 0 calc(var(--horizontal-gap) * 0.5);
+    min-width: 6rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: left;
+    border-bottom: 1px solid var(--dim-foreground);
+}
+
+tr {
+    height: 1.5rem;
+}
+
+table.banded-rows {
+    border: 1px solid var(--dim-foreground);
+    background: var(--content-background);
+
+    tr:nth-child(even) {
+        background-color: var(--card-background);
+    }
+
+    tr:not(:first-child):hover {
+        border-color: var(--dim-foreground);
+        border-width: 1px 0;
+        border-style: dashed none;
+        border-spacing: 1px;
+    }
+
+    th {
+        background: var(--dim-foreground);
+        color: var(--page-background);
+    }
+}
+
+.dim {
+    color: var(--dim-foreground);
+}
+
+.accent-1 {
+    color: var(--accent-1-foreground);
+    font-weight: bold;
+}
+
+.accent-2 {
+    color: var(--accent-2-foreground);
+    font-weight: bold;
+}
+
+.accent-3 {
+    color: var(--accent-3-foreground);
+    font-weight: bold;
+}
+
+.accent-4 {
+    color: var(--accent-4-foreground);
+    font-weight: bold;
+}
+
+.accent-5 {
+    color: var(--accent-5-foreground);
+    font-weight: bold;
+}
+
+.accent-6 {
+    color: var(--accent-6-foreground);
+    font-weight: bold;
+}
+
+.red {
+    color: var(--red-foreground);
+}
+
+.green {
+    color: var(--green-foreground);
+}
+
+.blue {
+    color: var(--blue-foreground);
+}
+
+.cyan {
+    color: var(--cyan-foreground);
+}
+
+.purple {
+    color: var(--purple-foreground);
+}
+
+.yellow {
+    color: var(--yellow-foreground);
+}
+
+.red-background {
+    background-color: var(--red-background);
+}
+
+.green-background {
+    background-color: var(--green-background);
+}
+
+.blue-background {
+    background-color: var(--blue-background);
+}
+
+.cyan-background {
+    background-color: var(--cyan-background);
+}
+
+.purple-background {
+    background-color: var(--purple-background);
+}
+
+.yellow-background {
+    background-color: var(--yellow-background);
+}
