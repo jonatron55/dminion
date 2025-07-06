@@ -1,7 +1,11 @@
-@import "globals.scss";
+@use "globals.scss";
 
 button,
-a.button {
+a.button,
+input[type="checkbox"].button+label,
+input[type="radio"].button+label,
+input[type="file"].button+label {
+    display: inline-block;
     padding: 0.25rem 1.5rem;
     font-size: var(--base-font-size);
     font-family: inherit;
@@ -13,7 +17,7 @@ a.button {
     transition-property: background-color, color, border-color, transform, box-shadow;
     transition: var(--ui-transition-time) ease-in-out;
     transform: scale(1);
-    box-shadow: $control-shadow-x $control-shadow-y $control-shadow-blur var(--chrome-shadow);
+    box-shadow: globals.$control-shadow-x globals.$control-shadow-y globals.$control-shadow-blur var(--chrome-shadow);
     text-decoration: none;
 
     &:hover {
@@ -83,7 +87,7 @@ a.button {
         background-color: var(--ok-control-background);
         color: var(--ok-control-foreground);
         border-color: var(--ok-control-foreground);
-        box-shadow: $control-shadow-x $control-shadow-y $control-shadow-blur var(--ok-shadow);
+        box-shadow: globals.$control-shadow-x globals.$control-shadow-y globals.$control-shadow-blur var(--ok-shadow);
 
         &:hover {
             background-color: var(--ok-control-hover-background);
@@ -117,7 +121,7 @@ a.button {
         background-color: var(--danger-control-background);
         color: var(--danger-control-foreground);
         border-color: var(--danger-control-foreground);
-        box-shadow: $control-shadow-x $control-shadow-y $control-shadow-blur var(--error-shadow);
+        box-shadow: globals.$control-shadow-x globals.$control-shadow-y globals.$control-shadow-blur var(--error-shadow);
 
         &:hover {
             background-color: var(--danger-control-hover-background);
@@ -151,7 +155,7 @@ a.button {
         background-color: var(--caution-control-background);
         color: var(--caution-control-foreground);
         border-color: var(--caution-control-foreground);
-        box-shadow: $control-shadow-x $control-shadow-y $control-shadow-blur var(--warning-shadow);
+        box-shadow: globals.$control-shadow-x globals.$control-shadow-y globals.$control-shadow-blur var(--warning-shadow);
 
         &:hover {
             background-color: var(--caution-control-hover-background);
@@ -182,6 +186,10 @@ a.button {
     }
 }
 
+input[type="file"].button {
+    display: none;
+}
+
 ::file-selector-button {
     margin-right: 1em;
 }
@@ -190,11 +198,27 @@ a.button {
     display: flex;
     justify-content: right;
     margin: var(--vertical-gap) var(--horizontal-gap);
+
+    button {
+        margin-left: var(--horizontal-gap);
+        min-width: 8em;
+        max-width: 12em;
+
+        .primary {
+            order: var(--primary-button-order);
+        }
+
+        .secondary {
+            order: var(--secondary-button-order);
+        }
+
+        .cancel {
+            order: var(--cancel-button-order);
+        }
+    }
 }
 
-.buttons-container button {
-    margin-left: var(--horizontal-gap);
-    min-width: 8em;
-    max-width: 12em;
-    flex-grow: 1;
+a.button input[type="checkbox"].button,
+input[type="radio"].button {
+    appearance: none;
 }

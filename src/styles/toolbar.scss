@@ -1,14 +1,18 @@
-button.toolbar {
-    padding: 0;
+button.toolbar,
+input[type="checkbox"].button.toolbar+label,
+input[type="radio"].button.toolbar+label,
+input[type="file"].button.toolbar+label {
+    display: inline-block;
     min-width: 48px;
     border-radius: 0;
     background: transparent;
     border: none;
-    margin: 0;
     height: 100%;
     box-shadow: none;
     transition: none;
     transform: scale(1);
+    padding: var(--vertical-gap) var(--horizontal-gap);
+    margin: 0;
 
     &:hover {
         background-color: var(--control-hover-background);
@@ -97,7 +101,54 @@ button.toolbar {
     }
 }
 
-.caption button.toolbar {
-    color: var(--caption-foreground);
-    min-width: 2rem;
+.caption {
+
+    button.toolbar,
+    input[type="checkbox"].button.toolbar+label,
+    input[type="radio"].button.toolbar+label,
+    input[type="file"].button.toolbar+label {
+        color: var(--caption-foreground);
+        min-width: 2rem;
+        padding: var(--vertical-gap) var(--horizontal-gap);
+
+        &:hover {
+            background-color: var(--control-background);
+            color: var(--control-hover-foreground);
+        }
+    }
+}
+
+input[type="checkbox"].button.toolbar,
+input[type="radio"].button.toolbar {
+    appearance: none;
+    display: none;
+    margin: 0;
+    padding: 0;
+
+    &+label {
+        padding: var(--vertical-gap) var(--horizontal-gap);
+        margin: 0;
+    }
+}
+
+input[type="checkbox"].button.toolbar:checked+label,
+input[type="radio"].button.toolbar:checked+label {
+    background-color: var(--control-active-background);
+    color: var(--control-active-foreground);
+    transform: scale(1);
+
+    &.ok {
+        background-color: var(--ok-control-active-background);
+        color: var(--ok-control-active-foreground);
+    }
+
+    &.caution {
+        background-color: var(--caution-control-active-background);
+        color: var(--caution-control-active-foreground);
+    }
+
+    &.danger {
+        background-color: var(--danger-control-active-background);
+        color: var(--danger-control-active-foreground);
+    }
 }

@@ -14,12 +14,6 @@ textarea {
     border-radius: 4px;
     margin: var(--vertical-gap) 0;
 
-    // &::before {
-    //   content: ">";
-    //   display: inline-block;
-    //   width: 1em;
-    // }
-
     &:hover:enabled {
         border-color: var(--input-hover-border);
         border-bottom-width: 3px;

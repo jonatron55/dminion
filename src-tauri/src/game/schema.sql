@@ -16,7 +16,7 @@ CREATE TABLE Players (
 
 CREATE TABLE Classes (
     id INTEGER PRIMARY KEY,
-    player_id INTEGER NOT NULL REFERENCES Players(id),
+    player_id INTEGER NOT NULL REFERENCES Players(id) ON DELETE CASCADE,
     name TEXT NOT NULL,
     level INTEGER NOT NULL
 );
@@ -48,7 +48,7 @@ CREATE TABLE EncounterMonsters (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
     encounter_id INTEGER NOT NULL REFERENCES Encounters(id),
-    monster_id INTEGER NOT NULL REFERENCES Monsters(id),
+    monster_id INTEGER NOT NULL REFERENCES Monsters(id)
 );
 
 CREATE TABLE Encounters (

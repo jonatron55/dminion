@@ -1,156 +1,134 @@
 <script lang="ts">
-  import { invoke } from "@tauri-apps/api/core";
+    import type { AppMode } from "$lib/AppMode";
+    import Toolbar from "../components/Toolbar.svelte";
+    import "../styles/app.scss";
+    import { currentTheme } from "../themes/theme";
 
-  let name = $state("");
-  let greetMsg = $state("");
-
-  async function greet(event: Event) {
-    event.preventDefault();
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    greetMsg = await invoke("greet", { name });
-  }
+    let mode: AppMode = "map";
+    currentTheme.set("Dungeoneer Dusk");
 </script>
 
-<main class="container">
-  <h1>Welcome to Tauri + Svelte</h1>
+<div class="app">
+    <Toolbar
+        {mode}
+        onModeChange={(newMode) => {
+            mode = newMode;
+        }}
+    />
 
-  <div class="row">
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo vite" alt="Vite Logo" />
-    </a>
-    <a href="https://tauri.app" target="_blank">
-      <img src="/tauri.svg" class="logo tauri" alt="Tauri Logo" />
-    </a>
-    <a href="https://kit.svelte.dev" target="_blank">
-      <img src="/svelte.svg" class="logo svelte-kit" alt="SvelteKit Logo" />
-    </a>
-  </div>
-  <p>Click on the Tauri, Vite, and SvelteKit logos to learn more.</p>
+    <main class="panel">
+        <p>
+            Lorem <span class="color-1">ipsum</span> dolor sit amet, consectetur
+            adipiscing elit, sed do eiusmod tempor
+            <span class="color-2">incididunt</span>
+            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+            <span class="color-3">exercitation</span>
+            ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+            dolor in <span class="color-4">reprehenderit</span> in voluptate
+            velit esse cillum dolore eu fugiat nulla pariatur.
+            <span class="color-5">Excepteur</span>
+            sint occaecat cupidatat non proident, sunt in culpa qui
+            <span class="color-6">officia deserunt</span> mollit anim id est laborum.
+        </p>
+        <p>
+            Here is a <a href="https://www.lipsum.com/feed/html"
+                >hyperlink to somewhere</a
+            >.
+        </p>
+        <table>
+            <tbody>
+                <tr>
+                    <td class="red">Red</td>
+                    <td class="green">Green</td>
+                    <td class="blue">Blue</td>
+                    <td class="cyan">Cyan</td>
+                    <td class="purple">Purple</td>
+                    <td class="yellow">Yellow</td>
+                </tr>
+                <tr>
+                    <td class="red-background">Red</td>
+                    <td class="green-background">Green</td>
+                    <td class="blue-background">Blue</td>
+                    <td class="cyan-background">Cyan</td>
+                    <td class="purple-background">Purple</td>
+                    <td class="yellow-background">Yellow</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr />
+        <button type="button">Button</button>&nbsp;<button
+            type="button"
+            class="secondary">Secondary</button
+        >&nbsp;<button type="button" disabled>Disabled</button>
+        <br /><br />
+        <button type="button" class="ok">Affirmative</button>&nbsp;<button
+            type="button"
+            class="danger">Negative</button
+        >&nbsp;<button class="caution">Cautionary</button>
+        <br /><br />
+        <input type="text" placeholder="Input" />&nbsp;<input
+            type="text"
+            placeholder="Disabled"
+            disabled
+        /><br /><br />
+        <textarea placeholder="Textarea"></textarea><br /><br />
+        <input type="checkbox" id="checkbox1" /><label for="checkbox1"
+            >Checkbox</label
+        >&nbsp;<input type="checkbox" id="checkbox2" disabled /><label
+            for="checkbox2">Disabled checkbox</label
+        ><br /><br />
+        <input type="checkbox" class="toggle-switch" id="checkbox3" /><label
+            for="checkbox3">Toggle switch</label
+        >&nbsp;<input
+            type="checkbox"
+            class="toggle-switch"
+            id="checkbox4"
+            disabled
+        /><label for="checkbox4">Toggle switch</label><br /><br />
+        <input type="radio" name="radios" id="radio1" /><label for="radio1"
+            >Radio1</label
+        ><br /><br />
+        <input type="radio" name="radios" id="radio2" /><label for="radio2"
+            >Radio2</label
+        ><br /><br />
+        <input type="radio" name="radios" id="radio3" disabled /><label
+            for="radio3">Disabled</label
+        ><br /><br />
+        <hr />
+        <p>
+            Donec eleifend arcu nec lacus ultricies hendrerit. Aliquam fringilla
+            odio risus, nec efficitur enim scelerisque sit amet. Integer tempor
+            dui in nisi scelerisque, et consectetur velit eleifend. Integer
+            porttitor tincidunt est id auctor. Maecenas sit amet hendrerit est.
+            Phasellus in hendrerit enim. Fusce imperdiet viverra erat, et
+            condimentum turpis ultricies non. Pellentesque blandit imperdiet
+            mollis. Suspendisse metus dui, blandit ac purus eget, dignissim
+            molestie dolor. Fusce dignissim ligula augue, et tristique nulla
+            efficitur id.
+        </p>
+        <div class="card">
+            <h1 class="caption">Card with Caption</h1>
+            <p>
+                I am not rightly able to apprehend the kind of confusion of
+                ideas that could have provoked such a question.
+            </p>
+            <div class="buttons-container">
+                <button class="secondary-button">Retry</button>&nbsp;
+                <button class="secondary-button">Cancel</button>
+            </div>
+        </div>
+    </main>
+</div>
 
-  <form class="row" onsubmit={greet}>
-    <input id="greet-input" placeholder="Enter a name..." bind:value={name} />
-    <button type="submit">Greet</button>
-  </form>
-  <p>{greetMsg}</p>
-</main>
+<style lang="scss">
+    .app {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        gap: var(--vertical-gap) var(--horizontal-gap);
+        height: calc(100vh - 2 * var(--vertical-gap));
+    }
 
-<style>
-.logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
-}
-
-.logo.svelte-kit:hover {
-  filter: drop-shadow(0 0 2em #ff3e00);
-}
-
-:root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
-
-  color: #0f0f0f;
-  background-color: #f6f6f6;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-}
-
-.container {
-  margin: 0;
-  padding-top: 10vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: 0.75s;
-}
-
-.logo.tauri:hover {
-  filter: drop-shadow(0 0 2em #24c8db);
-}
-
-.row {
-  display: flex;
-  justify-content: center;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: #535bf2;
-}
-
-h1 {
-  text-align: center;
-}
-
-input,
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  color: #0f0f0f;
-  background-color: #ffffff;
-  transition: border-color 0.25s;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-}
-
-button {
-  cursor: pointer;
-}
-
-button:hover {
-  border-color: #396cd8;
-}
-button:active {
-  border-color: #396cd8;
-  background-color: #e8e8e8;
-}
-
-input,
-button {
-  outline: none;
-}
-
-#greet-input {
-  margin-right: 5px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: #f6f6f6;
-    background-color: #2f2f2f;
-  }
-
-  a:hover {
-    color: #24c8db;
-  }
-
-  input,
-  button {
-    color: #ffffff;
-    background-color: #0f0f0f98;
-  }
-  button:active {
-    background-color: #0f0f0f69;
-  }
-}
-
+    main {
+        overflow-y: auto;
+    }
 </style>

@@ -89,6 +89,33 @@ $tooltip-delay: 500ms;
     color: var(--caption-foreground);
     padding: var(--vertical-gap) var(--horizontal-gap);
     background-clip: border-box;
+    margin-top: 0px;
+    text-transform: uppercase;
+    font-weight: bold;
+
+    &.toolbar {
+        padding: 0 var(--horizontal-gap);
+        margin: 0;
+        min-height: 2rem;
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+
+        label {
+            color: var(--caption-foreground);
+        }
+
+        h1,
+        h2 {
+            color: var(--caption-foreground);
+            margin: var(--vertical-gap) var(--horizontal-gap);
+            flex: 1;
+        }
+
+        h1 {
+            text-align: left;
+        }
+    }
 }
 
 .panel>.content,
@@ -99,7 +126,6 @@ $tooltip-delay: 500ms;
 
 .panel.ok,
 .card.ok {
-    // background-color: var(--ok-background-transparent);
     border-color: var(--ok-foreground);
     box-shadow: $panel-shadow-x $panel-shadow-y $panel-shadow-blur var(--ok-shadow);
     --inner-border-color: var(--ok-foreground);
@@ -111,25 +137,23 @@ $tooltip-delay: 500ms;
 
 .panel.caution,
 .card.caution {
-    // background-color: var(--warning-background-transparent);
-    border-color: var(--warning-foreground);
-    box-shadow: $panel-shadow-x $panel-shadow-y $panel-shadow-blur var(--warning-shadow);
-    --inner-border-color: var(--warning-foreground);
+    border-color: var(--caution-foreground);
+    box-shadow: $panel-shadow-x $panel-shadow-y $panel-shadow-blur var(--caution-shadow);
+    --inner-border-color: var(--caution-foreground);
 
     &>.caption {
-        background-color: var(--warning-foreground);
+        background-color: var(--caution-foreground);
     }
 }
 
 .panel.danger,
 .card.danger {
-    // background-color: var(--error-background-transparent);
-    border-color: var(--error-foreground);
-    box-shadow: $panel-shadow-x $panel-shadow-y $panel-shadow-blur var(--error-shadow);
-    --inner-border-color: var(--error-foreground);
+    border-color: var(--danger-foreground);
+    box-shadow: $panel-shadow-x $panel-shadow-y $panel-shadow-blur var(--danger-shadow);
+    --inner-border-color: var(--danger-foreground);
 
     &>.caption {
-        background-color: var(--error-foreground);
+        background-color: var(--danger-foreground);
     }
 }
 

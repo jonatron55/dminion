@@ -1,5 +1,7 @@
+@use "globals.scss";
+
 // Regular checkbox
-input[type=checkbox] {
+input[type=checkbox]:not(.button) {
     appearance: none;
     font: inherit;
 
@@ -14,7 +16,7 @@ input[type=checkbox] {
         margin-right: 1em;
         transition: var(--ui-transition-time) ease-in-out;
         transform: scale(1);
-        box-shadow: $control-shadow-x $control-shadow-y $control-shadow-blur var(--chrome-shadow);
+        box-shadow: globals.$control-shadow-x globals.$control-shadow-y globals.$control-shadow-blur var(--chrome-shadow);
     }
 
     &:hover+label::before,
@@ -57,7 +59,7 @@ input[type=checkbox].toggle-switch {
         margin-right: 1em;
         border-radius: 1em;
         font-weight: normal;
-        box-shadow: $control-shadow-x $control-shadow-y $control-shadow-blur var(--chrome-shadow);
+        box-shadow: globals.$control-shadow-x globals.$control-shadow-y globals.$control-shadow-blur var(--chrome-shadow);
     }
 
     &:hover+label::before,
@@ -113,7 +115,7 @@ input[type=checkbox].toggle-switch {
 }
 
 // Radio button
-input[type=radio] {
+input[type=radio]:not(.button) {
     appearance: none;
     font: inherit;
 
@@ -128,7 +130,7 @@ input[type=radio] {
         border-radius: 50%;
         transition: var(--ui-transition-time) ease-in-out;
         transform: scale(1);
-        box-shadow: $control-shadow-x $control-shadow-y $control-shadow-blur var(--chrome-shadow);
+        box-shadow: globals.$control-shadow-x globals.$control-shadow-y globals.$control-shadow-blur var(--chrome-shadow);
     }
 
     &:hover:enabled+label::before,

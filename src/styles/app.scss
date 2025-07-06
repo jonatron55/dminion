@@ -1,13 +1,13 @@
-@import "button.scss";
-@import "card.scss";
-@import "checkbox.scss";
-@import "fonts.scss";
-@import "game.scss";
-@import "globals.scss";
-@import "scrollbar.scss";
-@import "select.scss";
-@import "textinput.scss";
-@import "toolbar.scss";
+@use "button.scss";
+@use "card.scss";
+@use "checkbox.scss";
+@use "fonts.scss";
+@use "globals.scss";
+@use "range.scss";
+@use "scrollbar.scss";
+@use "select.scss";
+@use "textinput.scss";
+@use "toolbar.scss";
 
 * {
     box-sizing: border-box;
@@ -34,7 +34,7 @@
     user-select: none;
 }
 
-@media (max-width: $x-narrow-breakpoint) {
+@media (max-width: globals.$x-narrow-breakpoint) {
     :root {
         font-stretch: condensed;
         --horizontal-gap: 0.42rem;
@@ -52,20 +52,14 @@
 body {
     color: var(--primary-foreground);
     padding: 0;
-    margin: 0;
+    margin: var(--vertical-gap) var(--horizontal-gap);
     line-height: var(--base-line-height);
     background-attachment: fixed;
-    background-repeat: repeat;
-    background-blend-mode: multiply, soft-light, soft-light, soft-light;
-    background-color: var(--card-background);
-    background-image:
-        url("/uniform-noise.png"),
-        radial-gradient(circle at top left, var(--chrome), transparent),
-        radial-gradient(circle at top right, var(--page-background), transparent),
-        radial-gradient(ellipse at bottom center, var(--chrome-dim), transparent);
-    border: solid var(--window-border-width) var(--chrome);
-    width: 100vw;
-    height: 100vh;
+    background-size: cover;
+    background-color: var(--page-background);
+    background-image: url("images/background.jpg");
+    width: calc(100vw - 2 * var(--horizontal-gap));
+    height: calc(100vh - 2 * var(--vertical-gap));
 }
 
 div {
@@ -233,16 +227,19 @@ tr {
 table.banded-rows {
     border: 1px solid var(--dim-foreground);
     background: var(--content-background);
+    border-collapse: collapse;
+
 
     tr:nth-child(even) {
         background-color: var(--card-background);
     }
 
-    tr:not(:first-child):hover {
+    tr:hover {
         border-color: var(--dim-foreground);
         border-width: 1px 0;
         border-style: dashed none;
         border-spacing: 1px;
+        padding: 0;
     }
 
     th {
@@ -255,80 +252,113 @@ table.banded-rows {
     color: var(--dim-foreground);
 }
 
-.accent-1 {
-    color: var(--accent-1-foreground);
+.color-1 {
+    color: var(--intense-color-1-low-foreground);
     font-weight: bold;
 }
 
-.accent-2 {
-    color: var(--accent-2-foreground);
+.color-2 {
+    color: var(--intense-color-2-low-foreground);
     font-weight: bold;
 }
 
-.accent-3 {
-    color: var(--accent-3-foreground);
+.color-3 {
+    color: var(--intense-color-3-low-foreground);
     font-weight: bold;
 }
 
-.accent-4 {
-    color: var(--accent-4-foreground);
+.color-4 {
+    color: var(--intense-color-4-low-foreground);
     font-weight: bold;
 }
 
-.accent-5 {
-    color: var(--accent-5-foreground);
+.color-5 {
+    color: var(--intense-color-5-low-foreground);
     font-weight: bold;
 }
 
-.accent-6 {
-    color: var(--accent-6-foreground);
+.color-6 {
+    color: var(--intense-color-6-low-foreground);
     font-weight: bold;
+}
+
+.color-1-background {
+    background-color: var(--intense-color-1-high-background);
+}
+
+.color-2-background {
+    background-color: var(--intense-color-2-high-background);
+}
+
+.color-3-background {
+    background-color: var(--intense-color-3-high-background);
+}
+
+.color-4-background {
+    background-color: var(--intense-color-4-high-background);
+}
+
+.color-5-background {
+    background-color: var(--intense-color-5-high-background);
+}
+
+.color-6-background {
+    background-color: var(--intense-color-6-high-background);
 }
 
 .red {
-    color: var(--red-foreground);
+    color: var(--intense-red-low-foreground);
 }
 
 .green {
-    color: var(--green-foreground);
+    color: var(--intense-green-low-foreground);
 }
 
 .blue {
-    color: var(--blue-foreground);
+    color: var(--intense-blue-low-foreground);
 }
 
 .cyan {
-    color: var(--cyan-foreground);
+    color: var(--intense-cyan-low-foreground);
 }
 
 .purple {
-    color: var(--purple-foreground);
+    color: var(--intense-purple-low-foreground);
 }
 
 .yellow {
-    color: var(--yellow-foreground);
+    color: var(--intense-yellow-low-foreground);
 }
 
 .red-background {
-    background-color: var(--red-background);
+    background-color: var(--intense-red-high-background);
 }
 
 .green-background {
-    background-color: var(--green-background);
+    background-color: var(--intense-green-high-background);
 }
 
 .blue-background {
-    background-color: var(--blue-background);
+    background-color: var(--intense-blue-high-background);
 }
 
 .cyan-background {
-    background-color: var(--cyan-background);
+    background-color: var(--intense-cyan-high-background);
 }
 
 .purple-background {
-    background-color: var(--purple-background);
+    background-color: var(--intense-purple-high-background);
 }
 
 .yellow-background {
-    background-color: var(--yellow-background);
+    background-color: var(--intense-yellow-high-background);
+}
+
+.swatch {
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--panel-border-radius);
+    border: none;
+    display: inline-block;
+    background-color: magenta;
 }
