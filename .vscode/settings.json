@@ -11,7 +11,7 @@
     "source.fixAll.tslint": "explicit",
     "source.organizeImports": "explicit"
   },
-  "svelte.plugin.svelte.format.config.printWidth": 120,
+  "svelte.plugin.svelte.format.config.printWidth": 140,
   "[json][jsonc][jsonl][html][xml][css][scss]": {
     "editor.indentSize": 2,
   },

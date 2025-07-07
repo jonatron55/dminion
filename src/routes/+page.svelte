@@ -108,13 +108,49 @@
       </p>
       <div class="card">
         <h1 class="caption">Card with Caption</h1>
-        <p>
+        <p class="content">
           I am not rightly able to apprehend the kind of confusion of ideas that
           could have provoked such a question.
         </p>
         <div class="buttons-container">
-          <button class="secondary-button">Retry</button>&nbsp;
-          <button class="secondary-button">Cancel</button>
+          <button class="primary">Retry</button>&nbsp;
+          <button class="cancel">Cancel</button>
+        </div>
+      </div>
+      <hr />
+      <div class="card ok">
+        <h1 class="caption">Card with Caption</h1>
+        <p class="content">
+          I am not rightly able to apprehend the kind of confusion of ideas that
+          could have provoked such a question.
+        </p>
+        <div class="buttons-container">
+          <button class="primary ok">OK</button>&nbsp;
+          <button class="cancel ok">Cancel</button>
+        </div>
+      </div>
+      <hr />
+      <div class="card caution">
+        <h1 class="caption">Card with Caption</h1>
+        <p class="content">
+          I am not rightly able to apprehend the kind of confusion of ideas that
+          could have provoked such a question.
+        </p>
+        <div class="buttons-container">
+          <button class="primary caution">OK</button>&nbsp;
+          <button class="cancel caution">Cancel</button>
+        </div>
+      </div>
+      <hr />
+      <div class="card danger">
+        <h1 class="caption">Card with Caption</h1>
+        <p class="content">
+          I am not rightly able to apprehend the kind of confusion of ideas that
+          could have provoked such a question.
+        </p>
+        <div class="buttons-container">
+          <button class="primary danger">OK</button>&nbsp;
+          <button class="cancel danger">Cancel</button>
         </div>
       </div>
     </div>
