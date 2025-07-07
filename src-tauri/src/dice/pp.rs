@@ -1,12 +1,9 @@
-// Copyright 2024 Jonathon Cobb
-// Licensed under the ISC license
-
 //! This module contains a pretty-printer for the dice expressions that
 //! traverses an AST and outputs a string representation of the expression.
 
-use std::io::Write;
+use std::fmt::{Error as FmtError, Write};
 
-use super::ast::{Add, Div, Lit, Mul, Neg, Roll, Select, Selection, Sub, Visitor, VisitorResult};
+use super::ast::{Node, Selection};
 
 /// A pretty-printer for dice expressions.
 pub struct PP<'o, W: Write> {
@@ -25,53 +22,88 @@ impl<'o, W: Write> PP<'o, W> {
             prod: false,
         }
     }
-}
 
-impl<'o, W: Write> Visitor for PP<'o, W> {
-    fn lit(&mut self, node: &Lit) -> VisitorResult {
-        write!(self.writer, "{}", node.value)?;
+    pub fn write(&mut self, node: &Node) -> Result<(), FmtError> {
+        self.visit(node)
+    }
+
+    fn visit(&mut self, node: &Node) -> Result<(), FmtError> {
+        match node {
+            Node::Lit { value } => self.lit(*value),
+            Node::Roll {
+                count,
+                sides,
+                select,
+            } => self.roll(&count, &sides, select.as_ref().map(|n| n.as_ref())),
+            Node::Select { selection, next } => {
+                self.select(selection, next.as_ref().map(|n| n.as_ref()))
+            }
+            Node::Neg { right } => self.neg(right.as_ref()),
+            Node::Add { left, right } => self.add(left.as_ref(), right.as_ref()),
+            Node::Sub { left, right } => self.sub(left.as_ref(), right.as_ref()),
+            Node::Mul { left, right } => self.mul(left.as_ref(), right.as_ref()),
+            Node::Div { left, right } => self.div(left.as_ref(), right.as_ref()),
+        }
+    }
+
+    fn lit(&mut self, value: i32) -> Result<(), FmtError> {
+        write!(self.writer, "{}", value)?;
         Ok(())
     }
 
-    fn roll(&mut self, node: &Roll) -> VisitorResult {
-        node.count.accept(self)?;
+    fn roll(&mut self, count: &Node, sides: &Node, select: Option<&Node>) -> Result<(), FmtError> {
+        self.visit(count)?;
         write!(self.writer, "d")?;
-        node.sides.accept(self)?;
+        self.visit(sides)?;
 
-        if let Some(selection) = &node.select {
-            selection.accept(self)?;
+        if let Some(selection) = &select {
+            self.visit(selection)?;
         }
 
         Ok(())
     }
 
-    fn select(&mut self, node: &Select) -> VisitorResult {
-        match node.selection {
-            Selection::KeepHighest => write!(self.writer, "kh")?,
-            Selection::KeepLowest => write!(self.writer, "kl")?,
-            Selection::DropHighest => write!(self.writer, "dh")?,
-            Selection::DropLowest => write!(self.writer, "dl")?,
+    fn select(&mut self, selection: &Selection, next: Option<&Node>) -> Result<(), FmtError> {
+        match selection {
+            Selection::KeepHighest { .. } => write!(self.writer, "kh")?,
+            Selection::KeepLowest { .. } => write!(self.writer, "kl")?,
+            Selection::DropHighest { .. } => write!(self.writer, "dh")?,
+            Selection::DropLowest { .. } => write!(self.writer, "dl")?,
             Selection::Advantage => write!(self.writer, "adv")?,
             Selection::Disadvantage => write!(self.writer, "dis")?,
         };
 
-        if let Some(count) = &node.count {
-            count.accept(self)?;
+        match selection {
+            Selection::KeepHighest { count }
+            | Selection::KeepLowest { count }
+            | Selection::DropHighest { count }
+            | Selection::DropLowest { count } => {
+                if let Some(count) = count {
+                    self.visit(&count)?
+                } else {
+                    write!(self.writer, "1")?;
+                }
+            }
+            _ => {}
+        };
+
+        if let Some(next) = &next {
+            self.visit(next)?;
         }
 
         Ok(())
     }
 
-    fn neg(&mut self, node: &Neg) -> VisitorResult {
+    fn neg(&mut self, right: &Node) -> Result<(), FmtError> {
         let was_prod = self.prod;
         self.prod = true;
         write!(self.writer, "-")?;
-        node.right.accept(self)?;
+        self.visit(right)?;
         self.prod = was_prod;
         Ok(())
     }
 
-    fn add(&mut self, node: &Add) -> VisitorResult {
+    fn add(&mut self, left: &Node, right: &Node) -> Result<(), FmtError> {
         let was_prod = self.prod;
         self.prod = false;
 
@@ -79,9 +111,9 @@ impl<'o, W: Write> Visitor for PP<'o, W> {
             write!(self.writer, "(")?;
         }
 
-        node.left.accept(self)?;
+        self.visit(left)?;
         write!(self.writer, " + ")?;
-        node.right.accept(self)?;
+        self.visit(right)?;
 
         if was_prod {
             write!(self.writer, ")")?;
@@ -91,7 +123,7 @@ impl<'o, W: Write> Visitor for PP<'o, W> {
         Ok(())
     }
 
-    fn sub(&mut self, node: &Sub) -> VisitorResult {
+    fn sub(&mut self, left: &Node, right: &Node) -> Result<(), FmtError> {
         let was_prod = self.prod;
         self.prod = false;
 
@@ -99,9 +131,9 @@ impl<'o, W: Write> Visitor for PP<'o, W> {
             write!(self.writer, "(")?;
         }
 
-        node.left.accept(self)?;
+        self.visit(left)?;
         write!(self.writer, " - ")?;
-        node.right.accept(self)?;
+        self.visit(right)?;
 
         if was_prod {
             write!(self.writer, ")")?;
@@ -111,25 +143,25 @@ impl<'o, W: Write> Visitor for PP<'o, W> {
         Ok(())
     }
 
-    fn mul(&mut self, node: &Mul) -> VisitorResult {
+    fn mul(&mut self, left: &Node, right: &Node) -> Result<(), FmtError> {
         let was_prod = self.prod;
         self.prod = true;
 
-        node.left.accept(self)?;
+        self.visit(left)?;
         write!(self.writer, " × ")?;
-        node.right.accept(self)?;
+        self.visit(right)?;
 
         self.prod = was_prod;
         Ok(())
     }
 
-    fn div(&mut self, node: &Div) -> VisitorResult {
+    fn div(&mut self, left: &Node, right: &Node) -> Result<(), FmtError> {
         let was_prod = self.prod;
         self.prod = true;
 
-        node.left.accept(self)?;
+        self.visit(left)?;
         write!(self.writer, " / ")?;
-        node.right.accept(self)?;
+        self.visit(right)?;
 
         self.prod = was_prod;
         Ok(())

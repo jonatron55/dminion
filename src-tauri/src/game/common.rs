@@ -1,7 +1,7 @@
 use rand::Rng;
 use serde::{Deserialize, Serialize};
 
-use crate::dice::roll;
+use crate::dice::{roll, DiceExpr};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Stats {
@@ -21,13 +21,15 @@ pub struct Class {
 
 impl Stats {
     pub fn roll<TRng: Rng>(rng: &mut TRng) -> Self {
+        let dice = DiceExpr::parse("4d6kh3").unwrap();
+
         Stats {
-            str: roll("4d6kh3", rng).unwrap() as u32,
-            dex: roll("4d6kh3", rng).unwrap() as u32,
-            con: roll("4d6kh3", rng).unwrap() as u32,
-            int: roll("4d6kh3", rng).unwrap() as u32,
-            wis: roll("4d6kh3", rng).unwrap() as u32,
-            cha: roll("4d6kh3", rng).unwrap() as u32,
+            str: dice.roll(rng).unwrap().value as u32,
+            dex: dice.roll(rng).unwrap().value as u32,
+            con: dice.roll(rng).unwrap().value as u32,
+            int: dice.roll(rng).unwrap().value as u32,
+            wis: dice.roll(rng).unwrap().value as u32,
+            cha: dice.roll(rng).unwrap().value as u32,
         }
     }
 }

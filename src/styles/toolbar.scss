@@ -2,153 +2,153 @@ button.toolbar,
 input[type="checkbox"].button.toolbar+label,
 input[type="radio"].button.toolbar+label,
 input[type="file"].button.toolbar+label {
-    display: inline-block;
-    min-width: 48px;
-    border-radius: 0;
-    background: transparent;
-    border: none;
-    height: 100%;
-    box-shadow: none;
-    transition: none;
+  display: inline-block;
+  min-width: 48px;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  height: 100%;
+  box-shadow: none;
+  transition: none;
+  transform: scale(1);
+  padding: var(--vertical-gap) var(--horizontal-gap);
+  margin: 0;
+
+  &:hover {
+    background-color: var(--control-hover-background);
+    color: var(--control-hover-foreground);
     transform: scale(1);
-    padding: var(--vertical-gap) var(--horizontal-gap);
-    margin: 0;
+  }
+
+  &:active {
+    background-color: var(--control-active-background);
+    color: var(--control-active-foreground);
+    transform: scale(1);
+  }
+
+  &:disabled {
+    background-color: var(--control-disabled-background);
+    color: var(--control-disabled-foreground);
+    transform: scale(1);
+  }
+
+  &.highlight {
+    background-color: var(--control-background);
+    color: var(--control-foreground);
+  }
+
+  &.ok {
+    background: transparent;
+    color: var(--control-foreground);
+    border: none;
 
     &:hover {
-        background-color: var(--control-hover-background);
-        color: var(--control-hover-foreground);
-        transform: scale(1);
+      background-color: var(--ok-control-hover-background);
+      color: var(--ok-control-hover-foreground);
     }
 
     &:active {
-        background-color: var(--control-active-background);
-        color: var(--control-active-foreground);
-        transform: scale(1);
+      background-color: var(--ok-control-active-background);
+      color: var(--ok-control-active-foreground);
     }
 
     &:disabled {
-        background-color: var(--control-disabled-background);
-        color: var(--control-disabled-foreground);
-        transform: scale(1);
+      background-color: var(--ok-control-disabled-background);
+      color: var(--ok-control-disabled-foreground);
+    }
+  }
+
+  &.caution {
+    background: transparent;
+    color: var(--control-foreground);
+    border: none;
+
+    &:hover {
+      background-color: var(--caution-control-hover-background);
+      color: var(--caution-control-hover-foreground);
     }
 
-    &.highlight {
-        background-color: var(--control-background);
-        color: var(--control-foreground);
+    &:active {
+      background-color: var(--caution-control-active-background);
+      color: var(--caution-control-active-foreground);
     }
 
-    &.ok {
-        background: transparent;
-        color: var(--control-foreground);
-        border: none;
+    &:disabled {
+      background-color: var(--caution-control-disabled-background);
+      color: var(--caution-control-disabled-foreground);
+    }
+  }
 
-        &:hover {
-            background-color: var(--ok-control-hover-background);
-            color: var(--ok-control-hover-foreground);
-        }
+  &.danger {
+    background: transparent;
+    color: var(--control-foreground);
+    border: none;
 
-        &:active {
-            background-color: var(--ok-control-active-background);
-            color: var(--ok-control-active-foreground);
-        }
-
-        &:disabled {
-            background-color: var(--ok-control-disabled-background);
-            color: var(--ok-control-disabled-foreground);
-        }
+    &:hover {
+      background-color: var(--danger-control-hover-background);
+      color: var(--danger-control-hover-foreground);
     }
 
-    &.caution {
-        background: transparent;
-        color: var(--control-foreground);
-        border: none;
-
-        &:hover {
-            background-color: var(--caution-control-hover-background);
-            color: var(--caution-control-hover-foreground);
-        }
-
-        &:active {
-            background-color: var(--caution-control-active-background);
-            color: var(--caution-control-active-foreground);
-        }
-
-        &:disabled {
-            background-color: var(--caution-control-disabled-background);
-            color: var(--caution-control-disabled-foreground);
-        }
+    &:active {
+      background-color: var(--danger-control-active-background);
+      color: var(--danger-control-active-foreground);
     }
 
-    &.danger {
-        background: transparent;
-        color: var(--control-foreground);
-        border: none;
-
-        &:hover {
-            background-color: var(--danger-control-hover-background);
-            color: var(--danger-control-hover-foreground);
-        }
-
-        &:active {
-            background-color: var(--danger-control-active-background);
-            color: var(--danger-control-active-foreground);
-        }
-
-        &:disabled {
-            background-color: var(--danger-control-disabled-background);
-            color: var(--danger-control-disabled-foreground);
-        }
+    &:disabled {
+      background-color: var(--danger-control-disabled-background);
+      color: var(--danger-control-disabled-foreground);
     }
+  }
 }
 
 .caption {
 
-    button.toolbar,
-    input[type="checkbox"].button.toolbar+label,
-    input[type="radio"].button.toolbar+label,
-    input[type="file"].button.toolbar+label {
-        color: var(--caption-foreground);
-        min-width: 2rem;
-        padding: var(--vertical-gap) var(--horizontal-gap);
+  button.toolbar,
+  input[type="checkbox"].button.toolbar+label,
+  input[type="radio"].button.toolbar+label,
+  input[type="file"].button.toolbar+label {
+    color: var(--caption-foreground);
+    min-width: 2rem;
+    padding: var(--vertical-gap) var(--horizontal-gap);
 
-        &:hover {
-            background-color: var(--control-background);
-            color: var(--control-hover-foreground);
-        }
+    &:hover {
+      background-color: var(--control-background);
+      color: var(--control-hover-foreground);
     }
+  }
 }
 
 input[type="checkbox"].button.toolbar,
 input[type="radio"].button.toolbar {
-    appearance: none;
-    display: none;
-    margin: 0;
-    padding: 0;
+  appearance: none;
+  display: none;
+  margin: 0;
+  padding: 0;
 
-    &+label {
-        padding: var(--vertical-gap) var(--horizontal-gap);
-        margin: 0;
-    }
+  &+label {
+    padding: var(--vertical-gap) var(--horizontal-gap);
+    margin: 0;
+  }
 }
 
 input[type="checkbox"].button.toolbar:checked+label,
 input[type="radio"].button.toolbar:checked+label {
-    background-color: var(--control-active-background);
-    color: var(--control-active-foreground);
-    transform: scale(1);
+  background-color: var(--control-active-background);
+  color: var(--control-active-foreground);
+  transform: scale(1);
 
-    &.ok {
-        background-color: var(--ok-control-active-background);
-        color: var(--ok-control-active-foreground);
-    }
+  &.ok {
+    background-color: var(--ok-control-active-background);
+    color: var(--ok-control-active-foreground);
+  }
 
-    &.caution {
-        background-color: var(--caution-control-active-background);
-        color: var(--caution-control-active-foreground);
-    }
+  &.caution {
+    background-color: var(--caution-control-active-background);
+    color: var(--caution-control-active-foreground);
+  }
 
-    &.danger {
-        background-color: var(--danger-control-active-background);
-        color: var(--danger-control-active-foreground);
-    }
+  &.danger {
+    background-color: var(--danger-control-active-background);
+    color: var(--danger-control-active-foreground);
+  }
 }

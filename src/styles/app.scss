@@ -10,74 +10,74 @@
 @use "toolbar.scss";
 
 * {
-    box-sizing: border-box;
-    --titlebar-height: 26px;
+  box-sizing: border-box;
+  --titlebar-height: 26px;
 }
 
 .titlebar {
-    display: grid;
-    height: var(--titlebar-height);
-    width: 100vw;
-    padding: 0;
-    position: fixed;
+  display: grid;
+  height: var(--titlebar-height);
+  width: 100vw;
+  padding: 0;
+  position: fixed;
 }
 
 :root {
-    --vertical-gap: 0.5rem;
-    --horizontal-gap: 0.5rem;
+  --vertical-gap: 0.5rem;
+  --horizontal-gap: 0.5rem;
 
-    font-family: var(--base-font);
-    font-size: var(--base-font-size);
-    transition: background-color 0.1s, color 0.1s, border-color 0.1s, box-shadow 0.1s;
-    overflow: hidden;
-    -webkit-user-select: none;
-    user-select: none;
+  font-family: var(--base-font);
+  font-size: var(--base-font-size);
+  transition: background-color 0.1s, color 0.1s, border-color 0.1s, box-shadow 0.1s;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 @media (max-width: globals.$x-narrow-breakpoint) {
-    :root {
-        font-stretch: condensed;
-        --horizontal-gap: 0.42rem;
-    }
+  :root {
+    font-stretch: condensed;
+    --horizontal-gap: 0.42rem;
+  }
 }
 
 ::selection {
-    background-color: var(--selection-background);
+  background-color: var(--selection-background);
 
-    &:not(:focus) {
-        background-color: var(--dim-selection-background);
-    }
+  &:not(:focus) {
+    background-color: var(--dim-selection-background);
+  }
 }
 
 body {
-    color: var(--primary-foreground);
-    padding: 0;
-    margin: var(--vertical-gap) var(--horizontal-gap);
-    line-height: var(--base-line-height);
-    background-attachment: fixed;
-    background-size: cover;
-    background-color: var(--page-background);
-    background-image: url("images/background.jpg");
-    width: calc(100vw - 2 * var(--horizontal-gap));
-    height: calc(100vh - 2 * var(--vertical-gap));
+  color: var(--primary-foreground);
+  padding: 0;
+  margin: var(--vertical-gap) var(--horizontal-gap);
+  line-height: var(--base-line-height);
+  background-attachment: fixed;
+  background-size: cover;
+  background-color: var(--page-background);
+  background-image: url("images/background.jpg");
+  width: calc(100vw - 2 * var(--horizontal-gap));
+  height: calc(100vh - 2 * var(--vertical-gap));
 }
 
 div {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 dt {
-    font-weight: bold;
-    color: var(--dim-foreground);
+  font-weight: bold;
+  color: var(--dim-foreground);
 
-    &::after {
-        content: ":";
-    }
+  &::after {
+    content: ":";
+  }
 }
 
 dd {
-    margin: 0 0 1rem 0;
+  margin: 0 0 1rem 0;
 }
 
 h1,
@@ -86,279 +86,279 @@ h3,
 h4,
 h5,
 h6 {
-    font-size: var(--base-font-size);
-    font-weight: bold;
-    color: var(--dim-foreground);
+  font-size: var(--base-font-size);
+  font-weight: bold;
+  color: var(--dim-foreground);
 }
 
 h1,
 h2,
 h3 {
-    margin: var(--base-font-size) 0 var(--base-font-size) 0;
-    text-transform: uppercase;
+  margin: var(--base-font-size) 0 var(--base-font-size) 0;
+  text-transform: uppercase;
 }
 
 h1 {
-    text-align: center;
-    color: var(--chrome-foreground);
+  text-align: center;
+  color: var(--chrome-foreground);
 }
 
 p {
-    margin: 0 0 1rem 0;
+  margin: 0 0 1rem 0;
 }
 
 hr {
-    border: none;
-    border-top: var(--ui-border-width) solid var(--dim-foreground);
-    margin: 2rem auto;
-    padding: 0;
-    width: 40%;
+  border: none;
+  border-top: var(--ui-border-width) solid var(--dim-foreground);
+  margin: 2rem auto;
+  padding: 0;
+  width: 40%;
 }
 
 a {
-    color: var(--link);
-    text-decoration: 1.5px underline;
-    font-weight: 700;
-    border-radius: var(--ui-border-radius);
+  color: var(--link);
+  text-decoration: 1.5px underline;
+  font-weight: 700;
+  border-radius: var(--ui-border-radius);
 
-    &:hover {
-        color: var(--link-hover);
-        background-color: var(--card-background-transparent);
-    }
+  &:hover {
+    color: var(--link-hover);
+    background-color: var(--card-background-transparent);
+  }
 
-    &:active {
-        color: var(--link-active);
-        background-color: var(--card-background-transparent);
-    }
+  &:active {
+    color: var(--link-active);
+    background-color: var(--card-background-transparent);
+  }
 
-    &:disabled {
-        color: var(--link-disabled);
-    }
+  &:disabled {
+    color: var(--link-disabled);
+  }
 
-    &:focus-visible {
-        color: var(--hover-link);
-        background-color: var(--card-background-transparent);
-        box-shadow: 0px 0px 8px var(--hover-link);
-        outline: solid var(--ui-border-width) var(--hover-link);
-    }
+  &:focus-visible {
+    color: var(--hover-link);
+    background-color: var(--card-background-transparent);
+    box-shadow: 0px 0px 8px var(--hover-link);
+    outline: solid var(--ui-border-width) var(--hover-link);
+  }
 }
 
 .accent-link {
-    color: var(--accent-control-link);
+  color: var(--accent-control-link);
 
-    &:hover {
-        color: var(--accent-hover-link);
-    }
+  &:hover {
+    color: var(--accent-hover-link);
+  }
 
-    &:active {
-        color: var(--accent-active-link);
-    }
+  &:active {
+    color: var(--accent-active-link);
+  }
 
-    &:disabled {
-        color: var(--accent-disabled-link);
-    }
+  &:disabled {
+    color: var(--accent-disabled-link);
+  }
 }
 
 dl {
-    margin: 1rem 0;
+  margin: 1rem 0;
 }
 
 dt {
-    float: left;
-    margin-right: var(--horizontal-gap);
+  float: left;
+  margin-right: var(--horizontal-gap);
 
-    &::after {
-        content: ":";
-    }
+  &::after {
+    content: ":";
+  }
 }
 
 dd {
-    grid-column: 2;
+  grid-column: 2;
 }
 
 blockquote {
-    background: var(--card-background-transparent);
-    border-left: 2px solid var(--dim-foreground);
-    border-right: 2px solid var(--dim-foreground);
-    border-radius: var(--ui-border-radius);
-    padding: 0.5rem 1rem;
-    margin: 1rem 4rem;
-    font-style: italic;
+  background: var(--card-background-transparent);
+  border-left: 2px solid var(--dim-foreground);
+  border-right: 2px solid var(--dim-foreground);
+  border-radius: var(--ui-border-radius);
+  padding: 0.5rem 1rem;
+  margin: 1rem 4rem;
+  font-style: italic;
 }
 
 footer {
-    font-style: normal;
-    color: var(--dim-foreground);
+  font-style: normal;
+  color: var(--dim-foreground);
 }
 
 pre {
-    background-color: var(--card-background-transparent);
-    color: var(--primary-foreground);
-    border-color: var(--dim-foreground) var(--dim-foreground) var(--dim-foreground) var(--chrome);
-    border-style: solid;
-    border-width: 1px 1px 1px 4px;
-    padding: 0.5rem 1rem;
-    overflow: auto;
+  background-color: var(--card-background-transparent);
+  color: var(--primary-foreground);
+  border-color: var(--dim-foreground) var(--dim-foreground) var(--dim-foreground) var(--chrome);
+  border-style: solid;
+  border-width: 1px 1px 1px 4px;
+  padding: 0.5rem 1rem;
+  overflow: auto;
 }
 
 table {
-    border-collapse: collapse;
-    margin: 1rem auto;
+  border-collapse: collapse;
+  margin: 1rem auto;
 }
 
 td {
-    padding: 0 calc(var(--horizontal-gap) * 0.5);
-    min-width: 6rem;
+  padding: 0 calc(var(--horizontal-gap) * 0.5);
+  min-width: 6rem;
 }
 
 th {
-    padding: 0 calc(var(--horizontal-gap) * 0.5);
-    min-width: 6rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    text-align: left;
-    border-bottom: 1px solid var(--dim-foreground);
+  padding: 0 calc(var(--horizontal-gap) * 0.5);
+  min-width: 6rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: left;
+  border-bottom: 1px solid var(--dim-foreground);
 }
 
 tr {
-    height: 1.5rem;
+  height: 1.5rem;
 }
 
 table.banded-rows {
-    border: 1px solid var(--dim-foreground);
-    background: var(--content-background);
-    border-collapse: collapse;
+  border: 1px solid var(--dim-foreground);
+  background: var(--content-background);
+  border-collapse: collapse;
 
 
-    tr:nth-child(even) {
-        background-color: var(--card-background);
-    }
+  tr:nth-child(even) {
+    background-color: var(--card-background);
+  }
 
-    tr:hover {
-        border-color: var(--dim-foreground);
-        border-width: 1px 0;
-        border-style: dashed none;
-        border-spacing: 1px;
-        padding: 0;
-    }
+  tr:hover {
+    border-color: var(--dim-foreground);
+    border-width: 1px 0;
+    border-style: dashed none;
+    border-spacing: 1px;
+    padding: 0;
+  }
 
-    th {
-        background: var(--dim-foreground);
-        color: var(--page-background);
-    }
+  th {
+    background: var(--dim-foreground);
+    color: var(--page-background);
+  }
 }
 
 .dim {
-    color: var(--dim-foreground);
+  color: var(--dim-foreground);
 }
 
 .color-1 {
-    color: var(--intense-color-1-low-foreground);
-    font-weight: bold;
+  color: var(--intense-color-1-low-foreground);
+  font-weight: bold;
 }
 
 .color-2 {
-    color: var(--intense-color-2-low-foreground);
-    font-weight: bold;
+  color: var(--intense-color-2-low-foreground);
+  font-weight: bold;
 }
 
 .color-3 {
-    color: var(--intense-color-3-low-foreground);
-    font-weight: bold;
+  color: var(--intense-color-3-low-foreground);
+  font-weight: bold;
 }
 
 .color-4 {
-    color: var(--intense-color-4-low-foreground);
-    font-weight: bold;
+  color: var(--intense-color-4-low-foreground);
+  font-weight: bold;
 }
 
 .color-5 {
-    color: var(--intense-color-5-low-foreground);
-    font-weight: bold;
+  color: var(--intense-color-5-low-foreground);
+  font-weight: bold;
 }
 
 .color-6 {
-    color: var(--intense-color-6-low-foreground);
-    font-weight: bold;
+  color: var(--intense-color-6-low-foreground);
+  font-weight: bold;
 }
 
 .color-1-background {
-    background-color: var(--intense-color-1-high-background);
+  background-color: var(--intense-color-1-high-background);
 }
 
 .color-2-background {
-    background-color: var(--intense-color-2-high-background);
+  background-color: var(--intense-color-2-high-background);
 }
 
 .color-3-background {
-    background-color: var(--intense-color-3-high-background);
+  background-color: var(--intense-color-3-high-background);
 }
 
 .color-4-background {
-    background-color: var(--intense-color-4-high-background);
+  background-color: var(--intense-color-4-high-background);
 }
 
 .color-5-background {
-    background-color: var(--intense-color-5-high-background);
+  background-color: var(--intense-color-5-high-background);
 }
 
 .color-6-background {
-    background-color: var(--intense-color-6-high-background);
+  background-color: var(--intense-color-6-high-background);
 }
 
 .red {
-    color: var(--intense-red-low-foreground);
+  color: var(--intense-red-low-foreground);
 }
 
 .green {
-    color: var(--intense-green-low-foreground);
+  color: var(--intense-green-low-foreground);
 }
 
 .blue {
-    color: var(--intense-blue-low-foreground);
+  color: var(--intense-blue-low-foreground);
 }
 
 .cyan {
-    color: var(--intense-cyan-low-foreground);
+  color: var(--intense-cyan-low-foreground);
 }
 
 .purple {
-    color: var(--intense-purple-low-foreground);
+  color: var(--intense-purple-low-foreground);
 }
 
 .yellow {
-    color: var(--intense-yellow-low-foreground);
+  color: var(--intense-yellow-low-foreground);
 }
 
 .red-background {
-    background-color: var(--intense-red-high-background);
+  background-color: var(--intense-red-high-background);
 }
 
 .green-background {
-    background-color: var(--intense-green-high-background);
+  background-color: var(--intense-green-high-background);
 }
 
 .blue-background {
-    background-color: var(--intense-blue-high-background);
+  background-color: var(--intense-blue-high-background);
 }
 
 .cyan-background {
-    background-color: var(--intense-cyan-high-background);
+  background-color: var(--intense-cyan-high-background);
 }
 
 .purple-background {
-    background-color: var(--intense-purple-high-background);
+  background-color: var(--intense-purple-high-background);
 }
 
 .yellow-background {
-    background-color: var(--intense-yellow-high-background);
+  background-color: var(--intense-yellow-high-background);
 }
 
 .swatch {
-    width: 2rem;
-    height: 2rem;
-    border-radius: var(--panel-border-radius);
-    border: none;
-    display: inline-block;
-    background-color: magenta;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--panel-border-radius);
+  border: none;
+  display: inline-block;
+  background-color: magenta;
 }

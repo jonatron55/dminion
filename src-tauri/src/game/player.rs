@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use rand::Rng;
 use serde::{Deserialize, Serialize};
 
-use super::{Class, Stats};
+use super::{conditions::Condition, Class, Stats};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlayerDef {
@@ -25,6 +25,7 @@ pub struct Player {
     pub bonus_action: bool,
     pub notes: String,
     pub tiebreaker: i32,
+    pub conditions: Vec<Condition>,
 }
 
 impl PlayerDef {
@@ -37,6 +38,7 @@ impl PlayerDef {
             bonus_action: true,
             initiative: 0,
             tiebreaker: ((self.stats.dex & 0xFF) << 24 | (rng.gen::<u32>() & 0x00FF_FFFF)) as i32,
+            conditions: vec![],
         }
     }
 
