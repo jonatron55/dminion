@@ -42,7 +42,7 @@ export interface Player {
   initiative: number,
   action: boolean,
   reaction: boolean,
-  bonus_action: boolean,
+  bonusAction: boolean,
   notes: string,
   tiebreaker: number,
   conditions: string[],
@@ -92,9 +92,9 @@ export function portrait(participant: Participant): string {
 }
 
 export function smallPortraitUrl(participant: Participant): string {
-  return `/images/portraits/${portrait(participant)}.small.jpg`;
+  return `images/portraits/${portrait(participant)}.small.jpg`;
 }
 
 export function fullPortraitUrl(participant: Participant): string {
-  return `/images/portraits/${portrait(participant)}.full.jpg`;
+  return `images/portraits/${portrait(participant)}.full.jpg`;
 }

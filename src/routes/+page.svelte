@@ -1,11 +1,119 @@
 <script lang="ts">
   import type { AppMode } from "$lib/AppMode";
+  import type { Game } from "$lib/game/Game";
+  import EncounterPage from "../components/EncounterPage.svelte";
+  import LibraryPage from "../components/LibraryPage.svelte";
+  import MapPage from "../components/MapPage.svelte";
   import Toolbar from "../components/Toolbar.svelte";
+  import TradePage from "../components/TradePage.svelte";
   import "../styles/app.scss";
   import { currentTheme } from "../themes/theme";
 
-  let mode: AppMode = "map";
+  let mode: AppMode = "encounter";
   currentTheme.set("Dungeoneer Dusk");
+
+  let game: Game = {
+    participants: [
+      {
+        player: {
+          def: {
+            name: "Heroic Joe",
+            classes: [{ class: "Fighter", level: 5 }],
+            stats: {
+              str: 16,
+              dex: 14,
+              con: 15,
+              int: 10,
+              wis: 12,
+              cha: 8,
+            },
+            ac: 18,
+            initiativeBonus: 0,
+            portrait: "unknown-player",
+            notes: "Lawful stupid murder hobo in search of JUSTICE!",
+          },
+          initiative: 15,
+          tiebreaker: 123,
+          action: true,
+          reaction: true,
+          bonusAction: true,
+          notes: "",
+          conditions: ["surprised"],
+        },
+      },
+      {
+        monster: {
+          def: {
+            name: "Goblin Minion",
+            subtype: "Small Humanoid (Goblin)",
+            portrait: "goblin",
+            cr: 1,
+            ac: 14,
+            stats: {
+              str: 8,
+              dex: 15,
+              con: 10,
+              int: 10,
+              wis: 8,
+              cha: 8,
+            },
+            initiativeBonus: 0,
+            legendaryActions: 0,
+            notes: "Goblins are smelly green creatures that steal things.",
+            hitDice: "3d6",
+          },
+          name: "Gobbo McGobface",
+          initiative: 15,
+          tiebreaker: -456,
+          hp: 13,
+          action: true,
+          reaction: true,
+          bonusAction: true,
+          legendaryActions: 0,
+          notes:
+            "A complex and multidimensional character with hopes, dreams, and a knife. It's green",
+          conditions: ["bloodied"],
+        },
+      },
+      {
+        monster: {
+          def: {
+            name: "Bullywug",
+            subtype: "Medium Humanoid",
+            portrait: "bullywug",
+            cr: 1,
+            ac: 14,
+            stats: {
+              str: 12,
+              dex: 12,
+              con: 13,
+              int: 7,
+              wis: 10,
+              cha: 7,
+            },
+            initiativeBonus: 0,
+            legendaryActions: 0,
+            notes: "Bullywugs are wugly frogs that bully like thugs.",
+            hitDice: "2d8+2",
+          },
+          name: "Froggo McFrogface",
+          initiative: 15,
+          tiebreaker: -456,
+          hp: 11,
+          action: true,
+          reaction: true,
+          bonusAction: true,
+          legendaryActions: 0,
+          notes: "Froggo McFrogface would rather be eating flies.",
+          conditions: ["bloodied"],
+        },
+      },
+    ],
+    round: 1,
+    turn: 1,
+    game_started: new Date(),
+    turn_started: new Date(),
+  };
 </script>
 
 <div class="app">
@@ -16,144 +124,16 @@
     }}
   />
 
-  <main class="panel">
-    <div class="content">
-      <p>
-        Lorem <span class="color-1">ipsum</span> dolor sit amet, consectetur
-        adipiscing elit, sed do eiusmod tempor
-        <span class="color-2">incididunt</span>
-        ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-        <span class="color-3">exercitation</span>
-        ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-        dolor in <span class="color-4">reprehenderit</span> in voluptate velit
-        esse cillum dolore eu fugiat nulla pariatur.
-        <span class="color-5">Excepteur</span>
-        sint occaecat cupidatat non proident, sunt in culpa qui
-        <span class="color-6">officia deserunt</span> mollit anim id est laborum.
-      </p>
-      <p>
-        Here is a <a href="https://www.lipsum.com/feed/html"
-          >hyperlink to somewhere</a
-        >.
-      </p>
-      <table>
-        <tbody>
-          <tr>
-            <td class="red">Red</td>
-            <td class="green">Green</td>
-            <td class="blue">Blue</td>
-            <td class="cyan">Cyan</td>
-            <td class="purple">Purple</td>
-            <td class="yellow">Yellow</td>
-          </tr>
-          <tr>
-            <td class="red-background">Red</td>
-            <td class="green-background">Green</td>
-            <td class="blue-background">Blue</td>
-            <td class="cyan-background">Cyan</td>
-            <td class="purple-background">Purple</td>
-            <td class="yellow-background">Yellow</td>
-          </tr>
-        </tbody>
-      </table>
-      <hr />
-      <button type="button">Button</button>&nbsp;<button
-        type="button"
-        class="secondary">Secondary</button
-      >&nbsp;<button type="button" disabled>Disabled</button>
-      <br /><br />
-      <button type="button" class="ok">Affirmative</button>&nbsp;<button
-        type="button"
-        class="danger">Negative</button
-      >&nbsp;<button class="caution">Cautionary</button>
-      <br /><br />
-      <input type="text" placeholder="Input" />&nbsp;<input
-        type="text"
-        placeholder="Disabled"
-        disabled
-      /><br /><br />
-      <textarea placeholder="Textarea"></textarea><br /><br />
-      <input type="checkbox" id="checkbox1" /><label for="checkbox1"
-        >Checkbox</label
-      >&nbsp;<input type="checkbox" id="checkbox2" disabled /><label
-        for="checkbox2">Disabled checkbox</label
-      ><br /><br />
-      <input type="checkbox" class="toggle-switch" id="checkbox3" /><label
-        for="checkbox3">Toggle switch</label
-      >&nbsp;<input
-        type="checkbox"
-        class="toggle-switch"
-        id="checkbox4"
-        disabled
-      /><label for="checkbox4">Toggle switch</label><br /><br />
-      <input type="radio" name="radios" id="radio1" /><label for="radio1"
-        >Radio1</label
-      ><br /><br />
-      <input type="radio" name="radios" id="radio2" /><label for="radio2"
-        >Radio2</label
-      ><br /><br />
-      <input type="radio" name="radios" id="radio3" disabled /><label
-        for="radio3">Disabled</label
-      ><br /><br />
-      <hr />
-      <p>
-        Donec eleifend arcu nec lacus ultricies hendrerit. Aliquam fringilla
-        odio risus, nec efficitur enim scelerisque sit amet. Integer tempor dui
-        in nisi scelerisque, et consectetur velit eleifend. Integer porttitor
-        tincidunt est id auctor. Maecenas sit amet hendrerit est. Phasellus in
-        hendrerit enim. Fusce imperdiet viverra erat, et condimentum turpis
-        ultricies non. Pellentesque blandit imperdiet mollis. Suspendisse metus
-        dui, blandit ac purus eget, dignissim molestie dolor. Fusce dignissim
-        ligula augue, et tristique nulla efficitur id.
-      </p>
-      <div class="card">
-        <h1 class="caption">Card with Caption</h1>
-        <p class="content">
-          I am not rightly able to apprehend the kind of confusion of ideas that
-          could have provoked such a question.
-        </p>
-        <div class="buttons-container">
-          <button class="primary">Retry</button>&nbsp;
-          <button class="cancel">Cancel</button>
-        </div>
-      </div>
-      <hr />
-      <div class="card ok">
-        <h1 class="caption">Card with Caption</h1>
-        <p class="content">
-          I am not rightly able to apprehend the kind of confusion of ideas that
-          could have provoked such a question.
-        </p>
-        <div class="buttons-container">
-          <button class="primary ok">OK</button>&nbsp;
-          <button class="cancel ok">Cancel</button>
-        </div>
-      </div>
-      <hr />
-      <div class="card caution">
-        <h1 class="caption">Card with Caption</h1>
-        <p class="content">
-          I am not rightly able to apprehend the kind of confusion of ideas that
-          could have provoked such a question.
-        </p>
-        <div class="buttons-container">
-          <button class="primary caution">OK</button>&nbsp;
-          <button class="cancel caution">Cancel</button>
-        </div>
-      </div>
-      <hr />
-      <div class="card danger">
-        <h1 class="caption">Card with Caption</h1>
-        <p class="content">
-          I am not rightly able to apprehend the kind of confusion of ideas that
-          could have provoked such a question.
-        </p>
-        <div class="buttons-container">
-          <button class="primary danger">OK</button>&nbsp;
-          <button class="cancel danger">Cancel</button>
-        </div>
-      </div>
-    </div>
+  <main>
+    {#if mode === "map"}
+      <MapPage />
+    {:else if mode === "encounter"}
+      <EncounterPage {game} />
+    {:else if mode === "trade"}
+      <TradePage />
+    {:else if mode === "library"}
+      <LibraryPage />
+    {/if}
   </main>
 </div>
 
