@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { AppMode } from "$lib/AppMode";
-  import type { Game } from "$lib/game/Game";
+  import type { Game } from "$lib/model/Game";
+  import { GameViewModel } from "$lib/viewmodel/GameViewModel";
   import EncounterPage from "../components/EncounterPage.svelte";
   import LibraryPage from "../components/LibraryPage.svelte";
   import MapPage from "../components/MapPage.svelte";
@@ -38,7 +39,7 @@
           reaction: true,
           bonusAction: true,
           notes: "",
-          conditions: ["surprised"],
+          conditions: [{ name: "surprised" }, { name: "concentrating" }],
         },
       },
       {
@@ -63,16 +64,22 @@
             hitDice: "3d6",
           },
           name: "Gobbo McGobface",
-          initiative: 15,
+          initiative: 12,
           tiebreaker: -456,
-          hp: 13,
+          hp: 8,
+          tempHp: 0,
+          maxHp: 16,
           action: true,
           reaction: true,
           bonusAction: true,
           legendaryActions: 0,
           notes:
             "A complex and multidimensional character with hopes, dreams, and a knife. It's green",
-          conditions: ["bloodied"],
+          conditions: [
+            { name: "bloodied" },
+            { name: "dead" },
+            { name: "frightened", duration: 42 },
+          ],
         },
       },
       {
@@ -97,15 +104,29 @@
             hitDice: "2d8+2",
           },
           name: "Froggo McFrogface",
-          initiative: 15,
+          initiative: 19,
           tiebreaker: -456,
           hp: 11,
+          tempHp: 3,
+          maxHp: 16,
           action: true,
           reaction: true,
           bonusAction: true,
           legendaryActions: 0,
           notes: "Froggo McFrogface would rather be eating flies.",
-          conditions: ["bloodied"],
+          conditions: [
+            { name: "bloodied" },
+            { name: "prone" },
+            { name: "poisoned", duration: 30 },
+            { name: "blinded", duration: 15 },
+          ],
+        },
+      },
+      {
+        lair: {
+          name: "Bullywug Lair",
+          notes: "A swampy lair filled with bullywugs.",
+          action: true,
         },
       },
     ],
@@ -114,6 +135,8 @@
     game_started: new Date(),
     turn_started: new Date(),
   };
+
+  let gameViewModel = new GameViewModel(game);
 </script>
 
 <div class="app">
@@ -128,7 +151,7 @@
     {#if mode === "map"}
       <MapPage />
     {:else if mode === "encounter"}
-      <EncounterPage {game} />
+      <EncounterPage game={gameViewModel} />
     {:else if mode === "trade"}
       <TradePage />
     {:else if mode === "library"}

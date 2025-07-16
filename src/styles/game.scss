@@ -1,0 +1,169 @@
+$slow-alert: 900ms;
+$fast-alert: 300ms;
+
+@keyframes general-alert {
+  from {
+    --chrome: var(--base-color1-low-midground);
+  }
+
+  to {
+    --chrome: var(--base-color1-high-midground);
+  }
+}
+
+@keyframes intense-alert {
+  from {
+    --chrome: var(--muted-color6-low-midground);
+  }
+
+  to {
+    --chrome: var(--muted-color6-high-midground);
+  }
+}
+
+.blinded {
+  animation: intense-alert $fast-alert infinite alternate ease-in-out;
+}
+
+.bloodied {
+  &.badge {
+    color: var(--intense-red-medium-midground);
+    border-color: var(--intense-red-medium-midground);
+  }
+}
+
+@keyframes charmed {
+  from {
+    --chrome: var(--base-purple-low-midground);
+  }
+
+  to {
+    --chrome: var(--base-purple-high-midground);
+  }
+}
+
+.charmed {
+  &.badge {
+    color: var(--base-purple-low-foreground);
+    border-color: var(--base-purple-low-foreground);
+  }
+
+  animation: charmed $slow-alert infinite alternate ease-in-out;
+}
+
+.concentrating {
+  &.badge {
+    color: var(--base-cyan-low-foreground);
+    border-color: var(--base-cyan-low-foreground);
+  }
+
+  animation: concentrating $slow-alert infinite alternate ease-in-out;
+}
+
+.dead {
+  &.badge {
+    color: var(--muted-red-low-foreground);
+    border-color: var(--muted-red-low-foreground);
+  }
+
+  &.portrait {
+    filter: grayscale(100%) brightness(0.6667) !important;
+  }
+
+  --chrome: var(--muted-red-low-midground);
+  animation: none !important;
+}
+
+.deafened {
+  animation: intense-alert $fast-alert infinite alternate ease-in-out;
+}
+
+.frightened {
+  animation: intense-alert $fast-alert infinite alternate ease-in-out;
+}
+
+.grappled {
+  &.badge {
+    color: var(--base-yellow-low-foreground);
+    border-color: var(--base-yellow-low-foreground);
+  }
+}
+
+.incapacitated {
+  &.badge {
+    color: var(--base-yellow-low-foreground);
+    border-color: var(--base-yellow-low-foreground);
+  }
+}
+
+.invisible {
+  &.badge {
+    color: var(--muted-cyan-low-foreground);
+    border-color: var(--muted-cyan-low-foreground);
+  }
+}
+
+.marked {
+  &.badge {
+    color: var(--base-green-low-foreground);
+    border-color: var(--base-green-low-foreground);
+  }
+
+  --chrome: var(--base-green-high-midground);
+}
+
+
+.paralyzed {
+  &.badge {
+    color: var(--muted-purple-low-foreground);
+    border-color: var(--muted-purple-low-foreground);
+  }
+}
+
+.petrified {}
+
+.poisoned {
+  &.badge {
+    color: var(--base-green-medium-foreground);
+    border-color: var(--base-green-medium-foreground);
+  }
+
+  --chrome: var(--base-green-medium-midground);
+}
+
+.prone {}
+
+.restrained {}
+
+@keyframes concentrating {
+  from {
+    --chrome: var(--base-cyan-low-midground);
+  }
+
+  to {
+    --chrome: var(--base-cyan-high-midground);
+  }
+}
+
+.stunned {
+  &.badge {
+    color: var(--muted-cyan-high-foreground);
+    border-color: var(--muted-cyan-high-foreground);
+  }
+
+  animation: general-alert $fast-alert infinite alternate ease-in-out;
+}
+
+.surprised {
+  &.badge {
+    color: var(--muted-blue-high-foreground);
+    border-color: var(--muted-blue-high-foreground);
+  }
+}
+
+.unconscious {
+  &.badge {
+    color: var(--muted-blue-low-foreground);
+    border-color: var(--muted-blue-low-foreground);
+  }
+}

@@ -1,16 +1,26 @@
 <script lang="ts">
-  import type { Game } from "$lib/game/Game";
-  import { participantName, smallPortraitUrl } from "$lib/game/Participant";
+  import type { GameViewModel } from "$lib/viewmodel/GameViewModel";
+  import ParticipantRow from "./encounter/ParticipantRow.svelte";
 
-  export let game: Game;
+  export let game: GameViewModel;
 </script>
 
-{#each game.participants as participant}
-  <div class="participant">
-    <h2>{participantName(participant)}</h2>
-    <img
-      src={smallPortraitUrl(participant)}
-      alt={participantName(participant)}
+<div>
+  {#each game.participants
+    .slice()
+    .sort((a, b) => b.initiative - a.initiative) as participant}
+    <ParticipantRow
+      {participant}
+      isActive={participant.initiative == 15}
+      isSelected={false}
     />
-  </div>
-{/each}
+  {/each}
+</div>
+
+<style lang="scss">
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--vertical-gap);
+  }
+</style>

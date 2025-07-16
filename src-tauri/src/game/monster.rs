@@ -34,6 +34,7 @@ pub struct Monster {
     pub notes: String,
     pub tiebreaker: i32,
     pub conditions: Vec<Condition>,
+    pub is_hostile: bool,
 }
 
 impl MonsterDef {
@@ -50,6 +51,7 @@ impl MonsterDef {
             initiative: 0,
             tiebreaker: ((self.stats.dex & 0xFF) << 24 | (rng.gen::<u32>() & 0x00FF_FFFF)) as i32,
             conditions: vec![],
+            is_hostile: true,
         }
     }
 }

@@ -2,6 +2,7 @@
 @use "card.scss";
 @use "checkbox.scss";
 @use "fonts.scss";
+@use "game.scss";
 @use "globals.scss";
 @use "range.scss";
 @use "scrollbar.scss";
@@ -252,6 +253,39 @@ table.banded-rows {
   color: var(--dim-foreground);
 }
 
+.portrait {
+  border-color: var(--chrome);
+  border-style: var(--panel-border-style);
+  border-width: var(--panel-border-width);
+  border-radius: var(--panel-border-radius);
+}
+
+.badge {
+  color: var(--primary-foreground);
+  background-color: var(--card-background);
+  padding: 2px 4px;
+  border: solid 1px var(--primary-foreground);
+  border-radius: var(--ui-border-radius);
+  text-transform: capitalize;
+  font-weight: normal;
+
+  .count {
+    font-style: italic;
+    text-transform: none;
+
+    &::before {
+      content: "(";
+      font-style: normal;
+    }
+
+    &::after {
+      content: ")";
+      font-style: normal;
+    }
+  }
+}
+
+
 .color-1 {
   color: var(--intense-color-1-low-foreground);
   font-weight: bold;
@@ -352,13 +386,4 @@ table.banded-rows {
 
 .yellow-background {
   background-color: var(--intense-yellow-high-background);
-}
-
-.swatch {
-  width: 2rem;
-  height: 2rem;
-  border-radius: var(--panel-border-radius);
-  border: none;
-  display: inline-block;
-  background-color: magenta;
 }

@@ -24,3 +24,9 @@ $control-shadow-blur: 3px;
   --secondary-button-order: 2;
   --cancel-button-order: 3;
 }
+
+@property --chrome {
+  syntax: '<color>';
+  initial-value: #888888;
+  inherits: true;
+}
