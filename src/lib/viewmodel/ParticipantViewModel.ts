@@ -121,6 +121,22 @@ export class PlayerViewModel extends ParticipantViewModel {
     );
   }
 
+  get stats(): Stats {
+    return this._model.def.stats;
+  }
+
+  get action(): boolean {
+    return this._model.action;
+  }
+
+  get reaction(): boolean {
+    return this._model.reaction;
+  }
+
+  get bonusAction(): boolean {
+    return this._model.bonusAction;
+  }
+
   constructor(private _model: Player) {
     super();
   }
@@ -129,6 +145,10 @@ export class PlayerViewModel extends ParticipantViewModel {
 export class LairViewModel extends ParticipantViewModel {
   get name(): string {
     return this._model.name;
+  }
+
+  get action(): boolean {
+    return this._model.action;
   }
 
   get smallPortrait(): string {

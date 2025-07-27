@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use chrono::{DateTime, Duration, Utc};
 use rand::rngs::ThreadRng;
 use serde::{Deserialize, Serialize};
@@ -6,7 +8,8 @@ use super::{Participant, XP_PER_CR};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Game {
-    pub participants: Vec<Participant>,
+    pub participants: HashMap<u32, Participant>,
+    pub order: Vec<u32>,
     pub round: u32,
     pub turn: u32,
     pub game_started: DateTime<Utc>,
@@ -14,13 +17,25 @@ pub struct Game {
 
     #[serde(skip)]
     pub rng: ThreadRng,
+
+    next_id: u32,
 }
 
 impl Game {
     pub fn new(mut participants: Vec<Participant>) -> Self {
-        participants.sort();
+        participants.sort_unstable();
         Self {
-            participants,
+            order: participants
+                .iter()
+                .enumerate()
+                .map(|(id, _)| (id + 1) as u32)
+                .collect(),
+            next_id: participants.len() as u32 + 1,
+            participants: participants
+                .into_iter()
+                .enumerate()
+                .map(|(i, p)| ((i + 1) as u32, p))
+                .collect(),
             round: 0,
             turn: 0,
             game_started: Utc::now(),
@@ -29,9 +44,52 @@ impl Game {
         }
     }
 
-    pub fn spawn(&mut self, participant: Participant) {
-        self.participants.push(participant);
-        self.participants.sort();
+    pub fn spawn(&mut self, participant: Participant) -> u32 {
+        self.participants.insert(self.next_id, participant);
+        self.order.push(self.next_id);
+        self.order.sort_by(|a, b| {
+            self.participants
+                .get(a)
+                .unwrap()
+                .partial_cmp(self.participants.get(b).unwrap())
+                .unwrap_or(std::cmp::Ordering::Equal)
+        });
+        self.next_id += 1;
+        self.next_id - 1
+    }
+
+    pub fn despawn(&mut self, id: u32) {
+        self.participants.remove(&id);
+        self.order.retain(|&x| x != id);
+    }
+
+    pub fn begin_play(&mut self) {
+        self.turn = 0;
+        self.round = 1;
+        self.game_started = Utc::now();
+        self.turn_started = Utc::now();
+    }
+
+    pub fn next_turn(&mut self) {
+        if self.order.is_empty() {
+            return;
+        }
+
+        if let Some(participant) = self.participants.get_mut(&self.order[self.turn as usize]) {
+            participant.end_turn();
+        }
+
+        self.turn += 1;
+        if self.turn >= self.order.len() as u32 {
+            self.turn = 0;
+            self.round += 1;
+        }
+
+        self.turn_started = Utc::now();
+
+        if let Some(participant) = self.participants.get_mut(&self.order[self.turn as usize]) {
+            participant.begin_turn();
+        }
     }
 
     // pub fn realtime_duration(&self) -> Duration {

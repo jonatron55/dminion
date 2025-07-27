@@ -106,7 +106,7 @@
           name: "Froggo McFrogface",
           initiative: 19,
           tiebreaker: -456,
-          hp: 11,
+          hp: 1234,
           tempHp: 3,
           maxHp: 16,
           action: true,
@@ -147,17 +147,15 @@
     }}
   />
 
-  <main>
-    {#if mode === "map"}
-      <MapPage />
-    {:else if mode === "encounter"}
-      <EncounterPage game={gameViewModel} />
-    {:else if mode === "trade"}
-      <TradePage />
-    {:else if mode === "library"}
-      <LibraryPage />
-    {/if}
-  </main>
+  {#if mode === "map"}
+    <MapPage />
+  {:else if mode === "encounter"}
+    <EncounterPage game={gameViewModel} />
+  {:else if mode === "trade"}
+    <TradePage />
+  {:else if mode === "library"}
+    <LibraryPage />
+  {/if}
 </div>
 
 <style lang="scss">
@@ -166,9 +164,7 @@
     grid-template-rows: auto 1fr;
     gap: var(--vertical-gap) var(--horizontal-gap);
     height: calc(100vh - 2 * var(--vertical-gap));
-  }
-
-  main {
-    overflow-y: auto;
+    max-height: calc(100vh - 2 * var(--vertical-gap));
+    overflow: hidden;
   }
 </style>

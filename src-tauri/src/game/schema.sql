@@ -1,3 +1,5 @@
+-- Players and Monsters
+
 CREATE TABLE Players (
     id INTEGER PRIMARY KEY,
     party_id INTEGER REFERENCES Parties(id),
@@ -56,4 +58,14 @@ CREATE TABLE Encounters (
     name TEXT NOT NULL,
     has_lair BOOLEAN NOT NULL,
     notes TEXT
+);
+
+-- Trade
+
+CREATE TABLE TradeItems (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    measure REAL,
+    unit TEXT,
+    price INTEGER NOT NULL
 );

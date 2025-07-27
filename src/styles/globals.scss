@@ -19,6 +19,9 @@ $control-shadow-blur: 3px;
   --vertical-gap: 0.25rem;
   --horizontal-gap: 0.25rem;
 
+  --ui-hydrate-time: 180ms;
+  --ui-transition-time: 60ms;
+
   // Overridden by platform (Android and Apple reverse this order)
   --primary-button-order: 1;
   --secondary-button-order: 2;

@@ -124,39 +124,6 @@ $tooltip-delay: 500ms;
   margin: var(--vertical-gap) var(--horizontal-gap);
 }
 
-.panel.ok,
-.card.ok {
-  border-color: var(--ok-foreground);
-  box-shadow: $panel-shadow-x $panel-shadow-y $panel-shadow-blur var(--ok-shadow);
-  --inner-border-color: var(--ok-foreground);
-
-  &>.caption {
-    background-color: var(--ok-foreground);
-  }
-}
-
-.panel.caution,
-.card.caution {
-  border-color: var(--caution-foreground);
-  box-shadow: $panel-shadow-x $panel-shadow-y $panel-shadow-blur var(--caution-shadow);
-  --inner-border-color: var(--caution-foreground);
-
-  &>.caption {
-    background-color: var(--caution-foreground);
-  }
-}
-
-.panel.danger,
-.card.danger {
-  border-color: var(--danger-foreground);
-  box-shadow: $panel-shadow-x $panel-shadow-y $panel-shadow-blur var(--danger-shadow);
-  --inner-border-color: var(--danger-foreground);
-
-  &>.caption {
-    background-color: var(--danger-foreground);
-  }
-}
-
 @keyframes tooltip-hydrate {
   0% {
     opacity: 0;

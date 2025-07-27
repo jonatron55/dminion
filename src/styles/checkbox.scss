@@ -36,7 +36,7 @@ input[type=checkbox]:not(.button) {
   }
 
   &:checked+label::before {
-    content: "\2714";
+    content: "\2714"; // Heavy Check Mark
   }
 
   &:disabled+label::before {

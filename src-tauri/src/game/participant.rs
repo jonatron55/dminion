@@ -15,8 +15,8 @@ impl Participant {
     pub fn name(&self) -> &str {
         match self {
             Participant::Lair(lair) => &lair.name,
-            Participant::Monster(monster) => &monster.def.name,
-            Participant::Player(player) => &player.def.name,
+            Participant::Monster(monster) => &monster.name,
+            Participant::Player(player) => &player.name,
         }
     }
 
@@ -35,6 +35,16 @@ impl Participant {
             Participant::Player(player) => player.tiebreaker,
         }
     }
+
+    pub fn begin_turn(&mut self) {
+        match self {
+            Participant::Lair(_) => {}
+            Participant::Monster(monster) => monster.begin_turn(),
+            Participant::Player(player) => {}
+        }
+    }
+
+    pub fn end_turn(&mut self) {}
 }
 
 impl PartialEq for Participant {
@@ -59,7 +69,7 @@ impl Ord for Participant {
         match self.initiative().partial_cmp(&other.initiative()) {
             Some(Ordering::Equal) => self.tiebreaker().cmp(&other.tiebreaker()),
             Some(other) => other,
-            None => unreachable!()
+            None => unreachable!(),
         }
     }
 }

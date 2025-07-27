@@ -36,69 +36,6 @@ input[type="file"].button.toolbar+label {
     background-color: var(--control-background);
     color: var(--control-foreground);
   }
-
-  &.ok {
-    background: transparent;
-    color: var(--control-foreground);
-    border: none;
-
-    &:hover {
-      background-color: var(--ok-control-hover-background);
-      color: var(--ok-control-hover-foreground);
-    }
-
-    &:active {
-      background-color: var(--ok-control-active-background);
-      color: var(--ok-control-active-foreground);
-    }
-
-    &:disabled {
-      background-color: var(--ok-control-disabled-background);
-      color: var(--ok-control-disabled-foreground);
-    }
-  }
-
-  &.caution {
-    background: transparent;
-    color: var(--control-foreground);
-    border: none;
-
-    &:hover {
-      background-color: var(--caution-control-hover-background);
-      color: var(--caution-control-hover-foreground);
-    }
-
-    &:active {
-      background-color: var(--caution-control-active-background);
-      color: var(--caution-control-active-foreground);
-    }
-
-    &:disabled {
-      background-color: var(--caution-control-disabled-background);
-      color: var(--caution-control-disabled-foreground);
-    }
-  }
-
-  &.danger {
-    background: transparent;
-    color: var(--control-foreground);
-    border: none;
-
-    &:hover {
-      background-color: var(--danger-control-hover-background);
-      color: var(--danger-control-hover-foreground);
-    }
-
-    &:active {
-      background-color: var(--danger-control-active-background);
-      color: var(--danger-control-active-foreground);
-    }
-
-    &:disabled {
-      background-color: var(--danger-control-disabled-background);
-      color: var(--danger-control-disabled-foreground);
-    }
-  }
 }
 
 .caption {
@@ -136,19 +73,4 @@ input[type="radio"].button.toolbar:checked+label {
   background-color: var(--control-active-background);
   color: var(--control-active-foreground);
   transform: scale(1);
-
-  &.ok {
-    background-color: var(--ok-control-active-background);
-    color: var(--ok-control-active-foreground);
-  }
-
-  &.caution {
-    background-color: var(--caution-control-active-background);
-    color: var(--caution-control-active-foreground);
-  }
-
-  &.danger {
-    background-color: var(--danger-control-active-background);
-    color: var(--danger-control-active-foreground);
-  }
 }
