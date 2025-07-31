@@ -1,5 +1,6 @@
 <script lang="ts">
   import { conditionClasses } from "$lib/model/Condition";
+  import type { GameViewModel } from "$lib/viewmodel/GameViewModel";
   import {
     LairViewModel,
     MonsterViewModel,
@@ -9,6 +10,7 @@
   import HealDialog from "./HealDialog.svelte";
   import Stat from "./Stat.svelte";
 
+  export let game: GameViewModel;
   export let participant: ParticipantViewModel;
   export let isActive: boolean = false;
   export let isSelected: boolean = false;
@@ -58,7 +60,11 @@
             <span class="{condition.name} badge">
               {condition.name}
               {#if condition.duration}
-                <span class="count">{condition.duration}s</span>
+                <span class="count"
+                  >{condition.startTime! +
+                    condition.duration -
+                    game.time}s</span
+                >
               {/if}
             </span>
           {/each}

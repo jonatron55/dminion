@@ -54,14 +54,14 @@
 body {
   color: var(--primary-foreground);
   padding: 0;
-  margin: var(--vertical-gap) var(--horizontal-gap);
+  margin: 0;
   line-height: var(--base-line-height);
   background-attachment: fixed;
   background-size: cover;
   background-color: var(--page-background);
   background-image: url("images/background.jpg");
-  width: calc(100vw - 2 * var(--horizontal-gap));
-  height: calc(100vh - 2 * var(--vertical-gap));
+  width: 100vw;
+  height: 100vh;
 }
 
 div {

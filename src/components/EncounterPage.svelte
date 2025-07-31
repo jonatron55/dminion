@@ -13,6 +13,7 @@
         .sort((a, b) => b.initiative - a.initiative) as participant}
         <ParticipantRow
           {participant}
+          {game}
           isActive={participant.initiative == 15}
           isSelected={false}
         />
@@ -34,5 +35,6 @@
     flex-direction: column;
     gap: var(--vertical-gap);
     overflow-y: scroll;
+    padding: 0 var(--horizontal-gap);
   }
 </style>

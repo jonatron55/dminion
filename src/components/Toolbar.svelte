@@ -5,9 +5,12 @@
     type AppSidebarMode,
     appSidebarModes,
   } from "$lib/AppMode";
+  import type { GameViewModel } from "$lib/viewmodel/GameViewModel";
+  import EncounterToolbar from "./EncounterToolbar.svelte";
 
   export let mode: AppMode = "map";
   export let sidebarMode: AppSidebarMode = undefined;
+  export let gameViewModel: GameViewModel;
 
   export let onModeChange: (mode: AppMode) => void = () => {};
   export let onSidebarModeChange: (mode: AppSidebarMode) => void = () => {};
@@ -28,7 +31,11 @@
       <label for={m}>{m.charAt(0).toUpperCase() + m.slice(1)}</label>
     {/each}
   </div>
-  <div></div>
+  <div>
+    {#if mode === "encounter"}
+      <EncounterToolbar game={gameViewModel} />
+    {/if}
+  </div>
   <div class="caption mode-select">
     {#each appSidebarModes as m}
       <input

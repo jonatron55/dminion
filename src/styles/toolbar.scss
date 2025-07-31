@@ -13,6 +13,7 @@ input[type="file"].button.toolbar+label {
   transform: scale(1);
   padding: var(--vertical-gap) var(--horizontal-gap);
   margin: 0;
+  font-weight: bold;
 
   &:hover {
     background-color: var(--control-hover-background);
@@ -36,6 +37,18 @@ input[type="file"].button.toolbar+label {
     background-color: var(--control-background);
     color: var(--control-foreground);
   }
+
+  &::before {
+    content: "[ ";
+    font-weight: normal;
+    opacity: 0.5;
+  }
+
+  &::after {
+    content: " ]";
+    font-weight: normal;
+    opacity: 0.5;
+  }
 }
 
 .caption {
@@ -47,10 +60,19 @@ input[type="file"].button.toolbar+label {
     color: var(--caption-foreground);
     min-width: 2rem;
     padding: var(--vertical-gap) var(--horizontal-gap);
+    font-weight: normal;
 
     &:hover {
       background-color: var(--control-background);
       color: var(--control-hover-foreground);
+    }
+
+    &::before {
+      content: none;
+    }
+
+    &::after {
+      content: none;
     }
   }
 }

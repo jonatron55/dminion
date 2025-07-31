@@ -31,7 +31,8 @@
             ac: 18,
             initiativeBonus: 0,
             portrait: "unknown-player",
-            notes: "Lawful stupid murder hobo in search of JUSTICE!",
+            notes:
+              "Lawful stupid murder hobo with an angsty backstory who roams the land in search of justice or something.",
           },
           initiative: 15,
           tiebreaker: 123,
@@ -44,26 +45,21 @@
       },
       {
         monster: {
-          def: {
-            name: "Goblin Minion",
-            subtype: "Small Humanoid (Goblin)",
-            portrait: "goblin",
-            cr: 1,
-            ac: 14,
-            stats: {
-              str: 8,
-              dex: 15,
-              con: 10,
-              int: 10,
-              wis: 8,
-              cha: 8,
-            },
-            initiativeBonus: 0,
-            legendaryActions: 0,
-            notes: "Goblins are smelly green creatures that steal things.",
-            hitDice: "3d6",
-          },
           name: "Gobbo McGobface",
+          subtype: "Small Humanoid (Goblin)",
+          portrait: "goblin",
+          cr: 1,
+          ac: 14,
+          stats: {
+            str: 8,
+            dex: 15,
+            con: 10,
+            int: 10,
+            wis: 8,
+            cha: 8,
+          },
+          initiativeBonus: 0,
+          hitDice: "3d6",
           initiative: 12,
           tiebreaker: -456,
           hp: 8,
@@ -74,7 +70,7 @@
           bonusAction: true,
           legendaryActions: 0,
           notes:
-            "A complex and multidimensional character with hopes, dreams, and a knife. It's green",
+            "Gobbo McGobface is a complex and multidimensional character with hopes, dreams, and a knife. He's green",
           conditions: [
             { name: "bloodied" },
             { name: "dead" },
@@ -84,26 +80,21 @@
       },
       {
         monster: {
-          def: {
-            name: "Bullywug",
-            subtype: "Medium Humanoid",
-            portrait: "bullywug",
-            cr: 1,
-            ac: 14,
-            stats: {
-              str: 12,
-              dex: 12,
-              con: 13,
-              int: 7,
-              wis: 10,
-              cha: 7,
-            },
-            initiativeBonus: 0,
-            legendaryActions: 0,
-            notes: "Bullywugs are wugly frogs that bully like thugs.",
-            hitDice: "2d8+2",
-          },
           name: "Froggo McFrogface",
+          subtype: "Medium Humanoid",
+          portrait: "bullywug",
+          cr: 1,
+          ac: 14,
+          stats: {
+            str: 12,
+            dex: 12,
+            con: 13,
+            int: 7,
+            wis: 10,
+            cha: 7,
+          },
+          initiativeBonus: 0,
+          hitDice: "2d8+2",
           initiative: 19,
           tiebreaker: -456,
           hp: 1234,
@@ -117,8 +108,16 @@
           conditions: [
             { name: "bloodied" },
             { name: "prone" },
-            { name: "poisoned", duration: 30 },
-            { name: "blinded", duration: 15 },
+            {
+              name: "poisoned",
+              startTime: 16,
+              duration: 60,
+            },
+            {
+              name: "blinded",
+              startTime: 6,
+              duration: 60,
+            },
           ],
         },
       },
@@ -130,10 +129,9 @@
         },
       },
     ],
-    round: 1,
+    round: 4,
     turn: 1,
-    game_started: new Date(),
-    turn_started: new Date(),
+    turnStarted: new Date(),
   };
 
   let gameViewModel = new GameViewModel(game);
@@ -142,6 +140,7 @@
 <div class="app">
   <Toolbar
     {mode}
+    {gameViewModel}
     onModeChange={(newMode) => {
       mode = newMode;
     }}

@@ -32,12 +32,12 @@ export class MonsterViewModel extends ParticipantViewModel {
   }
 
   get smallPortrait(): string {
-    const portrait = this._model.def.portrait || "unknown-monster";
+    const portrait = this._model.portrait || "unknown-monster";
     return `/images/portraits/${portrait}.small.jpg`;
   }
 
   get fullPortrait(): string {
-    const portrait = this._model.def.portrait || "unknown-monster";
+    const portrait = this._model.portrait || "unknown-monster";
     return `/images/portraits/${portrait}.full.jpg`;
   }
 
@@ -64,11 +64,11 @@ export class MonsterViewModel extends ParticipantViewModel {
   }
 
   get ac(): number {
-    return this._model.def.ac;
+    return this._model.ac;
   }
 
   get stats(): Stats {
-    return this._model.def.stats;
+    return this._model.stats;
   }
 
   get action(): boolean {
@@ -88,7 +88,7 @@ export class MonsterViewModel extends ParticipantViewModel {
   }
 
   get totalLegendaryActions(): number {
-    return this._model.def.legendaryActions;
+    return this._model.legendaryActions;
   }
 
   constructor(private _model: Monster) {
