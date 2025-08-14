@@ -40,11 +40,17 @@ impl Participant {
         match self {
             Participant::Lair(_) => {}
             Participant::Monster(monster) => monster.begin_turn(),
-            Participant::Player(player) => {}
+            Participant::Player(player) => player.begin_turn(),
         }
     }
 
-    pub fn end_turn(&mut self) {}
+    pub fn end_turn(&mut self) {
+        match self {
+            Participant::Lair(_) => {}
+            Participant::Monster(monster) => monster.end_turn(),
+            Participant::Player(player) => player.end_turn(),
+        }
+    }
 }
 
 impl PartialEq for Participant {

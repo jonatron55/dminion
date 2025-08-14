@@ -13,15 +13,7 @@
 
 * {
   box-sizing: border-box;
-  --titlebar-height: 26px;
-}
-
-.titlebar {
-  display: grid;
-  height: var(--titlebar-height);
-  width: 100vw;
-  padding: 0;
-  position: fixed;
+  --titlebar-height: 3rem;
 }
 
 :root {
@@ -287,58 +279,58 @@ table.banded-rows {
 }
 
 
-.color-1 {
-  color: var(--intense-color-1-low-foreground);
+.color1 {
+  color: var(--intense-color1-low-foreground);
   font-weight: bold;
 }
 
-.color-2 {
-  color: var(--intense-color-2-low-foreground);
+.color2 {
+  color: var(--intense-color2-low-foreground);
   font-weight: bold;
 }
 
-.color-3 {
-  color: var(--intense-color-3-low-foreground);
+.color3 {
+  color: var(--intense-color3-low-foreground);
   font-weight: bold;
 }
 
-.color-4 {
-  color: var(--intense-color-4-low-foreground);
+.color4 {
+  color: var(--intense-color4-low-foreground);
   font-weight: bold;
 }
 
-.color-5 {
-  color: var(--intense-color-5-low-foreground);
+.color5 {
+  color: var(--intense-color5-low-foreground);
   font-weight: bold;
 }
 
-.color-6 {
-  color: var(--intense-color-6-low-foreground);
+.color6 {
+  color: var(--intense-color6-low-foreground);
   font-weight: bold;
 }
 
-.color-1-background {
-  background-color: var(--intense-color-1-high-background);
+.color1-background {
+  background-color: var(--intense-color1-high-background);
 }
 
-.color-2-background {
-  background-color: var(--intense-color-2-high-background);
+.color2-background {
+  background-color: var(--intense-color2-high-background);
 }
 
-.color-3-background {
-  background-color: var(--intense-color-3-high-background);
+.color3-background {
+  background-color: var(--intense-color3-high-background);
 }
 
-.color-4-background {
-  background-color: var(--intense-color-4-high-background);
+.color4-background {
+  background-color: var(--intense-color4-high-background);
 }
 
-.color-5-background {
-  background-color: var(--intense-color-5-high-background);
+.color5-background {
+  background-color: var(--intense-color5-high-background);
 }
 
-.color-6-background {
-  background-color: var(--intense-color-6-high-background);
+.color6-background {
+  background-color: var(--intense-color6-high-background);
 }
 
 .red {

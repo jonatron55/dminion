@@ -1,7 +1,7 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, vec};
 
 use chrono::{DateTime, Duration, Utc};
-use rand::rngs::ThreadRng;
+use rand::{rngs::StdRng, SeedableRng};
 use serde::{Deserialize, Serialize};
 
 use super::{Participant, XP_PER_CR};
@@ -15,34 +15,47 @@ pub struct Game {
     pub game_started: DateTime<Utc>,
     pub turn_started: DateTime<Utc>,
 
-    #[serde(skip)]
-    pub rng: ThreadRng,
+    #[serde(skip, default = "rand::rngs::StdRng::from_entropy")]
+    pub rng: StdRng,
 
     next_id: u32,
 }
 
 impl Game {
-    pub fn new(mut participants: Vec<Participant>) -> Self {
-        participants.sort_unstable();
+    pub fn new() -> Self {
         Self {
-            order: participants
-                .iter()
-                .enumerate()
-                .map(|(id, _)| (id + 1) as u32)
-                .collect(),
-            next_id: participants.len() as u32 + 1,
-            participants: participants
-                .into_iter()
-                .enumerate()
-                .map(|(i, p)| ((i + 1) as u32, p))
-                .collect(),
+            order: vec![],
+            participants: HashMap::new(),
+            next_id: 1,
             round: 0,
             turn: 0,
             game_started: Utc::now(),
             turn_started: Utc::now(),
-            rng: rand::thread_rng(),
+            rng: StdRng::from_entropy(),
         }
     }
+
+    // pub fn with_participants(self, participants: Vec<Participant>) -> Self {
+    //     let participant_count = participants.len();
+    //     Self {
+    //         order: participants
+    //             .iter()
+    //             .enumerate()
+    //             .map(|(id, _)| (id + 1) as u32)
+    //             .collect(),
+    //         next_id: participants.len() as u32 + 1,
+    //         participants: participants
+    //             .into_iter()
+    //             .enumerate()
+    //             .map(|(i, p)| ((i + 1) as u32, p))
+    //             .collect(),
+    //         round: self.round,
+    //         turn: self.turn.min(participant_count as u32 - 1),
+    //         game_started: self.game_started,
+    //         turn_started: self.turn_started,
+    //         rng: self.rng,
+    //     }
+    // }
 
     pub fn spawn(&mut self, participant: Participant) -> u32 {
         self.participants.insert(self.next_id, participant);
@@ -159,4 +172,19 @@ impl Game {
     //         })
     //         .sum()
     // }
+}
+
+impl Default for Game {
+    fn default() -> Self {
+        Self {
+            participants: HashMap::new(),
+            order: Vec::new(),
+            round: 0,
+            turn: 0,
+            game_started: Utc::now(),
+            turn_started: Utc::now(),
+            rng: StdRng::from_entropy(),
+            next_id: 1,
+        }
+    }
 }

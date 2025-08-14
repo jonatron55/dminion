@@ -118,8 +118,9 @@
 
         <div class="ac"><strong>AC:</strong> {monster.ac}</div>
         <div class="hp"><strong>HP:</strong> {monster.hp}</div>
-        <div class="temp-hp"><strong>temp:</strong> {monster.tempHp}</div>
-
+        {#if monster.tempHp > 0}
+          <div class="temp-hp"><strong>temp:</strong> {monster.tempHp}</div>
+        {/if}
         <button class="danger damage-button">Damage</button>
         <button class="ok heal-button" on:click={() => healDialogRef.open()}>
           Heal

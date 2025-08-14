@@ -85,6 +85,7 @@ pub enum Error {
 
 pub type Result<T> = std::result::Result<T, Error>;
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Roll {
     pub value: i32,
     pub dice: Vec<DieRoll>,

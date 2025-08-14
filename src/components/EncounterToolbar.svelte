@@ -15,9 +15,9 @@
     <button class="toolbar">↺ Undo</button>
     <button class="toolbar">⏩ Next</button>
   </span>
-  <span class="details">
-    <span class="round">{game.round}</span>
-    <span class="time">{time()}</span>
+  <span data-tauri-drag-region class="titlebar details">
+    <span data-tauri-drag-region class="titlebar round">{game.round}</span>
+    <span data-tauri-drag-region class="titlebar time">{time()}</span>
   </span>
   <span class="participants">
     <button class="toolbar">+ Player</button>
@@ -31,7 +31,7 @@
     justify-content: start;
     align-items: center;
     gap: var(--horizontal-gap);
-    padding: 0 var(--horizontal-gap);
+    padding: 0;
     background: var(--background);
   }
 

@@ -13,7 +13,6 @@ input[type="file"].button.toolbar+label {
   transform: scale(1);
   padding: var(--vertical-gap) var(--horizontal-gap);
   margin: 0;
-  font-weight: bold;
 
   &:hover {
     background-color: var(--control-hover-background);
@@ -38,17 +37,74 @@ input[type="file"].button.toolbar+label {
     color: var(--control-foreground);
   }
 
-  &::before {
-    content: "[ ";
-    font-weight: normal;
-    opacity: 0.5;
+
+  &.ok {
+    &:hover {
+      background-color: var(--ok-control-hover-background);
+      color: var(--ok-control-hover-foreground);
+    }
+
+    &:active {
+      background-color: var(--ok-control-active-background);
+      color: var(--ok-control-active-foreground);
+    }
+
+    &:disabled {
+      background-color: var(--ok-control-disabled-background);
+      color: var(--ok-control-disabled-foreground);
+    }
+
+    &.highlight {
+      background-color: var(--ok-control-background);
+      color: var(--ok-control-foreground);
+    }
+
   }
 
-  &::after {
-    content: " ]";
-    font-weight: normal;
-    opacity: 0.5;
+  &.danger {
+    &:hover {
+      background-color: var(--danger-control-hover-background);
+      color: var(--danger-control-hover-foreground);
+    }
+
+    &:active {
+      background-color: var(--danger-control-active-background);
+      color: var(--danger-control-active-foreground);
+    }
+
+    &:disabled {
+      background-color: var(--danger-control-disabled-background);
+      color: var(--danger-control-disabled-foreground);
+    }
+
+    &.highlight {
+      background-color: var(--danger-control-background);
+      color: var(--danger-control-foreground);
+    }
   }
+
+  &.caution {
+    &:hover {
+      background-color: var(--caution-control-hover-background);
+      color: var(--caution-control-hover-foreground);
+    }
+
+    &:active {
+      background-color: var(--caution-control-active-background);
+      color: var(--caution-control-active-foreground);
+    }
+
+    &:disabled {
+      background-color: var(--caution-control-disabled-background);
+      color: var(--caution-control-disabled-foreground);
+    }
+
+    &.highlight {
+      background-color: var(--caution-control-background);
+      color: var(--caution-control-foreground);
+    }
+  }
+
 }
 
 .caption {
@@ -60,19 +116,10 @@ input[type="file"].button.toolbar+label {
     color: var(--caption-foreground);
     min-width: 2rem;
     padding: var(--vertical-gap) var(--horizontal-gap);
-    font-weight: normal;
 
-    &:hover {
+    &:hover:not(.ok, .danger, .caution) {
       background-color: var(--control-background);
       color: var(--control-hover-foreground);
-    }
-
-    &::before {
-      content: none;
-    }
-
-    &::after {
-      content: none;
     }
   }
 }

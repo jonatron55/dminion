@@ -79,4 +79,12 @@ impl Monster {
         //     .filter_map(|c| c.begin_turn())
         //     .collect();
     }
+
+    pub fn end_turn(&mut self) {
+        // self.conditions = self
+        //     .conditions
+        //     .into_iter()
+        //     .filter_map(|c| c.end_turn())
+        //     .collect();
+    }
 }

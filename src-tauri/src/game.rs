@@ -10,6 +10,7 @@ mod player;
 pub use common::*;
 pub use conditions::*;
 pub use duration::*;
+pub use game::Game;
 pub use lair::*;
 pub use monster::*;
 pub use participant::Participant;

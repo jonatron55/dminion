@@ -56,3 +56,24 @@ impl PlayerDef {
         self.classes.iter().map(|c| c.level).sum()
     }
 }
+
+impl Player {
+    pub fn begin_turn(&mut self) {
+        self.action = true;
+        self.reaction = true;
+        self.bonus_action = true;
+        // self.conditions = self
+        //     .conditions
+        //     .into_iter()
+        //     .filter_map(|c| c.begin_turn())
+        //     .collect();
+    }
+
+    pub fn end_turn(&mut self) {
+        // self.conditions = self
+        //     .conditions
+        //     .into_iter()
+        //     .filter_map(|c| c.end_turn())
+        //     .collect();
+    }
+}

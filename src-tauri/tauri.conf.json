@@ -12,9 +12,15 @@
   "app": {
     "windows": [
       {
-        "title": "dminion",
+        "title": "Dungeon Minion",
         "width": 800,
-        "height": 600
+        "height": 600,
+        "decorations": false,
+        "shadow": true,
+        "resizable": true,
+        "maximized": true,
+        "maximizable": true,
+        "minimizable": true
       }
     ],
     "security": {

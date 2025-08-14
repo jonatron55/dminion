@@ -8,6 +8,7 @@ use std::{
 };
 
 use rand::Rng;
+use serde::{Deserialize, Serialize};
 
 use super::ast::{Node, Selection};
 
@@ -28,7 +29,7 @@ pub enum Evaluation<TRng: Rng> {
 }
 
 /// A single die roll.
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct DieRoll {
     /// The number of sides on the die. May be 4, 6, 8, 10, 12, 20, or 100.
     pub sides: i32,
