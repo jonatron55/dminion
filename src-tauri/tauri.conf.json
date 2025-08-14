@@ -31,11 +31,31 @@
     "active": true,
     "targets": "all",
     "icon": [
+      "icons/16x16.png",
+      "icons/20x20.png",
+      "icons/24x24.png",
+      "icons/30x30.png",
       "icons/32x32.png",
+      "icons/36x36.png",
+      "icons/48x48.png",
+      "icons/60x60.png",
+      "icons/64x64.png",
       "icons/128x128.png",
-      "icons/128x128@2x.png",
+      "icons/256x256.png",
+      "icons/512x512.png",
+      "icons/icon.ico",
       "icons/icon.icns",
-      "icons/icon.ico"
+      "icons/StoreLogo.scale-400.png",
+      "icons/Square44x44Logo.png",
+      "icons/Square44x44Logo.scale-125.png",
+      "icons/Square44x44Logo.scale-150.png",
+      "icons/Square44x44Logo.scale-200.png",
+      "icons/Square44x44Logo.scale-400.png",
+      "icons/Square71x71Logo.png",
+      "icons/StoreLogo.png",
+      "icons/StoreLogo.scale-125.png",
+      "icons/StoreLogo.scale-150.png",
+      "icons/StoreLogo.scale-200.png"
     ]
   }
 }

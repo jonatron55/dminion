@@ -2,6 +2,7 @@
   import { type AppMode, appModes, type AppSidebarMode, appSidebarModes } from "$lib/AppMode";
   import type { GameViewModel } from "$lib/viewmodel/GameViewModel";
   import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
+  import appicon from "../images/icon.svg";
   // import * as os from "@tauri-apps/plugin-os";
   import EncounterToolbar from "./EncounterToolbar.svelte";
 
@@ -35,6 +36,11 @@
 </script>
 
 <nav class="panel">
+  {#if decorationStyle !== "mac"}
+    <div class="icon" role="none" on:dblclick={appWindow.close}>
+      <img src={appicon} alt="App Icon" />
+    </div>
+  {/if}
   <div class="mode-select caption">
     {#each appModes as m}
       <input
@@ -177,6 +183,15 @@
         }
       }
     }
+  }
+
+  .icon {
+    grid-column: 1;
+    grid-row: 1;
+    width: 2rem;
+    height: 2rem;
+    padding: 1px;
+    background-color: var(--chrome);
   }
 
   .mode-select,
