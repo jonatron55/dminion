@@ -2,13 +2,15 @@ import type { Condition } from "./Condition";
 import type { Stats } from "./Stats";
 
 export interface Monster {
+  type: "monster",
   name: string,
   subtype: string,
   stats: Stats,
   cr: number,
   ac: number,
   initiativeBonus: number,
-  portrait?: string,
+  smallPortrait?: string,
+  fullPortrait?: string,
   hitDice: string,
   initiative: number,
   action: boolean,
@@ -23,18 +25,15 @@ export interface Monster {
   conditions: Condition[],
 }
 
-export interface PlayerDef {
+export interface Player {
+  type: "player",
   name: string,
   classes: { class: string, level: number }[],
   stats: Stats,
   ac: number,
   initiativeBonus: number,
-  portrait?: string,
-  notes: string,
-}
-
-export interface Player {
-  def: PlayerDef,
+  smallPortrait?: string,
+  fullPortrait?: string,
   initiative: number,
   action: boolean,
   reaction: boolean,
@@ -45,13 +44,28 @@ export interface Player {
 }
 
 export interface Lair {
+  type: "lair",
   name: string,
   action: boolean,
   notes: string,
-  portrait?: string,
+  smallPortrait?: string,
+  fullPortrait?: string,
 }
 
-export type Participant = { monster: Monster } | { player: Player } | { lair: Lair };
+export type Participant = Monster | Player | Lair;
+
+export function isMonster(participant: Participant): participant is Monster {
+  return participant.type === "monster";
+}
+
+export function isPlayer(participant: Participant): participant is Player {
+  return participant.type === "player";
+}
+
+export function isLair(participant: Participant): participant is Lair {
+  return participant.type === "lair";
+}
+
 export function crValue(cr: number): number {
   if (cr === 0) {
     return 0.0;

@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Tauri Core Debug (Windows)",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/target/src-tauri/debug/dminion.exe",
+      "cwd": "${workspaceRoot}",
+      "preLaunchTask": "ui:dev",
+      "stopAtEntry": false,
+      "environment": [
+        {
+          "name": "RUST_BACKTRACE",
+          "value": "1"
+        }
+      ],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Frontend Debug",
+      "type": "msedge",
+      "request": "launch",
+      "runtimeExecutable": "${workspaceFolder}/src-tauri/target/debug/dminion.exe",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "ui:dev&core:buildDebug"
+    }
+  ]
+}

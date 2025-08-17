@@ -1,15 +1,16 @@
 mod common;
 mod conditions;
-mod duration;
+mod expiry;
 mod game;
 mod lair;
 mod monster;
 mod participant;
 mod player;
+pub mod time;
 
 pub use common::*;
 pub use conditions::*;
-pub use duration::*;
+pub use expiry::*;
 pub use game::Game;
 pub use lair::*;
 pub use monster::*;

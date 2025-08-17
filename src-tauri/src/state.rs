@@ -5,7 +5,7 @@ use crate::game::Game;
 
 pub struct AppState {
     pub gamestate: GameState,
-    pub db: SqlitePool,
+    // pub db: SqlitePool,
 }
 
 pub type AppStateMutex = Mutex<AppState>;

@@ -1,8 +1,10 @@
 import type { Participant } from "./Participant";
 
 export interface Game {
-  participants: Participant[];
-  round: number,
-  turn: number,
-  turnStarted: Date,
+  participants: Record<number, Participant>;
+  order: number[];
+  round: number;
+  turn: number;
+  gameStarted: Date;
+  turnStarted: Date;
 }

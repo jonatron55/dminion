@@ -12,7 +12,8 @@ CREATE TABLE Players (
     cha INTEGER NOT NULL,
     ac INTEGER NOT NULL,
     initiative_bonus INTEGER NOT NULL,
-    portrait TEXT,
+    small_portrait TEXT,
+    full_portrait TEXT,
     notes TEXT
 );
 
@@ -26,6 +27,7 @@ CREATE TABLE Classes (
 CREATE TABLE Monsters (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
+    subtype TEXT NOT NULL,
     str INTEGER NOT NULL,
     dex INTEGER NOT NULL,
     con INTEGER NOT NULL,
@@ -37,7 +39,8 @@ CREATE TABLE Monsters (
     initiative_bonus INTEGER NOT NULL,
     hit_dice TEXT NOT NULL,
     legendary_actions INTEGER NOT NULL,
-    portrait TEXT,
+    small_portrait TEXT,
+    full_portrait TEXT,
     notes TEXT
 );
 

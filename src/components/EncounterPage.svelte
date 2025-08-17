@@ -7,17 +7,10 @@
 
 <main>
   <div class="participants">
-    {#each Array(4).fill(0) as _}
-      {#each game.participants
-        .slice()
-        .sort((a, b) => b.initiative - a.initiative) as participant}
-        <ParticipantRow
-          {participant}
-          {game}
-          isActive={participant.initiative == 15}
-          isSelected={false}
-        />
-      {/each}
+    {#each Object.entries(game.participants)
+      .slice()
+      .sort((a, b) => b[1].initiative - a[1].initiative) as [id, participant]}
+      <ParticipantRow {id} {participant} {game} isActive={participant.initiative == 15} />
     {/each}
   </div>
 </main>

@@ -1,9 +1,12 @@
 import type { Condition } from "$lib/model/Condition";
-import type {
-  Lair,
-  Monster,
-  Participant,
-  Player
+import {
+  isLair,
+  isMonster,
+  isPlayer,
+  type Lair,
+  type Monster,
+  type Participant,
+  type Player
 } from "$lib/model/Participant";
 import type { Stats } from "$lib/model/Stats";
 
@@ -15,14 +18,15 @@ export abstract class ParticipantViewModel {
   abstract get conditions(): Condition[];
 
   static create(model: Participant): ParticipantViewModel {
-    if ("monster" in model) {
-      return new MonsterViewModel(model.monster);
-    } else if ("player" in model) {
-      return new PlayerViewModel(model.player);
-    } else if ("lair" in model) {
-      return new LairViewModel(model.lair);
+    if (isMonster(model)) {
+      return new MonsterViewModel(model);
+    } else if (isPlayer(model)) {
+      return new PlayerViewModel(model);
+    } else if (isLair(model)) {
+      return new LairViewModel(model);
+    } else {
+      throw new Error("Unknown participant type");
     }
-    throw new Error("Unknown participant type");
   }
 }
 
@@ -32,13 +36,11 @@ export class MonsterViewModel extends ParticipantViewModel {
   }
 
   get smallPortrait(): string {
-    const portrait = this._model.portrait || "unknown-monster";
-    return `/images/portraits/${portrait}.small.jpg`;
+    return this._model.smallPortrait ?? "/images/portraits/unknown-monster.small.jpg";
   }
 
   get fullPortrait(): string {
-    const portrait = this._model.portrait || "unknown-monster";
-    return `/images/portraits/${portrait}.full.jpg`;
+    return this._model.fullPortrait ?? "/images/portraits/unknown-monster.full.jpg";
   }
 
   get initiative(): number {
@@ -71,16 +73,29 @@ export class MonsterViewModel extends ParticipantViewModel {
     return this._model.stats;
   }
 
+
   get action(): boolean {
     return this._model.action;
+  }
+
+  set action(value: boolean) {
+    this._model.action = value;
   }
 
   get reaction(): boolean {
     return this._model.reaction;
   }
 
+  set reaction(value: boolean) {
+    this._model.action = value;
+  }
+
   get bonusAction(): boolean {
     return this._model.bonusAction;
+  }
+
+  set bonusAction(value: boolean) {
+    this._model.bonusAction = value;
   }
 
   get legendaryActions(): number {
@@ -98,17 +113,15 @@ export class MonsterViewModel extends ParticipantViewModel {
 
 export class PlayerViewModel extends ParticipantViewModel {
   get name(): string {
-    return this._model.def.name;
+    return this._model.name;
   }
 
   get smallPortrait(): string {
-    const portrait = this._model.def.portrait || "unknown-player";
-    return `/images/portraits/${portrait}.small.jpg`;
+    return this._model.smallPortrait ?? "/images/portraits/unknown-player.small.jpg";
   }
 
   get fullPortrait(): string {
-    const portrait = this._model.def.portrait || "unknown-player";
-    return `/images/portraits/${portrait}.full.jpg`;
+    return this._model.fullPortrait ?? "/images/portraits/unknown-player.full.jpg";
   }
 
   get initiative(): number {
@@ -122,19 +135,31 @@ export class PlayerViewModel extends ParticipantViewModel {
   }
 
   get stats(): Stats {
-    return this._model.def.stats;
+    return this._model.stats;
   }
 
   get action(): boolean {
     return this._model.action;
   }
 
+  set action(value: boolean) {
+    this._model.action = value;
+  }
+
   get reaction(): boolean {
     return this._model.reaction;
   }
 
+  set reaction(value: boolean) {
+    this._model.action = value;
+  }
+
   get bonusAction(): boolean {
     return this._model.bonusAction;
+  }
+
+  set bonusAction(value: boolean) {
+    this._model.bonusAction = value;
   }
 
   constructor(private _model: Player) {
@@ -151,14 +176,16 @@ export class LairViewModel extends ParticipantViewModel {
     return this._model.action;
   }
 
+  set action(value: boolean) {
+    this._model.action = value;
+  }
+
   get smallPortrait(): string {
-    const portrait = this._model.portrait || "lair";
-    return `/images/portraits/${portrait}.small.jpg`;
+    return this._model.smallPortrait || "/images/portraits/lair.small.jpg";
   }
 
   get fullPortrait(): string {
-    const portrait = this._model.portrait || "lair";
-    return `/images/portraits/${portrait}.full.jpg`;
+    return this._model.fullPortrait || "/images/portraits/lair.full.jpg";
   }
 
   get conditions(): Condition[] {

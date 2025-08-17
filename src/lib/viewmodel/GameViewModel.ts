@@ -2,9 +2,9 @@ import type { Game } from "$lib/model/Game";
 import { ParticipantViewModel } from "./ParticipantViewModel";
 
 export class GameViewModel {
-  private _participants: ParticipantViewModel[] = [];
+  private _participants: Record<number, ParticipantViewModel> = {};
 
-  public get participants(): ParticipantViewModel[] {
+  public get participants(): Record<number, ParticipantViewModel> {
     return this._participants;
   }
 
@@ -21,6 +21,10 @@ export class GameViewModel {
   }
 
   constructor(private _model: Game) {
-    this._participants = this._model.participants.map(ParticipantViewModel.create);
+    this._participants = Object.fromEntries(
+      Object.entries(this._model.participants).map(
+        ([id, participant]) => [Number(id), ParticipantViewModel.create(participant)]
+      )
+    );
   }
 }

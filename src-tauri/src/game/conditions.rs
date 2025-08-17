@@ -2,164 +2,155 @@ use std::fmt::{Debug, Display, Formatter, Result as FmtResult};
 
 use serde::{Deserialize, Serialize};
 
-use super::Duration;
+use crate::game::time::{Duration, Time};
+
+use super::Expiry;
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
-pub enum Condition {
-    Blinded {
-        duration: Duration,
-    },
-    Bloodied,
-    Charmed {
-        duration: Duration,
-    },
-    Dead,
-    Deafened {
-        duration: Duration,
-    },
-    Frightened {
-        duration: Duration,
-    },
-    Grappled {
-        source: String,
-    },
-    Incapacitated {
-        duration: Duration,
-    },
-    Invisible {
-        duration: Duration,
-    },
-    Marked {
-        source: String,
-        duration: Duration,
-    },
-    Paralyzed {
-        duration: Duration,
-    },
-    Petrified {
-        duration: Duration,
-    },
-    Poisoned {
-        duration: Duration,
-    },
-    Prone,
-    Restrained {
-        duration: Duration,
-    },
-    Spellcasting {
-        spell: String,
-        concentration: bool,
-        duration: Duration,
-    },
-    Stunned {
-        duration: Duration,
-    },
-    Surprised,
-    Unconscious,
+#[serde(rename_all = "camelCase")]
+pub struct Condition {
+    pub name: String,
+    pub start_time: Time,
+    pub expiry: Expiry,
+    pub instigator: Option<String>,
 }
 
+pub const BLINDED: &'static str = "blinded";
+pub const BLOODIED: &'static str = "bloodied";
+pub const CHARMED: &'static str = "charmed";
+pub const CONCENTRATING: &'static str = "concentrating";
+pub const DEAD: &'static str = "dead";
+pub const DEAFENED: &'static str = "deafened";
+pub const FRIGHTENED: &'static str = "frightened";
+pub const GRAPPLED: &'static str = "grappled";
+pub const INCAPACITATED: &'static str = "incapacitated";
+pub const INVISIBLE: &'static str = "invisible";
+pub const MARKED: &'static str = "marked";
+pub const PARALYZED: &'static str = "paralyzed";
+pub const PETRIFIED: &'static str = "petrified";
+pub const POISONED: &'static str = "poisoned";
+pub const PRONE: &'static str = "prone";
+pub const RESTRAINED: &'static str = "restrained";
+pub const STUNNED: &'static str = "stunned";
+pub const SURPRISED: &'static str = "surprised";
+pub const UNCONSCIOUS: &'static str = "unconscious";
+
 impl Condition {
-    pub fn begin_turn(self) -> Option<Self> {
-        match self.duration() {
-            Some(Duration::StartOfTurn) => None,
-            Some(Duration::Seconds(seconds)) => {
-                if seconds > 0 {
-                    Some(self.with_duration(Duration::Seconds(seconds - 6)))
-                } else {
-                    None
-                }
-            }
-            _ => Some(self),
+    pub fn new(name: String, start_time: Time) -> Self {
+        Self {
+            name,
+            start_time: start_time,
+            expiry: Expiry::None,
+            instigator: None,
         }
     }
 
-    pub fn end_turn(self) -> Option<Self> {
-        if matches!(self, Condition::Surprised) {
-            return None;
-        }
-
-        match self.duration() {
-            Some(Duration::EndOfTurn) => None,
-            _ => Some(self),
-        }
+    pub fn with_expiry(mut self, expiry: Expiry) -> Self {
+        self.expiry = expiry;
+        self
     }
 
-    pub fn duration(&self) -> Option<Duration> {
-        match self {
-            Condition::Blinded { duration } => Some(duration.clone()),
-            Condition::Charmed { duration } => Some(duration.clone()),
-            Condition::Deafened { duration } => Some(duration.clone()),
-            Condition::Frightened { duration } => Some(duration.clone()),
-            Condition::Incapacitated { duration } => Some(duration.clone()),
-            Condition::Invisible { duration } => Some(duration.clone()),
-            Condition::Marked { duration, .. } => Some(duration.clone()),
-            Condition::Paralyzed { duration } => Some(duration.clone()),
-            Condition::Petrified { duration } => Some(duration.clone()),
-            Condition::Poisoned { duration } => Some(duration.clone()),
-            Condition::Restrained { duration } => Some(duration.clone()),
-            Condition::Spellcasting { duration, .. } => Some(duration.clone()),
-            Condition::Stunned { duration } => Some(duration.clone()),
-            _ => None,
-        }
+    pub fn with_instigator(mut self, instigator: String) -> Self {
+        self.instigator = Some(instigator);
+        self
     }
 
-    pub fn with_duration(self, duration: Duration) -> Self {
-        match self {
-            Condition::Blinded { .. } => Condition::Blinded { duration },
-            Condition::Charmed { .. } => Condition::Charmed { duration },
-            Condition::Deafened { .. } => Condition::Deafened { duration },
-            Condition::Frightened { .. } => Condition::Frightened { duration },
-            Condition::Incapacitated { .. } => Condition::Incapacitated { duration },
-            Condition::Invisible { .. } => Condition::Invisible { duration },
-            Condition::Marked { source, .. } => Condition::Marked { source, duration },
-            Condition::Paralyzed { .. } => Condition::Paralyzed { duration },
-            Condition::Petrified { .. } => Condition::Petrified { duration },
-            Condition::Poisoned { .. } => Condition::Poisoned { duration },
-            Condition::Restrained { .. } => Condition::Restrained { duration },
-            Condition::Spellcasting {
-                spell,
-                concentration,
-                ..
-            } => Condition::Spellcasting {
-                spell,
-                concentration,
-                duration,
-            },
-            Condition::Stunned { .. } => Condition::Stunned { duration },
-            _ => self,
-        }
+    pub fn blinded(start_time: Time) -> Self {
+        Self::new(BLINDED.into(), start_time)
     }
 
-    pub fn source(&self) -> Option<String> {
-        match self {
-            Condition::Grappled { source } => Some(source.clone()),
-            Condition::Marked { source, .. } => Some(source.clone()),
-            _ => None,
+    pub fn bloodied(start_time: Time) -> Self {
+        Self::new(BLOODIED.into(), start_time)
+    }
+
+    pub fn charmed(start_time: Time) -> Self {
+        Self::new(CHARMED.into(), start_time)
+    }
+
+    pub fn concentrating(start_time: Time) -> Self {
+        Self::new(CONCENTRATING.into(), start_time)
+    }
+
+    pub fn dead(start_time: Time) -> Self {
+        Self::new(DEAD.into(), start_time)
+    }
+
+    pub fn deafened(start_time: Time) -> Self {
+        Self::new(DEAFENED.into(), start_time)
+    }
+
+    pub fn frightened(start_time: Time) -> Self {
+        Self::new(FRIGHTENED.into(), start_time)
+    }
+
+    pub fn grappled(start_time: Time) -> Self {
+        Self::new(GRAPPLED.into(), start_time)
+    }
+
+    pub fn incapacitated(start_time: Time) -> Self {
+        Self::new(INCAPACITATED.into(), start_time)
+    }
+
+    pub fn invisible(start_time: Time) -> Self {
+        Self::new(INVISIBLE.into(), start_time)
+    }
+
+    pub fn marked(start_time: Time) -> Self {
+        Self::new(MARKED.into(), start_time)
+    }
+
+    pub fn paralyzed(start_time: Time) -> Self {
+        Self::new(PARALYZED.into(), start_time)
+    }
+
+    pub fn petrified(start_time: Time) -> Self {
+        Self::new(PETRIFIED.into(), start_time)
+    }
+
+    pub fn poisoned(start_time: Time) -> Self {
+        Self::new(POISONED.into(), start_time)
+    }
+
+    pub fn prone(start_time: Time) -> Self {
+        Self::new(PRONE.into(), start_time)
+    }
+
+    pub fn restrained(start_time: Time) -> Self {
+        Self::new(RESTRAINED.into(), start_time)
+    }
+
+    pub fn stunned(start_time: Time) -> Self {
+        Self::new(STUNNED.into(), start_time)
+    }
+
+    pub fn surprised(start_time: Time) -> Self {
+        Self::new(SURPRISED.into(), start_time)
+    }
+
+    pub fn unconscious(start_time: Time) -> Self {
+        Self::new(UNCONSCIOUS.into(), start_time)
+    }
+
+    pub fn expired_on_turn_start(&self, game_time: Time) -> bool {
+        match self.expiry {
+            Expiry::NextTurnStart => true,
+            Expiry::Duration(duration) => game_time >= self.start_time + duration,
+            _ => false,
         }
     }
 
     pub fn implications(&self) -> Vec<Condition> {
-        match self {
-            Condition::Grappled { .. } => vec![Condition::Restrained {
-                duration: Duration::Indefinite,
-            }],
-            Condition::Paralyzed { duration } => vec![Condition::Incapacitated {
-                duration: duration.clone(),
-            }],
-            Condition::Petrified { duration } => vec![
-                Condition::Incapacitated {
-                    duration: duration.clone(),
-                },
-                Condition::Unconscious,
+        match self.name.as_str() {
+            GRAPPLED => vec![Self::restrained(self.start_time)],
+            PARALYZED => vec![Self::incapacitated(self.start_time)],
+            PETRIFIED => vec![
+                Self::incapacitated(self.start_time),
+                Self::unconscious(self.start_time),
             ],
-            Condition::Stunned { duration } => vec![Condition::Incapacitated {
-                duration: duration.clone(),
-            }],
-            Condition::Unconscious => vec![
-                Condition::Incapacitated {
-                    duration: Duration::Indefinite,
-                },
-                Condition::Prone,
+            STUNNED => vec![Self::incapacitated(self.start_time)],
+            UNCONSCIOUS => vec![
+                Self::incapacitated(self.start_time),
+                Self::prone(self.start_time),
             ],
             _ => vec![],
         }
@@ -168,32 +159,13 @@ impl Condition {
 
 impl Display for Condition {
     fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
-        match self {
-            Condition::Blinded { .. } => write!(f, "Blinded"),
-            Condition::Bloodied => write!(f, "Bloodied"),
-            Condition::Charmed { .. } => write!(f, "Charmed"),
-            Condition::Dead => write!(f, "Dead"),
-            Condition::Deafened { .. } => write!(f, "Deafened"),
-            Condition::Frightened { .. } => write!(f, "Frightened"),
-            Condition::Grappled { .. } => write!(f, "Grappled"),
-            Condition::Incapacitated { .. } => write!(f, "Incapacitated"),
-            Condition::Invisible { .. } => write!(f, "Invisible"),
-            Condition::Marked { .. } => write!(f, "Marked"),
-            Condition::Paralyzed { .. } => write!(f, "Paralyzed"),
-            Condition::Petrified { .. } => write!(f, "Petrified"),
-            Condition::Poisoned { .. } => write!(f, "Poisoned"),
-            Condition::Prone => write!(f, "Prone"),
-            Condition::Restrained { .. } => write!(f, "Restrained"),
-            Condition::Spellcasting {
-                spell,
-                concentration: true,
-                ..
-            } => write!(f, "Concentrating on {spell}"),
-            Condition::Spellcasting { spell, .. } => write!(f, "Casting {spell}"),
-            Condition::Stunned { .. } => write!(f, "Stunned"),
-            Condition::Surprised => write!(f, "Surprised"),
-            Condition::Unconscious => write!(f, "Unconscious"),
-        }
+        write!(f, "{}", self.name)
+    }
+}
+
+impl From<Duration> for Expiry {
+    fn from(duration: Duration) -> Self {
+        Expiry::Duration(duration)
     }
 }
 

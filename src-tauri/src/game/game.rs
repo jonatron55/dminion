@@ -1,12 +1,15 @@
 use std::{collections::HashMap, vec};
 
-use chrono::{DateTime, Duration, Utc};
+use chrono::{DateTime, Utc};
 use rand::{rngs::StdRng, SeedableRng};
 use serde::{Deserialize, Serialize};
+
+use crate::game::time::Time;
 
 use super::{Participant, XP_PER_CR};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Game {
     pub participants: HashMap<u32, Participant>,
     pub order: Vec<u32>,
@@ -18,6 +21,7 @@ pub struct Game {
     #[serde(skip, default = "rand::rngs::StdRng::from_entropy")]
     pub rng: StdRng,
 
+    #[serde(skip)]
     next_id: u32,
 }
 
@@ -34,28 +38,6 @@ impl Game {
             rng: StdRng::from_entropy(),
         }
     }
-
-    // pub fn with_participants(self, participants: Vec<Participant>) -> Self {
-    //     let participant_count = participants.len();
-    //     Self {
-    //         order: participants
-    //             .iter()
-    //             .enumerate()
-    //             .map(|(id, _)| (id + 1) as u32)
-    //             .collect(),
-    //         next_id: participants.len() as u32 + 1,
-    //         participants: participants
-    //             .into_iter()
-    //             .enumerate()
-    //             .map(|(i, p)| ((i + 1) as u32, p))
-    //             .collect(),
-    //         round: self.round,
-    //         turn: self.turn.min(participant_count as u32 - 1),
-    //         game_started: self.game_started,
-    //         turn_started: self.turn_started,
-    //         rng: self.rng,
-    //     }
-    // }
 
     pub fn spawn(&mut self, participant: Participant) -> u32 {
         self.participants.insert(self.next_id, participant);
@@ -74,6 +56,7 @@ impl Game {
     pub fn despawn(&mut self, id: u32) {
         self.participants.remove(&id);
         self.order.retain(|&x| x != id);
+        self.turn = self.turn.min((self.order.len() as u32).saturating_sub(1));
     }
 
     pub fn begin_play(&mut self) {
@@ -103,6 +86,15 @@ impl Game {
         if let Some(participant) = self.participants.get_mut(&self.order[self.turn as usize]) {
             participant.begin_turn();
         }
+    }
+
+    pub fn time(&self) -> Time {
+        Time::new(
+            self.round,
+            self.participants
+                .get(&self.order[self.turn as usize])
+                .map_or(0, |p| p.initiative()),
+        )
     }
 
     // pub fn realtime_duration(&self) -> Duration {

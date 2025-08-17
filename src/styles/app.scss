@@ -8,8 +8,13 @@
 @use "scrollbar.scss";
 @use "select.scss";
 @use "textinput.scss";
+@use "themes/dawn.scss";
+@use "themes/dusk.scss";
+@use "themes/night.scss";
+@use "themes/noon.scss";
 @use "toolbar.scss";
 @use "ui.scss";
+
 
 * {
   box-sizing: border-box;
@@ -52,6 +57,19 @@ body {
   background-size: cover;
   background-color: var(--page-background);
   background-image: url("images/background.jpg");
+
+  &.dusk,
+  &.night {
+    -webkit-backdrop-filter: grayscale(100%) contrast(80%) brightness(33%);
+    backdrop-filter: grayscale(100%) contrast(80%) brightness(33%);
+  }
+
+  &.dawn,
+  &.noon {
+    -webkit-backdrop-filter: grayscale(100%) contrast(33%) brightness(180%);
+    backdrop-filter: grayscale(100%) contrast(33%) brightness(180%);
+  }
+
   width: 100vw;
   height: 100vh;
 }
@@ -279,58 +297,58 @@ table.banded-rows {
 }
 
 
-.color1 {
-  color: var(--intense-color1-low-foreground);
+.color-1 {
+  color: var(--intense-color-1-low-foreground);
   font-weight: bold;
 }
 
-.color2 {
-  color: var(--intense-color2-low-foreground);
+.color-2 {
+  color: var(--intense-color-2-low-foreground);
   font-weight: bold;
 }
 
-.color3 {
-  color: var(--intense-color3-low-foreground);
+.color-3 {
+  color: var(--intense-color-3-low-foreground);
   font-weight: bold;
 }
 
-.color4 {
-  color: var(--intense-color4-low-foreground);
+.color-4 {
+  color: var(--intense-color-4-low-foreground);
   font-weight: bold;
 }
 
-.color5 {
-  color: var(--intense-color5-low-foreground);
+.color-5 {
+  color: var(--intense-color-5-low-foreground);
   font-weight: bold;
 }
 
-.color6 {
-  color: var(--intense-color6-low-foreground);
+.color-6 {
+  color: var(--intense-color-6-low-foreground);
   font-weight: bold;
 }
 
-.color1-background {
-  background-color: var(--intense-color1-high-background);
+.color-1-background {
+  background-color: var(--intense-color-1-high-background);
 }
 
-.color2-background {
-  background-color: var(--intense-color2-high-background);
+.color-2-background {
+  background-color: var(--intense-color-2-high-background);
 }
 
-.color3-background {
-  background-color: var(--intense-color3-high-background);
+.color-3-background {
+  background-color: var(--intense-color-3-high-background);
 }
 
-.color4-background {
-  background-color: var(--intense-color4-high-background);
+.color-4-background {
+  background-color: var(--intense-color-4-high-background);
 }
 
-.color5-background {
-  background-color: var(--intense-color5-high-background);
+.color-5-background {
+  background-color: var(--intense-color-5-high-background);
 }
 
-.color6-background {
-  background-color: var(--intense-color6-high-background);
+.color-6-background {
+  background-color: var(--intense-color-6-high-background);
 }
 
 .red {

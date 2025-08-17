@@ -1,7 +1,0 @@
-import type { Theme } from "./theme";
-
-export const {{mode:c}}Theme: Theme = {
-  name: "{{name:T}} {{mode:T}}",
-  {{#each}}{{$key:c}}: "#{{$value.rgba:X}}",
-  {{/each}}
-};

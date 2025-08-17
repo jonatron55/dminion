@@ -3,21 +3,21 @@ $fast-alert: 300ms;
 
 @keyframes general-alert {
   from {
-    --chrome: var(--base-color1-low-midground);
+    --chrome: var(--base-color-1-low-midground);
   }
 
   to {
-    --chrome: var(--base-color1-high-midground);
+    --chrome: var(--base-color-1-high-midground);
   }
 }
 
 @keyframes intense-alert {
   from {
-    --chrome: var(--muted-color6-low-midground);
+    --chrome: var(--muted-color-6-low-midground);
   }
 
   to {
-    --chrome: var(--muted-color6-high-midground);
+    --chrome: var(--muted-color-6-high-midground);
   }
 }
 

@@ -13,7 +13,7 @@
   export let game: GameViewModel;
   export let participant: ParticipantViewModel;
   export let isActive: boolean = false;
-  export let isSelected: boolean = false;
+  export let id: string;
 
   let monster: MonsterViewModel = participant as MonsterViewModel;
   let player: PlayerViewModel = participant as PlayerViewModel;
@@ -40,19 +40,11 @@
     alt={`${participant.name} portrait`}
   />
 
-  <div
-    class="panel {isActive ? 'active ' : ''}{conditionClasses(
-      participant.conditions,
-    )}"
-  >
+  <div class="panel {isActive ? 'active ' : ''}{conditionClasses(participant.conditions)}">
     <div class="caption">
       <span class="title">
-        <span class="initiative {conditionClasses(participant.conditions)}"
-          >{participant.initiative}.</span
-        >
-        <span class="name {conditionClasses(participant.conditions)}"
-          >{participant.name}</span
-        >
+        <span class="initiative {conditionClasses(participant.conditions)}">{participant.initiative}.</span>
+        <span class="name {conditionClasses(participant.conditions)}">{participant.name}</span>
       </span>
       {#if participant.conditions.length > 0}
         <span class="conditions">
@@ -60,11 +52,7 @@
             <span class="{condition.name} badge">
               {condition.name}
               {#if condition.duration}
-                <span class="count"
-                  >{condition.startTime! +
-                    condition.duration -
-                    game.time}s</span
-                >
+                <span class="count">{condition.startTime! + condition.duration - game.time}s</span>
               {/if}
             </span>
           {/each}
@@ -79,27 +67,15 @@
     {#if participant instanceof MonsterViewModel}
       <div class="content monster">
         <div>
-          <input
-            type="checkbox"
-            id="{monster.name}-action"
-            bind:checked={monster.action}
-          />
+          <input type="checkbox" id="{monster.name}-action" bind:checked={monster.action} />
           <label for="{monster.name}-action">Action</label>
         </div>
         <div>
-          <input
-            type="checkbox"
-            id="{monster.name}-bonus"
-            bind:checked={monster.bonusAction}
-          />
+          <input type="checkbox" id="{monster.name}-bonus" bind:checked={monster.bonusAction} />
           <label for="{monster.name}-bonus">Bonus</label>
         </div>
         <div>
-          <input
-            type="checkbox"
-            id="{monster.name}-reaction"
-            bind:checked={monster.reaction}
-          />
+          <input type="checkbox" id="{monster.name}-reaction" bind:checked={monster.reaction} />
           <label for="{monster.name}-reaction">Reaction</label>
         </div>
 
@@ -107,11 +83,7 @@
           .fill(0)
           .map((_, i) => i) as i}
           <div class="legendary">
-            <input
-              type="checkbox"
-              id="{monster.name}-legendary-{i}"
-              checked={monster.legendaryActions >= i + 1}
-            />
+            <input type="checkbox" id="{monster.name}-legendary-{i}" checked={monster.legendaryActions >= i + 1} />
             <label for="{monster.name}-legendary-{i}">Legendary</label>
           </div>
         {/each}
@@ -122,9 +94,7 @@
           <div class="temp-hp"><strong>temp:</strong> {monster.tempHp}</div>
         {/if}
         <button class="danger damage-button">Damage</button>
-        <button class="ok heal-button" on:click={() => healDialogRef.open()}>
-          Heal
-        </button>
+        <button class="ok heal-button" on:click={() => healDialogRef.open()}> Heal </button>
 
         <div class="str"><Stat label="str" value={monster.stats.str} /></div>
         <div class="dex"><Stat label="dex" value={monster.stats.dex} /></div>
@@ -138,27 +108,15 @@
     {:else if participant instanceof PlayerViewModel}
       <div class="content player">
         <div>
-          <input
-            type="checkbox"
-            id="{monster.name}-action"
-            bind:checked={monster.action}
-          />
+          <input type="checkbox" id="{monster.name}-action" bind:checked={monster.action} />
           <label for="{monster.name}-action">Action</label>
         </div>
         <div>
-          <input
-            type="checkbox"
-            id="{monster.name}-bonus"
-            bind:checked={monster.bonusAction}
-          />
+          <input type="checkbox" id="{monster.name}-bonus" bind:checked={monster.bonusAction} />
           <label for="{monster.name}-bonus">Bonus</label>
         </div>
         <div>
-          <input
-            type="checkbox"
-            id="{monster.name}-reaction"
-            bind:checked={monster.reaction}
-          />
+          <input type="checkbox" id="{monster.name}-reaction" bind:checked={monster.reaction} />
           <label for="{monster.name}-reaction">Reaction</label>
         </div>
 
@@ -174,11 +132,7 @@
     {:else if participant instanceof LairViewModel}
       <div class="content lair">
         <div>
-          <input
-            type="checkbox"
-            id="{lair.name}-action"
-            bind:checked={lair.action}
-          />
+          <input type="checkbox" id="{lair.name}-action" bind:checked={lair.action} />
           <label for="{lair.name}-action">Action</label>
         </div>
         <div class="notes" contenteditable="true"></div>
@@ -283,11 +237,8 @@
   }
 
   .panel.active {
-    background-color: color-mix(
-      in srgb-linear,
-      var(--muted-color6-low-midground),
-      transparent 50%
-    );
+    background-color: color-mix(in srgb-linear, var(--muted-color-6-low-midground), transparent 50%);
+    backdrop-filter: blur(24px);
   }
 
   .action {

@@ -6,6 +6,15 @@ use crate::game::{self, Game};
 use crate::state::{AppState, AppStateMutex, GameState};
 
 #[tauri::command]
+pub async fn get_game(state: tauri::State<'_, AppStateMutex>) -> Result<Game, String> {
+    let state = state.lock().await;
+    match state.gamestate.undo_stack.last() {
+        Some(game) => Ok(game.clone()),
+        None => Err("No game found".to_string()),
+    }
+}
+
+#[tauri::command]
 pub async fn new_game(
     app: AppHandle,
     state: tauri::State<'_, AppStateMutex>,

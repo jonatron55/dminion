@@ -28,6 +28,7 @@
 
   .value {
     text-align: right;
+    color: var(--caption-foreground);
     background-color: var(--chrome);
     padding: 2px 4px;
     font-weight: bold;

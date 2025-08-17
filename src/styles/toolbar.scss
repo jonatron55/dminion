@@ -139,7 +139,7 @@ input[type="radio"].button.toolbar {
 
 input[type="checkbox"].button.toolbar:checked+label,
 input[type="radio"].button.toolbar:checked+label {
-  background-color: var(--control-active-background);
-  color: var(--control-active-foreground);
+  background-color: var(--chrome-low);
+  color: var(--control-foreground);
   transform: scale(1);
 }

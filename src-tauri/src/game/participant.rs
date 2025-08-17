@@ -5,6 +5,8 @@ use serde::{Deserialize, Serialize};
 use super::{Lair, Monster, Player};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(tag = "type")]
+#[serde(rename_all = "camelCase")]
 pub enum Participant {
     Lair(Lair),
     Monster(Monster),
@@ -20,7 +22,7 @@ impl Participant {
         }
     }
 
-    pub fn initiative(&self) -> i32 {
+    pub fn initiative(&self) -> u32 {
         match self {
             Participant::Lair(_) => 20,
             Participant::Monster(monster) => monster.initiative,
@@ -77,5 +79,23 @@ impl Ord for Participant {
             Some(other) => other,
             None => unreachable!(),
         }
+    }
+}
+
+impl Into<Participant> for Player {
+    fn into(self) -> Participant {
+        Participant::Player(self)
+    }
+}
+
+impl Into<Participant> for Monster {
+    fn into(self) -> Participant {
+        Participant::Monster(self)
+    }
+}
+
+impl Into<Participant> for Lair {
+    fn into(self) -> Participant {
+        Participant::Lair(self)
     }
 }
