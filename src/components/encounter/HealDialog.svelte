@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { MonsterViewModel } from "$lib/viewmodel/ParticipantViewModel";
+  import { MonsterViewModel } from "$lib/viewmodel/MonsterViewModel";
   import DialogBox from "../DialogBox.svelte";
 
   export let monster: MonsterViewModel;
@@ -30,43 +30,19 @@
     <div class="heal-dialog">
       <div class="amount">
         <label id="amount-label" for="amount">Amount</label>
-        <input
-          id="amount"
-          type="number"
-          bind:value={amount}
-          min="0"
-          placeholder="amount"
-        />
+        <input id="amount" type="number" bind:value={amount} min="0" placeholder="amount" />
       </div>
       <div class="mode">
         <span>
-          <input
-            type="radio"
-            name="mode"
-            id="mode-heal"
-            value="heal"
-            bind:group={mode}
-          />
+          <input type="radio" name="mode" id="mode-heal" value="heal" bind:group={mode} />
           <label for="mode-heal">Heal</label>
         </span>
         <span>
-          <input
-            type="radio"
-            name="mode"
-            id="mode-set-hp"
-            value="set-hp"
-            bind:group={mode}
-          />
+          <input type="radio" name="mode" id="mode-set-hp" value="set-hp" bind:group={mode} />
           <label for="mode-set-hp">Set HP</label>
         </span>
         <span>
-          <input
-            type="radio"
-            name="mode"
-            id="mode-temp-hp"
-            value="temp-hp"
-            bind:group={mode}
-          />
+          <input type="radio" name="mode" id="mode-temp-hp" value="temp-hp" bind:group={mode} />
           <label for="mode-temp-hp">Set Temp. HP</label>
         </span>
       </div>

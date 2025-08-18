@@ -2,11 +2,9 @@
   import { type AppMode, appModes, type AppSidebarMode, appSidebarModes } from "$lib/AppMode";
   import type { GameViewModel } from "$lib/viewmodel/GameViewModel";
   import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
-  import alticon from "../images/alticon.svg";
-  import appicon from "../images/icon.svg";
   // import * as os from "@tauri-apps/plugin-os";
-  import { currentTheme } from "../themes/theme";
-  import EncounterToolbar from "./EncounterToolbar.svelte";
+  import AppIcon from "./AppIcon.svelte";
+  import EncounterToolbar from "./encounter/EncounterToolbar.svelte";
 
   const appWindow = getCurrentWebviewWindow();
   const platform: string = "windows"; //os.platform();
@@ -35,18 +33,12 @@
   } else {
     decorationStyle = "generic";
   }
-
-  currentTheme.subscribe((theme) => {
-    icon = theme === "noon" || theme === "night" ? alticon : appicon;
-  });
-
-  $: icon = appicon;
 </script>
 
 <nav class="panel">
   {#if decorationStyle !== "mac"}
     <div class="icon" role="none" on:dblclick={appWindow.close}>
-      <img src={icon} alt="App Icon" />
+      <AppIcon />
     </div>
   {/if}
   <div class="mode-select caption">

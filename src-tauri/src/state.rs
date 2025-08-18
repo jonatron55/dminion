@@ -1,5 +1,4 @@
-use sqlx::SqlitePool;
-use tauri::async_runtime::Mutex;
+use tauri::{async_runtime::Mutex, AppHandle, Emitter};
 
 use crate::game::Game;
 
@@ -17,14 +16,15 @@ pub struct GameState {
 }
 
 impl GameState {
-    pub async fn mutate<F>(&mut self, f: F) -> Result<(), String>
+    pub async fn mutate<F>(&mut self, app: AppHandle, f: F) -> Result<(), String>
     where
         F: FnOnce(&mut Game) -> Result<(), String>,
     {
         if let Some(mut game) = self.undo_stack.last().cloned() {
             f(&mut game).map_err(|e| e.to_string())?;
-            self.undo_stack.push(game);
+            self.undo_stack.push(game.clone());
             self.redo_stack.clear();
+            app.emit("game-updated", game).map_err(|e| e.to_string())?;
             Ok(())
         } else {
             Err("No game found".to_string())

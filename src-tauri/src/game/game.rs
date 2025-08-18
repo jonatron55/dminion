@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::game::time::Time;
 
-use super::{Participant, XP_PER_CR};
+use super::Participant;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -42,7 +42,7 @@ impl Game {
     pub fn spawn(&mut self, participant: Participant) -> u32 {
         self.participants.insert(self.next_id, participant);
         self.order.push(self.next_id);
-        self.order.sort_by(|a, b| {
+        self.order.sort_by(|b, a| {
             self.participants
                 .get(a)
                 .unwrap()

@@ -2,15 +2,16 @@
   import type { AppMode } from "$lib/AppMode";
   import { game_commands } from "$lib/model/Commands";
   import type { Game } from "$lib/model/Game";
+  import { currentTheme } from "$lib/theme";
   import { GameViewModel } from "$lib/viewmodel/GameViewModel";
+  import { listen, type Event } from "@tauri-apps/api/event";
   import { onMount } from "svelte";
-  import EncounterPage from "../components/EncounterPage.svelte";
+  import EncounterPage from "../components/encounter/EncounterPage.svelte";
   import LibraryPage from "../components/LibraryPage.svelte";
   import MapPage from "../components/MapPage.svelte";
-  import Toolbar from "../components/Toolbar.svelte";
+  import Toolbar from "../components/Titlebar.svelte";
   import TradePage from "../components/TradePage.svelte";
   import "../styles/app.scss";
-  import { currentTheme } from "../themes/theme";
 
   let mode: AppMode = "encounter";
   let game: Game;
@@ -18,7 +19,10 @@
 
   onMount(async () => {
     game = await game_commands.getGame();
-    // console.log(JSON.stringify(game, undefined, 2));
+  });
+
+  listen("game-updated", (event: Event<Game>) => {
+    game = event.payload;
   });
 
   $: game = {
@@ -29,6 +33,7 @@
     gameStarted: new Date(),
     turnStarted: new Date(),
   };
+
   $: gameViewModel = new GameViewModel(game);
 </script>
 

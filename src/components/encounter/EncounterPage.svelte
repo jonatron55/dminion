@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { GameViewModel } from "$lib/viewmodel/GameViewModel";
-  import ParticipantRow from "./encounter/ParticipantRow.svelte";
+  import ParticipantRow from "./ParticipantRow.svelte";
 
   export let game: GameViewModel;
 </script>
@@ -10,7 +10,7 @@
     {#each Object.entries(game.participants)
       .slice()
       .sort((a, b) => b[1].initiative - a[1].initiative) as [id, participant]}
-      <ParticipantRow {id} {participant} {game} isActive={participant.initiative == 15} />
+      <ParticipantRow {participant} {game} isActive={game.activeParticipantId === id} />
     {/each}
   </div>
 </main>

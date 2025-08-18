@@ -5,10 +5,10 @@
       "name": "Tauri Core Debug (Windows)",
       "type": "cppvsdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/target/src-tauri/debug/dminion.exe",
+      "program": "${workspaceRoot}/src-tauri/target/debug/dminion.exe",
+      "args": [],
       "cwd": "${workspaceRoot}",
-      "preLaunchTask": "ui:dev",
-      "stopAtEntry": false,
+      "preLaunchTask": "core:buildDebug",
       "environment": [
         {
           "name": "RUST_BACKTRACE",
@@ -23,7 +23,7 @@
       "request": "launch",
       "runtimeExecutable": "${workspaceFolder}/src-tauri/target/debug/dminion.exe",
       "webRoot": "${workspaceFolder}",
-      "preLaunchTask": "ui:dev&core:buildDebug"
+      "preLaunchTask": "core:buildDebug"
     }
   ]
 }

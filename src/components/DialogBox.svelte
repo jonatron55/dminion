@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+
   export let affirmative: string = "OK";
   export let negative: string | undefined = undefined;
   export let cancel: string | undefined = undefined;
@@ -8,9 +10,17 @@
   export let onAffirmative: () => void = () => {};
   export let onNegative: () => void = () => {};
   export let onCancel: () => void = () => {};
+
+  let dialogRef: HTMLDialogElement | null = null;
+
+  onMount(() => {
+    if (dialogRef) {
+      dialogRef.showModal();
+    }
+  });
 </script>
 
-<dialog open>
+<dialog bind:this={dialogRef}>
   <div class="overlay">
     <div class="card {severity}">
       <h1 class="caption">{title}</h1>

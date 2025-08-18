@@ -9,6 +9,23 @@
       "args": [
         "dev"
       ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": [
+        {
+          "owner": "vite",
+          "pattern": {
+            "regexp": "^.*$"
+          },
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": ".",
+            "endsPattern": "Local:"
+          }
+        }
+      ],
     },
     {
       "label": "ui:build",
@@ -31,11 +48,17 @@
       ],
     },
     {
-      "label": "ui:dev&core:buildDebug",
-      "dependsOn": [
-        "core:buildDebug",
-        "ui:dev"
-      ]
+      "label": "core:buildRelease",
+      "type": "shell",
+      "command": "cargo",
+      "args": [
+        "build",
+        "--release",
+        "--manifest-path=./src-tauri/Cargo.toml",
+      ],
+      "problemMatcher": [
+        "$rustc"
+      ],
     }
   ]
 }

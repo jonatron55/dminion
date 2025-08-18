@@ -1,9 +1,9 @@
 use std::vec;
 
-use tauri::{AppHandle, Emitter, State};
+use tauri::{AppHandle, Emitter};
 
-use crate::game::{self, Game};
-use crate::state::{AppState, AppStateMutex, GameState};
+use crate::game::Game;
+use crate::state::AppStateMutex;
 
 #[tauri::command]
 pub async fn get_game(state: tauri::State<'_, AppStateMutex>) -> Result<Game, String> {
@@ -34,12 +34,11 @@ pub async fn next_turn(
     let mut state = state.lock().await;
     state
         .gamestate
-        .mutate(|game| {
+        .mutate(app, |game| {
             game.next_turn();
             Ok(())
         })
         .await?;
-    app.emit("game-updated", ()).map_err(|e| e.to_string())?;
     Ok(())
 }
 
@@ -48,8 +47,8 @@ pub async fn undo(app: AppHandle, state: tauri::State<'_, AppStateMutex>) -> Res
     let mut state = state.lock().await;
     if state.gamestate.undo_stack.len() > 1 {
         let game = state.gamestate.undo_stack.pop().unwrap();
-        state.gamestate.redo_stack.push(game);
-        app.emit("game-updated", ()).map_err(|e| e.to_string())?;
+        state.gamestate.redo_stack.push(game.clone());
+        app.emit("game-updated", game).map_err(|e| e.to_string())?;
         Ok(())
     } else {
         return Err("Undo stack is empty".to_string());
@@ -60,8 +59,8 @@ pub async fn undo(app: AppHandle, state: tauri::State<'_, AppStateMutex>) -> Res
 pub async fn redo(app: AppHandle, state: tauri::State<'_, AppStateMutex>) -> Result<(), String> {
     let mut state = state.lock().await;
     if let Some(game) = state.gamestate.redo_stack.pop() {
-        state.gamestate.undo_stack.push(game);
-        app.emit("game-updated", ()).map_err(|e| e.to_string())?;
+        state.gamestate.undo_stack.push(game.clone());
+        app.emit("game-updated", game).map_err(|e| e.to_string())?;
         Ok(())
     } else {
         return Err("Redo stack is empty".to_string());

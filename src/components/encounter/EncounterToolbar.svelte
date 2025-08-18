@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { game_commands } from "$lib/model/Commands";
   import type { GameViewModel } from "$lib/viewmodel/GameViewModel";
 
   export let game: GameViewModel;
@@ -12,8 +13,8 @@
 
 <div class="encounter-toolbar">
   <span class="actions">
-    <button class="toolbar">↺ Undo</button>
-    <button class="toolbar">⏩ Next</button>
+    <button class="toolbar" on:click={game_commands.undo}>↺ Undo</button>
+    <button class="toolbar" on:click={game_commands.nextTurn}>⏩ Next</button>
   </span>
   <span data-tauri-drag-region class="titlebar details">
     <span data-tauri-drag-region class="titlebar round">{game.round}</span>

@@ -1,25 +1,24 @@
 <script lang="ts">
   import { conditionClasses } from "$lib/model/Condition";
-  import type { GameViewModel } from "$lib/viewmodel/GameViewModel";
-  import {
-    LairViewModel,
-    MonsterViewModel,
-    ParticipantViewModel,
-    PlayerViewModel,
-  } from "$lib/viewmodel/ParticipantViewModel";
+  import { GameViewModel } from "$lib/viewmodel/GameViewModel";
+  import { LairViewModel } from "$lib/viewmodel/LairViewModel";
+  import { MonsterViewModel } from "$lib/viewmodel/MonsterViewModel";
+  import { ParticipantViewModel } from "$lib/viewmodel/ParticipantViewModel";
+  import { PlayerViewModel } from "$lib/viewmodel/PlayerViewModel";
+  import DamageDialog from "./DamageDialog.svelte";
   import HealDialog from "./HealDialog.svelte";
   import Stat from "./Stat.svelte";
 
   export let game: GameViewModel;
   export let participant: ParticipantViewModel;
   export let isActive: boolean = false;
-  export let id: string;
 
   let monster: MonsterViewModel = participant as MonsterViewModel;
   let player: PlayerViewModel = participant as PlayerViewModel;
   let lair: LairViewModel = participant as LairViewModel;
 
   let healDialogRef: HealDialog;
+  let damageDialogRef: DamageDialog;
 
   $: monster: participant as MonsterViewModel;
   $: player: participant as PlayerViewModel;
@@ -93,8 +92,8 @@
         {#if monster.tempHp > 0}
           <div class="temp-hp"><strong>temp:</strong> {monster.tempHp}</div>
         {/if}
-        <button class="danger damage-button">Damage</button>
-        <button class="ok heal-button" on:click={() => healDialogRef.open()}> Heal </button>
+        <button class="danger damage-button" on:click={damageDialogRef.open}>Damage</button>
+        <button class="ok heal-button" on:click={healDialogRef.open}> Heal </button>
 
         <div class="str"><Stat label="str" value={monster.stats.str} /></div>
         <div class="dex"><Stat label="dex" value={monster.stats.dex} /></div>
@@ -142,6 +141,7 @@
 </div>
 
 <HealDialog bind:monster bind:this={healDialogRef} />
+<DamageDialog bind:monster bind:this={damageDialogRef} />
 
 <style lang="scss">
   .participant {
