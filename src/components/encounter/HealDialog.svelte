@@ -6,10 +6,19 @@
 
   let isOpen: boolean = false;
   let amount: number = 0;
-  let mode: "heal" | "set-hp" | "temp-hp" = "heal";
+  let type: "heal" | "setHp" | "setTempHp" = "heal";
 
   export function open() {
     isOpen = true;
+  }
+
+  async function apply() {
+    await monster.heal({ type, amount });
+    isOpen = false;
+  }
+
+  function cancel() {
+    isOpen = false;
   }
 </script>
 
@@ -19,13 +28,8 @@
     affirmative="Apply"
     cancel="Cancel"
     severity="ok"
-    onAffirmative={() => {
-      // Apply healing logic here
-      isOpen = false;
-    }}
-    onCancel={() => {
-      isOpen = false;
-    }}
+    onAffirmative={apply}
+    onCancel={cancel}
   >
     <div class="heal-dialog">
       <div class="amount">
@@ -34,15 +38,15 @@
       </div>
       <div class="mode">
         <span>
-          <input type="radio" name="mode" id="mode-heal" value="heal" bind:group={mode} />
+          <input type="radio" name="mode" id="mode-heal" value="heal" bind:group={type} />
           <label for="mode-heal">Heal</label>
         </span>
         <span>
-          <input type="radio" name="mode" id="mode-set-hp" value="set-hp" bind:group={mode} />
+          <input type="radio" name="mode" id="mode-set-hp" value="setHp" bind:group={type} />
           <label for="mode-set-hp">Set HP</label>
         </span>
         <span>
-          <input type="radio" name="mode" id="mode-temp-hp" value="temp-hp" bind:group={mode} />
+          <input type="radio" name="mode" id="mode-temp-hp" value="setTempHp" bind:group={type} />
           <label for="mode-temp-hp">Set Temp. HP</label>
         </span>
       </div>

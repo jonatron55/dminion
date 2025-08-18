@@ -6,6 +6,7 @@ export abstract class ParticipantViewModel {
   abstract get fullPortrait(): string;
   abstract get initiative(): number;
   abstract get conditions(): Condition[];
+  abstract get id(): number;
 }
 
 export const conditionPriorities: Record<Condition["name"], number> = {

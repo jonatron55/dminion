@@ -1,11 +1,32 @@
 import { messageBoxStore } from "$lib/MessageBox";
-import { invoke } from "@tauri-apps/api/core";
+import { invoke, type InvokeArgs } from "@tauri-apps/api/core";
+import type { Damage, Healing } from "./Damage";
 import type { Game } from "./Game";
 
-export namespace game_commands {
-  async function tryInvoke(command: string): Promise<any> {
+export namespace gameCommands {
+  export interface DamageArgs {
+    [key: string]: unknown;
+    target: number,
+    damage: Damage,
+  }
+
+  export interface HealArgs {
+    [key: string]: unknown;
+    target: number,
+    healing: Healing
+  }
+
+  export const newGame = async (): Promise<void> => await tryInvoke("new_game");
+  export const getGame = async (): Promise<Game> => await tryInvoke("get_game");
+  export const nextTurn = async (): Promise<void> => await tryInvoke("next_turn");
+  export const undo = async (): Promise<void> => await tryInvoke("undo");
+  export const redo = async (): Promise<void> => await tryInvoke("redo");
+  export const damage = async (args: DamageArgs): Promise<void> => await tryInvoke("damage", args);
+  export const heal = async (args: HealArgs): Promise<void> => await tryInvoke("heal", args);
+
+  async function tryInvoke(command: string, args?: InvokeArgs): Promise<any> {
     try {
-      return await invoke(command);
+      return await invoke(command, args);
     } catch (e) {
       messageBoxStore.show({
         title: `Failed to execute ${command}`,
@@ -14,13 +35,7 @@ export namespace game_commands {
         affirmativeButton: { label: "OK" }
       });
 
-      // throw e;
+      throw e;
     }
   }
-
-  export const newGame = async () => await tryInvoke("new_game") as void;
-  export const getGame = async () => await tryInvoke("get_game") as Game;
-  export const nextTurn = async () => await tryInvoke("next_turn") as void;
-  export const undo = async () => await tryInvoke("undo") as void;
-  export const redo = async () => await tryInvoke("redo") as void;
 }

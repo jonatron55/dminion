@@ -6,10 +6,28 @@
 
   let isOpen: boolean = false;
   let amount: number = 0;
-  let mode: "damage" | "half damage" | "double damage" | "kill" = "damage";
+  let type: "damage" | "halfDamage" | "doubleDamage" | "kill" = "damage";
 
   export function open() {
     isOpen = true;
+  }
+
+  async function apply() {
+    switch (type) {
+      case "damage":
+      case "halfDamage":
+      case "doubleDamage":
+        await monster.damage({ type, amount });
+        break;
+      case "kill":
+        await monster.damage({ type });
+        break;
+    }
+    isOpen = false;
+  }
+
+  function cancel() {
+    isOpen = false;
   }
 </script>
 
@@ -19,13 +37,8 @@
     affirmative="Apply"
     cancel="Cancel"
     severity="danger"
-    onAffirmative={() => {
-      // Apply damage logic here
-      isOpen = false;
-    }}
-    onCancel={() => {
-      isOpen = false;
-    }}
+    onAffirmative={apply}
+    onCancel={cancel}
   >
     <div class="damage-dialog">
       <div class="amount">
@@ -34,19 +47,19 @@
       </div>
       <div class="mode">
         <span>
-          <input type="radio" name="mode" id="mode-damage" value="damage" bind:group={mode} />
+          <input type="radio" name="mode" id="mode-damage" value="damage" bind:group={type} />
           <label for="mode-damage">Damage</label>
         </span>
         <span>
-          <input type="radio" name="mode" id="mode-set-hp" value="Half damage" bind:group={mode} />
+          <input type="radio" name="mode" id="mode-set-hp" value="halfDamage" bind:group={type} />
           <label for="mode-set-hp">Half damage</label>
         </span>
         <span>
-          <input type="radio" name="mode" id="mode-temp-hp" value="Double damage" bind:group={mode} />
+          <input type="radio" name="mode" id="mode-temp-hp" value="doubleDamage" bind:group={type} />
           <label for="mode-temp-hp">Double damage</label>
         </span>
         <span>
-          <input type="radio" name="mode" id="mode-kill" value="kill" bind:group={mode} />
+          <input type="radio" name="mode" id="mode-kill" value="kill" bind:group={type} />
           <label for="mode-kill">Kill instantly</label>
         </span>
       </div>

@@ -1,9 +1,12 @@
-use std::{path::PathBuf, vec};
+use std::{ops::Index, path::PathBuf, vec};
 
 use rand::Rng;
 use serde::{Deserialize, Serialize};
 
-use crate::dice::DiceExpr;
+use crate::{
+    dice::DiceExpr,
+    game::{conditions, time::Time, Healing},
+};
 
 use super::{Condition, Stats};
 
@@ -70,5 +73,56 @@ impl Monster {
         //     .into_iter()
         //     .filter_map(|c| c.end_turn())
         //     .collect();
+    }
+
+    pub fn has_condition(&self, condition_name: &str) -> bool {
+        self.conditions.iter().any(|c| c.name == condition_name)
+    }
+
+    pub fn damage(&mut self, time: Time, damage: super::Damage) {
+        match damage {
+            super::Damage::Damage { amount } => {
+                self.hp = self.hp.saturating_sub(amount as i32);
+            }
+            super::Damage::HalfDamage { amount } => {
+                self.hp = self.hp.saturating_sub((amount / 2) as i32);
+            }
+            super::Damage::DoubleDamage { amount } => {
+                self.hp = self.hp.saturating_sub((amount * 2) as i32);
+            }
+            super::Damage::Kill => {
+                self.hp = 0;
+            }
+        };
+
+        if self.hp <= self.max_hp / 2 && !self.has_condition(conditions::BLOODIED) {
+            self.conditions.push(Condition::bloodied(time));
+        }
+
+        if self.hp <= 0 && !self.has_condition(conditions::DEAD) {
+            self.conditions.push(Condition::dead(time));
+        }
+    }
+
+    pub fn heal(&mut self, healing: Healing) {
+        match healing {
+            Healing::Heal { amount } => {
+                self.hp = (self.hp.max(0) + amount as i32).min(self.max_hp);
+            }
+            Healing::SetHp { amount } => {
+                self.hp = amount as i32;
+            }
+            Healing::SetTempHp { amount } => {
+                self.temp_hp = amount as i32;
+            }
+        };
+
+        if self.hp > 0 {
+            self.conditions.retain(|c| c.name != conditions::DEAD);
+        }
+
+        if self.hp > self.max_hp / 2 {
+            self.conditions.retain(|c| c.name != conditions::BLOODIED);
+        }
     }
 }

@@ -9,8 +9,8 @@
   <div class="participants">
     {#each Object.entries(game.participants)
       .slice()
-      .sort((a, b) => b[1].initiative - a[1].initiative) as [id, participant]}
-      <ParticipantRow {participant} {game} isActive={game.activeParticipantId === id} />
+      .sort((a, b) => b[1].initiative - a[1].initiative) as [, participant]}
+      <ParticipantRow {participant} {game} isActive={game.activeParticipantId === participant.id} />
     {/each}
   </div>
 </main>

@@ -1,11 +1,17 @@
+import { gameCommands } from "$lib/model/Commands";
 import type { Condition } from "$lib/model/Condition";
+import type { Damage, Healing } from "$lib/model/Damage";
 import type { Monster } from "$lib/model/Participant";
 import type { Stats } from "$lib/model/Stats";
 import { ParticipantViewModel, conditionPriorities } from "./ParticipantViewModel";
 
 export class MonsterViewModel extends ParticipantViewModel {
-  constructor(private _model: Monster) {
+  constructor(private _id: number, private _model: Monster) {
     super();
+  }
+
+  get id(): number {
+    return this._id;
   }
 
   get name(): string {
@@ -80,5 +86,19 @@ export class MonsterViewModel extends ParticipantViewModel {
 
   get totalLegendaryActions(): number {
     return this._model.legendaryActions;
+  }
+
+  async damage(damage: Damage): Promise<void> {
+    await gameCommands.damage({
+      target: this._id,
+      damage
+    });
+  }
+
+  async heal(healing: Healing): Promise<void> {
+    await gameCommands.heal({
+      target: this._id,
+      healing
+    });
   }
 }

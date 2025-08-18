@@ -1,32 +1,36 @@
 {
-  "svelte.enable-ts-plugin": true,
-  "editor.formatOnSave": true,
-  "files.trimFinalNewlines": true,
-  "files.insertFinalNewline": true,
-  "files.trimTrailingWhitespace": true,
-  "files.eol": "\n",
-  "files.encoding": "utf8",
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
-    "source.fixAll.tslint": "explicit",
-    "source.organizeImports": "explicit"
-  },
-  "svelte.plugin.svelte.format.config.printWidth": 140,
-  "[json][jsonc][jsonl][html][xml][css][scss]": {
-    "editor.indentSize": 2,
-  },
   "[javascript][javascriptreact][typecript][typescriptreact][svelte][sveltekit]": {
     "editor.indentSize": 2,
     "javascript.preferences.quoteStyle": "double",
     "typescript.preferences.quoteStyle": "double"
   },
+  "[json][jsonc][jsonl][html][xml][css][scss]": {
+    "editor.indentSize": 2
+  },
+  "[rust]": {
+    "editor.tabSize": 4
+  },
   "[svelte][sveltekit]": {
     "editor.defaultFormatter": "svelte.svelte-vscode"
   },
-  "[rust]": {
-    "editor.tabSize": 4,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.tslint": "explicit",
+    "source.organizeImports": "explicit",
+    "source.organizeLinkDefinitions": "explicit",
+    "source.removeUnusedImports": "explicit",
+    "source.sort.json": "explicit",
+    "source.sortImports": "explicit"
   },
+  "editor.formatOnSave": true,
+  "files.encoding": "utf8",
+  "files.eol": "\n",
   "files.exclude": {
-    "**/.git": true,
-  }
+    "**/.git": true
+  },
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "svelte.enable-ts-plugin": true,
+  "svelte.plugin.svelte.format.config.printWidth": 140
 }

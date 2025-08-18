@@ -1,5 +1,6 @@
 mod common;
 mod conditions;
+mod damage;
 mod expiry;
 mod game;
 mod lair;
@@ -10,6 +11,7 @@ pub mod time;
 
 pub use common::*;
 pub use conditions::*;
+pub use damage::*;
 pub use expiry::*;
 pub use game::Game;
 pub use lair::*;

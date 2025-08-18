@@ -4,8 +4,12 @@ import type { Stats } from "$lib/model/Stats";
 import { ParticipantViewModel, conditionPriorities } from "./ParticipantViewModel";
 
 export class PlayerViewModel extends ParticipantViewModel {
-  constructor(private _model: Player) {
+  constructor(private _id: number, private _model: Player) {
     super();
+  }
+
+  get id(): number {
+    return this._id;
   }
 
   get name(): string {

@@ -5,14 +5,14 @@ import { MonsterViewModel } from "./MonsterViewModel";
 import type { ParticipantViewModel } from "./ParticipantViewModel";
 import { PlayerViewModel } from "./PlayerViewModel";
 
-export function createParticipantViewModel(model: Participant): ParticipantViewModel {
+export function createParticipantViewModel(id: number, model: Participant): ParticipantViewModel {
   if (isMonster(model)) {
-    return new MonsterViewModel(model);
+    return new MonsterViewModel(id, model);
   } else if (isPlayer(model)) {
-    return new PlayerViewModel(model);
+    return new PlayerViewModel(id, model);
   } else if (isLair(model)) {
-    return new LairViewModel(model);
+    return new LairViewModel(id, model);
   } else {
-    throw new Error("Unknown participant type");
+    throw new Error(`Unknown participant type '${typeof model}' for id ${id}`);
   }
 }

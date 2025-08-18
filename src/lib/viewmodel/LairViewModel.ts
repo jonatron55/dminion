@@ -3,8 +3,12 @@ import type { Lair } from "$lib/model/Participant";
 import { ParticipantViewModel } from "./ParticipantViewModel";
 
 export class LairViewModel extends ParticipantViewModel {
-  constructor(private _model: Lair) {
+  constructor(private _id: number, private _model: Lair) {
     super();
+  }
+
+  get id(): number {
+    return this._id;
   }
 
   get name(): string {

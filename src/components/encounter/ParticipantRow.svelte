@@ -20,9 +20,9 @@
   let healDialogRef: HealDialog;
   let damageDialogRef: DamageDialog;
 
-  $: monster: participant as MonsterViewModel;
-  $: player: participant as PlayerViewModel;
-  $: lair: participant as LairViewModel;
+  $: monster = participant as MonsterViewModel;
+  $: player = participant as PlayerViewModel;
+  $: lair = participant as LairViewModel;
 </script>
 
 <div class="participant{isActive ? ' active' : ''} ">

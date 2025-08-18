@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { AppMode } from "$lib/AppMode";
-  import { game_commands } from "$lib/model/Commands";
+  import { gameCommands } from "$lib/model/Commands";
   import type { Game } from "$lib/model/Game";
   import { currentTheme } from "$lib/theme";
   import { GameViewModel } from "$lib/viewmodel/GameViewModel";
@@ -18,7 +18,7 @@
   currentTheme.set("dusk");
 
   onMount(async () => {
-    game = await game_commands.getGame();
+    game = await gameCommands.getGame();
   });
 
   listen("game-updated", (event: Event<Game>) => {

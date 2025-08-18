@@ -2,7 +2,7 @@ use std::vec;
 
 use tauri::{AppHandle, Emitter};
 
-use crate::game::Game;
+use crate::game::{Damage, Game, Healing, Participant};
 use crate::state::AppStateMutex;
 
 #[tauri::command]
@@ -36,6 +36,61 @@ pub async fn next_turn(
         .gamestate
         .mutate(app, |game| {
             game.next_turn();
+            Ok(())
+        })
+        .await?;
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn damage(
+    app: AppHandle,
+    state: tauri::State<'_, AppStateMutex>,
+    target: u32,
+    damage: Damage,
+) -> Result<(), String> {
+    let mut state = state.lock().await;
+    state
+        .gamestate
+        .mutate(app, |game| {
+            let time = game.time();
+            let Some(participant) = game.participants.get_mut(&target) else {
+                return Err(format!("No participant found with id {target}"));
+            };
+
+            let Participant::Monster(monster) = participant else {
+                return Err(format!("Participant with id {target} is not a monster"));
+            };
+
+            monster.damage(time, damage);
+
+            Ok(())
+        })
+        .await?;
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn heal(
+    app: AppHandle,
+    state: tauri::State<'_, AppStateMutex>,
+    target: u32,
+    healing: Healing,
+) -> Result<(), String> {
+    let mut state = state.lock().await;
+    state
+        .gamestate
+        .mutate(app, |game| {
+            let Some(participant) = game.participants.get_mut(&target) else {
+                return Err(format!("No participant found with id {target}"));
+            };
+
+            let Participant::Monster(monster) = participant else {
+                return Err(format!("Participant with id {target} is not a monster"));
+            };
+
+            monster.heal(healing);
+
             Ok(())
         })
         .await?;

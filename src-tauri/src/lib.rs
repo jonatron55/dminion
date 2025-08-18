@@ -73,11 +73,7 @@ pub fn run() {
         legendary_actions: 0,
         is_hostile: true,
         notes: "Gobbo McGobface is a complex and multidimensional character with hopes, dreams, and a knife. He's green".into(),
-        conditions: vec![
-            Condition::bloodied(Time::new(0, 0)),
-            Condition::dead(Time::new(0, 0)),
-            Condition::frightened(Time::new(0, 0)).with_expiry(Duration::from_secs(60).into()),
-        ],
+        conditions: vec![Condition::bloodied(Time::new(0, 0))],
     }.into());
 
     game.spawn(
@@ -102,7 +98,7 @@ pub fn run() {
             tiebreaker: -456,
             hp: 1234,
             temp_hp: 3,
-            max_hp: 16,
+            max_hp: 1234,
             action: true,
             reaction: true,
             bonus_action: true,
@@ -110,7 +106,6 @@ pub fn run() {
             is_hostile: true,
             notes: "Froggo McFrogface would rather be eating flies.".into(),
             conditions: vec![
-                Condition::bloodied(Time::new(0, 0)),
                 Condition::prone(Time::new(0, 0)),
                 Condition::poisoned(Time::new(16, 0)).with_expiry(Duration::from_secs(60).into()),
                 Condition::blinded(Time::new(6, 0)).with_expiry(Duration::from_secs(60).into()),
@@ -150,6 +145,8 @@ pub fn run() {
             game_commands::next_turn,
             game_commands::undo,
             game_commands::redo,
+            game_commands::damage,
+            game_commands::heal,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

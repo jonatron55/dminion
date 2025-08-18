@@ -1,6 +1,6 @@
 import type { Game } from "$lib/model/Game";
-import { createParticipantViewModel } from "./ParticipantViewModelFactory";
 import type { ParticipantViewModel } from "./ParticipantViewModel";
+import { createParticipantViewModel } from "./ParticipantViewModelFactory";
 
 export class GameViewModel {
   private _participants: Record<number, ParticipantViewModel> = {};
@@ -21,14 +21,14 @@ export class GameViewModel {
     return this._model.round * 6;
   }
 
-  public get activeParticipantId(): string {
-    return this._model.order[this._model.turn].toString();
+  public get activeParticipantId(): number {
+    return this._model.order[this._model.turn];
   }
 
   constructor(private _model: Game) {
     this._participants = Object.fromEntries(
       Object.entries(this._model.participants).map(
-        ([id, participant]) => [Number(id), createParticipantViewModel(participant)]
+        ([id, participant]) => [Number(id), createParticipantViewModel(Number(id), participant)]
       )
     );
   }
