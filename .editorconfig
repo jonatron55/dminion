@@ -7,6 +7,6 @@ insert_final_newline = true
 tab_width = 4
 indent_size = 4
 
-[*.{json,html,xml,css,scss,js,ts,jsx,tsx,svelte}]
+[*.{json,html,xml,css,scss,js,ts,jsx,tsx,svelte,md,yml}]
 tab_width = 2
 indent_size = 2

@@ -1,46 +1,72 @@
-# Copilot Memory Bank Instructions (Inspired by Cline Memory Bank)
+Getting started
+===============
 
-**Core Principle:** This repository uses a structured "Memory Bank" in the `memory-bank/` directory to provide persistent project context. Your effectiveness relies *entirely* on understanding and utilizing this context, as your memory may reset. **FIRST ACTION: At the beginning of each new chat session, read ALL Memory Bank files to initialize your understanding.** **Never proceed without complete context from these files.**
+1. Read the [project brief] to understand what we're building and why.
+2. Review the [process document] to learn how work flows through the system.
+3. Check [active tasks] to see what's currently in progress.
+4. Skim the [backlog] to understand priorities and upcoming work.
 
-## Memory Bank Files & Purpose:
+**Ensure you have read and understood the above documents before proceeding.**
 
-Refer to the following files in the `memory-bank/` directory for specific context. If any are missing, you MUST attempt to create them based on available information or by asking the user before proceeding.
+Working on tasks
+================
 
-*   **`project-brief.md`**: Overall project goals, scope, and success criteria. (High-level understanding).
-*   **`product-context.md`**: The "why" behind the project, problems it solves, how it should work. (User needs, product features).
-*   **`tech-context.md`**: Technologies used, development setup, technical constraints. (Implementation details, dependencies, limitations).
-*   **`system-patterns.md`**: System architecture, key technical decisions, design patterns, component relationships. (System structure and organization).
-*   **`active-context.md`**: Current work focus, recent changes, next steps, active decisions. (**Your primary source of truth for current state**).
-*   **`progress.md`**: What works, what's left to build, current status, known issues. (Project status assessment).
+1. Pick an unchecked task from [active tasks]. If your instructions seem to refer to something not in the document, ask
+   for clarification.
+2. Complete the work according to [coding standards](#coding-standards).
+3. Check off the task.
+4. Add discoveries or context to "Working notes" in [active tasks].
 
-## Core Workflows & Behavior:
+Coding standards
+----------------
 
-**1. Starting New Chat Sessions:**
-    *   **At the beginning of each new chat session, read ALL Memory Bank files to initialize your understanding.**
-    *   Check for the existence of all required `memory-bank/` files.
-    *   If ANY file is missing, STOP. Attempt to create it by reading available documentation and asking the user for missing information. **Do not proceed without complete context.**
-    *   Verify you have complete context before starting development.
+You are surgically precise and pragmatic. You write clean, idiomatic code that focuses on the task at hand with the
+simplest and smallest changes possible. Your goal is a minimal diff that does not alter unrelated code or add
+unnecessary complexity.
 
-**2. During Development:**
-    *   Consistently follow the patterns, decisions, and context documented in the Memory Bank.
-    *   **IMPORTANT:** When using tools (like writing files, executing commands), preface the action description with `[MEMORY BANK: ACTIVE]` to signal you are operating based on the established context. Example: `[MEMORY BANK: ACTIVE] I will now write the file...`
-    *   Update Memory Bank files (especially `active-context.md` and `progress.md`) *after* implementing significant changes or completing sub-tasks, but NOT continuously after every minor action.
+### DO ###
 
-**3. Memory Bank Updates (User Request: "update memory bank"):**
-    *   This signals an imminent memory reset.
-    *   Prioritize documenting EVERYTHING about the current state, ongoing work, and crystal-clear next steps in `active-context.md` and `progress.md`.
-    *   Complete the immediate task if possible before the reset.
+- Keep code units cohesive and minimally coupled.
+- Introduce new items at the narrowest scope possible.
+- Search for existing functionality before adding new code.
+- Write clear, self-explanatory code with meaningful names.
+- Document public types and members with complete doc comments following [style guidelines].
+- Update comments and documentation when the code they reference changes.
+- Follow existing style and conventions in the codebase.
+- Fix compiler warnings and linter issues in the areas you touch.
 
-**4. Plan Mode (User Request starts with "#plan"):**
-    *   When a request begins with "#plan", enter plan-mode.
-    *   In this mode, read all necessary files to understand the context, then create a detailed implementation plan WITHOUT making any actual changes to files or running commands.
-    *   Structure your plan with clear steps, file paths, and specific code changes needed.
-    *   At the end of the plan, ask if any adjustments are needed or if the user wants to execute the plan.
-    *   If adjustments are requested, remain in plan-mode.
-    *   Only exit plan-mode when explicitly instructed to execute the plan.
+### DO NOT ###
 
-**General Guidance:**
+- Refactor existing code unless specifically instructed.
+- Reorganize existing declarations or rename them unnecessarily.
+- Add new dependencies or libraries without first seeking approval.
+- Add abstractions "just in case" they might be useful later.
+- Attempt to fix compiler warnings or linter issues with code you did not modify.
+- Fix warnings by applying a global suppression.
+- Attempt to change file encodings, line endings, or formatting applied by your editor.
 
-*   When context from `memory-bank/` files conflicts with your general knowledge, **always prioritize the `memory-bank/` information** for this specific repository.
-*   Use the context provided to generate more relevant, accurate, and project-specific responses.
-*   Your ability to function effectively depends entirely on the accuracy and completeness of the Memory Bank. Maintain it diligently.
+Maintaining documentation
+=========================
+
+**Critical**: Keep documentation current as you work. You should imagine that you might at any point need to hand off
+work to someone new who has no context nor explanation apart from the documents mentioned here.
+
+- Update [active tasks] immediately when tasks are completed or new details emerge.
+- Follow the same standards you see in existing documents (formatting, level of detail, tone).
+- Ask questions if anything is unclear; better to clarify than guess.
+
+What's expected
+===============
+
+- **Surgically precise changes**: Each change should be as minimal as possible to achieve the goal.
+- **High cohesion, low coupling**: New code should be focused and encapsulated.
+- **Documentation is not optional**: It's how the team stays synchronized and how you hold yourself accountable.
+- **Be consistent**: Match the conventions you see in existing code. Match the brevity you see in existing documents.
+- **Reference, don't repeat**: Reuse functionality and link to other documents rather than duplicating material.
+- **Keep it tactical**: Focus on what to do, not extensive explanation.
+
+[active tasks]: /docs/process/active-tasks.md
+[backlog]: /docs/process/backlog.md
+[process document]: /docs/process.md
+[project brief]: /docs/project-brief.md
+[style guidelines]: /.github/instructions/md.instructions.md

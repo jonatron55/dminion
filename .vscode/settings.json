@@ -7,6 +7,10 @@
   "[json][jsonc][jsonl][html][xml][css][scss]": {
     "editor.indentSize": 2
   },
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+    "editor.indentSize": 2
+  },
   "[rust]": {
     "editor.tabSize": 4
   },

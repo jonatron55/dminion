@@ -1,21 +1,36 @@
-<img src="src/images/icon.svg" alt="Dungeon Minion Icon" style="width: 128px; height: 128px; margin: 24px auto; display: block;"/>
+<img
+  src="src/images/icon.svg"
+  alt="Dungeon Minion Icon"
+  style="width: 128px; height: 128px; margin: 24px auto; display: block;"
+/>
 
 Dungeon Minion
 ==============
 
-Dungeon Minion is a tabletop RPG companion app designed to:
-- Track encounters and initiative.
-- Present maps and images.
-- Track trade items in transactions.
-- Generate character names.
-- Simulate dice rolls.
+Dungeon Minion is a local-first desktop assistant for dungeon masters running D&D 5e. It provides a private DM window
+with complete game management alongside a player-facing display for shared information like maps, encounters, and
+initiative tracking.
+
+Key features include:
+
+- **Encounter management**: Initiative tracking, conditions, health, and lair actions with undo/redo support.
+- **Map display**: Present maps to players with highlights and markers.
+- **Trade system**: Manage transactions with pricing and inventory.
+- **Library**: Organize campaign data including monsters, items, and encounters.
+- **Utilities**: Dice calculator and name generator.
+
+This is a power-user tool designed for DMs who want offline-first functionality without requiring player accounts or
+shared systems. See the [Project brief] for full details on goals, architecture, and design
+decisions.
 
 Getting started
 ---------------
 
-This project uses a web UI built with [Node.js] tooling ([pnpm], [Vite], [Svelte]) and a [Rust]/[Tauri] backend. The instructions below target Windows (PowerShell).
+This project uses a web UI built with [Node.js] tooling ([pnpm], [Vite], [Svelte]) and a [Rust]/[Tauri] backend. The
+instructions below target Windows (PowerShell).
 
 ### Prerequisites ###
+
 - [Node.js] (LTS) and npm (bundled with Node)
 - [pnpm] (recommended package manager)
 - [Rust] (rustup + cargo)
@@ -66,6 +81,7 @@ cargo run --manifest-path=.\src-tauri\Cargo.toml
 
 [Node.js]: https://nodejs.org/
 [pnpm]: https://pnpm.io/
+[Project brief]: docs/project-brief.md
 [Rust]: https://www.rust-lang.org/
 [Svelte]: https://svelte.dev/
 [Tauri]: https://tauri.app/
