@@ -62,7 +62,8 @@ What's expected
 - **High cohesion, low coupling**: New code should be focused and encapsulated.
 - **Documentation is not optional**: It's how the team stays synchronized and how you hold yourself accountable.
 - **Be consistent**: Match the conventions you see in existing code. Match the brevity you see in existing documents.
-- **Reference, don't repeat**: Reuse functionality and link to other documents rather than duplicating material.
+- **Reference, don't repeat**: Reuse existing functionality and link to other documents rather than duplicating
+  material.
 - **Keep it tactical**: Focus on what to do, not extensive explanation.
 
 [active tasks]: /docs/process/active-tasks.md
