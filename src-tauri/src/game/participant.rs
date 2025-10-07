@@ -2,7 +2,7 @@ use std::cmp::Ordering;
 
 use serde::{Deserialize, Serialize};
 
-use super::{Lair, Monster, Player};
+use crate::game::{Lair, Monster, Player};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(tag = "type")]
@@ -11,6 +11,15 @@ pub enum Participant {
     Lair(Lair),
     Monster(Monster),
     Player(Player),
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase", tag = "type")]
+pub enum Action {
+    Standard,
+    Bonus,
+    Reaction,
+    Legendary { index: usize },
 }
 
 impl Participant {
@@ -51,6 +60,14 @@ impl Participant {
             Participant::Lair(_) => {}
             Participant::Monster(monster) => monster.end_turn(),
             Participant::Player(player) => player.end_turn(),
+        }
+    }
+
+    pub fn set_action(&mut self, action: Action, available: bool) -> Result<(), ()> {
+        match self {
+            Participant::Lair(lair) => lair.set_action(action, available),
+            Participant::Monster(monster) => monster.set_action(action, available),
+            Participant::Player(player) => player.set_action(action, available),
         }
     }
 }

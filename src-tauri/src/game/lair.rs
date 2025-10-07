@@ -13,3 +13,16 @@ pub struct Lair {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub full_portrait: Option<String>,
 }
+
+impl Lair {
+    pub fn set_action(&mut self, action: super::Action, available: bool) -> Result<(), ()> {
+        match action {
+            super::Action::Standard => self.action = available,
+            super::Action::Bonus => return Err(()),
+            super::Action::Reaction => return Err(()),
+            super::Action::Legendary { .. } => return Err(()),
+        }
+
+        Ok(())
+    }
+}

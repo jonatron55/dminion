@@ -2,6 +2,7 @@ import { messageBoxStore } from "$lib/MessageBox";
 import { invoke, type InvokeArgs } from "@tauri-apps/api/core";
 import type { Damage, Healing } from "./Damage";
 import type { Game } from "./Game";
+import type { Action, } from "./Participant";
 
 export namespace gameCommands {
   export interface DamageArgs {
@@ -16,6 +17,13 @@ export namespace gameCommands {
     healing: Healing
   }
 
+  export interface SetActionArgs {
+    [key: string]: unknown;
+    target: number,
+    action: Action,
+    available: boolean
+  }
+
   export const newGame = async (): Promise<void> => await tryInvoke("new_game");
   export const getGame = async (): Promise<Game> => await tryInvoke("get_game");
   export const nextTurn = async (): Promise<void> => await tryInvoke("next_turn");
@@ -23,6 +31,7 @@ export namespace gameCommands {
   export const redo = async (): Promise<void> => await tryInvoke("redo");
   export const damage = async (args: DamageArgs): Promise<void> => await tryInvoke("damage", args);
   export const heal = async (args: HealArgs): Promise<void> => await tryInvoke("heal", args);
+  export const setAction = async (args: SetActionArgs): Promise<void> => await tryInvoke("set_action", args);
 
   async function tryInvoke(command: string, args?: InvokeArgs): Promise<any> {
     try {

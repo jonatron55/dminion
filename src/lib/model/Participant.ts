@@ -19,7 +19,8 @@ export interface Monster {
   maxHp: number,
   reaction: boolean,
   bonusAction: boolean,
-  legendaryActions: number,
+  legendaryActions: boolean[],
+  legendaryActionCount: number,
   notes: string,
   tiebreaker: number,
   conditions: Condition[],
@@ -53,6 +54,8 @@ export interface Lair {
 }
 
 export type Participant = Monster | Player | Lair;
+
+export type Action = { type: "standard" } | { type: "bonus" } | { type: "reaction" } | { type: "legendary", index: number };
 
 export function isMonster(participant: Participant): participant is Monster {
   return participant.type === "monster";

@@ -2,7 +2,7 @@ use std::vec;
 
 use tauri::{AppHandle, Emitter};
 
-use crate::game::{Damage, Game, Healing, Participant};
+use crate::game::{Action, Damage, Game, Healing, Participant};
 use crate::state::AppStateMutex;
 
 #[tauri::command]
@@ -120,4 +120,29 @@ pub async fn redo(app: AppHandle, state: tauri::State<'_, AppStateMutex>) -> Res
     } else {
         return Err("Redo stack is empty".to_string());
     }
+}
+
+#[tauri::command]
+pub async fn set_action(
+    app: AppHandle,
+    state: tauri::State<'_, AppStateMutex>,
+    target: u32,
+    action: Action,
+    available: bool,
+) -> Result<(), String> {
+    let mut state = state.lock().await;
+    state
+        .gamestate
+        .mutate(app, |game| {
+            let Some(participant) = game.participants.get_mut(&target) else {
+                return Err(format!("No participant found with id {target}"));
+            };
+
+            participant.set_action(action, available)
+                .map_err(|_| "Invalid action for this participant type".to_string())?;
+
+            Ok(())
+        })
+        .await?;
+    Ok(())
 }

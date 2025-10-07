@@ -66,23 +66,41 @@
     {#if participant instanceof MonsterViewModel}
       <div class="content monster">
         <div>
-          <input type="checkbox" id="{monster.name}-action" bind:checked={monster.action} />
+          <input
+            type="checkbox"
+            id="{monster.name}-action"
+            checked={!monster.action}
+            on:change={(e) => (monster.action = !e.currentTarget.checked)}
+          />
           <label for="{monster.name}-action">Action</label>
         </div>
         <div>
-          <input type="checkbox" id="{monster.name}-bonus" bind:checked={monster.bonusAction} />
+          <input
+            type="checkbox"
+            id="{monster.name}-bonus"
+            checked={!monster.bonusAction}
+            on:change={(e) => (monster.bonusAction = !e.currentTarget.checked)}
+          />
           <label for="{monster.name}-bonus">Bonus</label>
         </div>
         <div>
-          <input type="checkbox" id="{monster.name}-reaction" bind:checked={monster.reaction} />
+          <input
+            type="checkbox"
+            id="{monster.name}-reaction"
+            checked={!monster.reaction}
+            on:change={(e) => (monster.reaction = !e.currentTarget.checked)}
+          />
           <label for="{monster.name}-reaction">Reaction</label>
         </div>
 
-        {#each Array(monster.legendaryActions)
-          .fill(0)
-          .map((_, i) => i) as i}
+        {#each monster.legendaryActions as legendaryAction, i}
           <div class="legendary">
-            <input type="checkbox" id="{monster.name}-legendary-{i}" checked={monster.legendaryActions >= i + 1} />
+            <input 
+              type="checkbox" 
+              id="{monster.name}-legendary-{i}" 
+              checked={!legendaryAction}
+              on:change={(e) => monster.setLegendaryAction(i, !e.currentTarget.checked)}
+            />
             <label for="{monster.name}-legendary-{i}">Legendary</label>
           </div>
         {/each}
@@ -107,16 +125,31 @@
     {:else if participant instanceof PlayerViewModel}
       <div class="content player">
         <div>
-          <input type="checkbox" id="{monster.name}-action" bind:checked={monster.action} />
-          <label for="{monster.name}-action">Action</label>
+          <input
+            type="checkbox"
+            id="{player.name}-action"
+            checked={!player.action}
+            on:change={(e) => (player.action = !e.currentTarget.checked)}
+          />
+          <label for="{player.name}-action">Action</label>
         </div>
         <div>
-          <input type="checkbox" id="{monster.name}-bonus" bind:checked={monster.bonusAction} />
-          <label for="{monster.name}-bonus">Bonus</label>
+          <input
+            type="checkbox"
+            id="{player.name}-bonus"
+            checked={!player.bonusAction}
+            on:change={(e) => (player.bonusAction = !e.currentTarget.checked)}
+          />
+          <label for="{player.name}-bonus">Bonus</label>
         </div>
         <div>
-          <input type="checkbox" id="{monster.name}-reaction" bind:checked={monster.reaction} />
-          <label for="{monster.name}-reaction">Reaction</label>
+          <input
+            type="checkbox"
+            id="{player.name}-reaction"
+            checked={!player.reaction}
+            on:change={(e) => (player.reaction = !e.currentTarget.checked)}
+          />
+          <label for="{player.name}-reaction">Reaction</label>
         </div>
 
         <div class="str"><Stat label="str" value={player.stats.str} /></div>
@@ -131,7 +164,12 @@
     {:else if participant instanceof LairViewModel}
       <div class="content lair">
         <div>
-          <input type="checkbox" id="{lair.name}-action" bind:checked={lair.action} />
+          <input
+            type="checkbox"
+            id="{lair.name}-action"
+            checked={!lair.action}
+            on:change={(e) => (lair.action = !e.currentTarget.checked)}
+          />
           <label for="{lair.name}-action">Action</label>
         </div>
         <div class="notes" contenteditable="true"></div>

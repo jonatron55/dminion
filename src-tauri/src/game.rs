@@ -16,5 +16,5 @@ pub use expiry::*;
 pub use game::Game;
 pub use lair::*;
 pub use monster::*;
-pub use participant::Participant;
+pub use participant::{Action, Participant};
 pub use player::*;

@@ -1,5 +1,6 @@
+import { gameCommands } from "$lib/model/Commands";
 import type { Condition } from "$lib/model/Condition";
-import type { Player } from "$lib/model/Participant";
+import type { Action, Player } from "$lib/model/Participant";
 import type { Stats } from "$lib/model/Stats";
 import { ParticipantViewModel, conditionPriorities } from "./ParticipantViewModel";
 
@@ -44,6 +45,7 @@ export class PlayerViewModel extends ParticipantViewModel {
 
   set action(value: boolean) {
     this._model.action = value;
+    this.setAction({ type: "standard" }, value);
   }
 
   get reaction(): boolean {
@@ -51,7 +53,8 @@ export class PlayerViewModel extends ParticipantViewModel {
   }
 
   set reaction(value: boolean) {
-    this._model.action = value;
+    this._model.reaction = value;
+    this.setAction({ type: "reaction" }, value);
   }
 
   get bonusAction(): boolean {
@@ -60,5 +63,14 @@ export class PlayerViewModel extends ParticipantViewModel {
 
   set bonusAction(value: boolean) {
     this._model.bonusAction = value;
+    this.setAction({ type: "bonus" }, value);
+  }
+
+  private async setAction(action: Action, available: boolean): Promise<void> {
+    await gameCommands.setAction({
+      target: this._id,
+      action,
+      available
+    });
   }
 }

@@ -1,5 +1,6 @@
+import { gameCommands } from "$lib/model/Commands";
 import type { Condition } from "$lib/model/Condition";
-import type { Lair } from "$lib/model/Participant";
+import type { Action, Lair } from "$lib/model/Participant";
 import { ParticipantViewModel } from "./ParticipantViewModel";
 
 export class LairViewModel extends ParticipantViewModel {
@@ -21,6 +22,7 @@ export class LairViewModel extends ParticipantViewModel {
 
   set action(value: boolean) {
     this._model.action = value;
+    this.setAction({ type: "standard" }, value);
   }
 
   get smallPortrait(): string {
@@ -37,5 +39,13 @@ export class LairViewModel extends ParticipantViewModel {
 
   get initiative(): number {
     return 20;
+  }
+
+  private async setAction(action: Action, available: boolean): Promise<void> {
+    await gameCommands.setAction({
+      target: this._id,
+      action,
+      available
+    });
   }
 }

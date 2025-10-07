@@ -70,7 +70,8 @@ pub fn run() {
         action: true,
         reaction: true,
         bonus_action: true,
-        legendary_actions: 0,
+        legendary_actions: vec![],
+        legendary_action_count: 0,
         is_hostile: true,
         notes: "Gobbo McGobface is a complex and multidimensional character with hopes, dreams, and a knife. He's green".into(),
         conditions: vec![Condition::bloodied(Time::new(0, 0))],
@@ -102,7 +103,8 @@ pub fn run() {
             action: true,
             reaction: true,
             bonus_action: true,
-            legendary_actions: 0,
+            legendary_actions: vec![true, true, true],
+            legendary_action_count: 3,
             is_hostile: true,
             notes: "Froggo McFrogface would rather be eating flies.".into(),
             conditions: vec![
@@ -147,6 +149,7 @@ pub fn run() {
             game_commands::redo,
             game_commands::damage,
             game_commands::heal,
+            game_commands::set_action,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

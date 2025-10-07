@@ -1,7 +1,7 @@
 import { gameCommands } from "$lib/model/Commands";
 import type { Condition } from "$lib/model/Condition";
 import type { Damage, Healing } from "$lib/model/Damage";
-import type { Monster } from "$lib/model/Participant";
+import type { Action, Monster } from "$lib/model/Participant";
 import type { Stats } from "$lib/model/Stats";
 import { ParticipantViewModel, conditionPriorities } from "./ParticipantViewModel";
 
@@ -62,6 +62,7 @@ export class MonsterViewModel extends ParticipantViewModel {
 
   set action(value: boolean) {
     this._model.action = value;
+    this.setAction({ type: "standard" }, value);
   }
 
   get reaction(): boolean {
@@ -70,6 +71,7 @@ export class MonsterViewModel extends ParticipantViewModel {
 
   set reaction(value: boolean) {
     this._model.reaction = value;
+    this.setAction({ type: "reaction" }, value);
   }
 
   get bonusAction(): boolean {
@@ -78,14 +80,28 @@ export class MonsterViewModel extends ParticipantViewModel {
 
   set bonusAction(value: boolean) {
     this._model.bonusAction = value;
+    this.setAction({ type: "bonus" }, value);
   }
 
-  get legendaryActions(): number {
+  get legendaryActions(): boolean[] {
     return this._model.legendaryActions;
   }
 
-  get totalLegendaryActions(): number {
-    return this._model.legendaryActions;
+  get legendaryActionCount(): number {
+    return this._model.legendaryActionCount;
+  }
+
+  setLegendaryAction(index: number, value: boolean) {
+    this._model.legendaryActions[index] = value;
+    this.setAction({ type: "legendary", index }, value);
+  }
+
+  private async setAction(action: Action, available: boolean): Promise<void> {
+    await gameCommands.setAction({
+      target: this._id,
+      action,
+      available
+    });
   }
 
   async damage(damage: Damage): Promise<void> {

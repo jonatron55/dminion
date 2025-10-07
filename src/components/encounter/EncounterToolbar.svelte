@@ -4,21 +4,36 @@
 
   export let game: GameViewModel;
 
-  function time(): string {
+  $: timeStr = (() => {
     const minutes = Math.floor(game.time / 60);
     const seconds = game.time % 60;
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  })();
+
+  function handleKeydown(event: KeyboardEvent) {
+    const modifier = event.ctrlKey || event.metaKey; // Ctrl on Windows/Linux, Cmd on Mac
+
+    if (modifier && !event.shiftKey && event.key === "z") {
+      event.preventDefault();
+      gameCommands.undo();
+    } else if (modifier && (event.key === "y" || (event.shiftKey && event.key === "Z"))) {
+      event.preventDefault();
+      gameCommands.redo();
+    }
   }
 </script>
+
+<svelte:window on:keydown={handleKeydown} />
 
 <div class="encounter-toolbar">
   <span class="actions">
     <button class="toolbar" on:click={gameCommands.undo}>↺ Undo</button>
+    <button class="toolbar" on:click={gameCommands.redo}>↻ Redo</button>
     <button class="toolbar" on:click={gameCommands.nextTurn}>⏩ Next</button>
   </span>
   <span data-tauri-drag-region class="titlebar details">
     <span data-tauri-drag-region class="titlebar round">{game.round}</span>
-    <span data-tauri-drag-region class="titlebar time">{time()}</span>
+    <span data-tauri-drag-region class="titlebar time">{timeStr}</span>
   </span>
   <span class="participants">
     <button class="toolbar">+ Player</button>

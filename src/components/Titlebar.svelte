@@ -132,7 +132,7 @@
       button {
         font-family: "Segoe Fluent Icons", "Segoe MDL2 Assets";
         font-size: 10px;
-        width: 48px;
+        width: 46px;
       }
     }
 

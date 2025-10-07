@@ -1,11 +1,8 @@
-use std::{ops::Index, path::PathBuf, vec};
-
-use rand::Rng;
 use serde::{Deserialize, Serialize};
 
 use crate::{
     dice::DiceExpr,
-    game::{conditions, time::Time, Healing},
+    game::{conditions, time::Time, Action, Damage, Healing},
 };
 
 use super::{Condition, Stats};
@@ -46,7 +43,8 @@ pub struct Monster {
     pub max_hp: i32,
     pub reaction: bool,
     pub bonus_action: bool,
-    pub legendary_actions: u32,
+    pub legendary_actions: Vec<bool>,
+    pub legendary_action_count: u32,
     pub notes: String,
     pub tiebreaker: i32,
     pub conditions: Vec<Condition>,
@@ -60,6 +58,7 @@ impl Monster {
         self.action = true;
         self.reaction = true;
         self.bonus_action = true;
+        self.legendary_actions.fill(true);
         // self.conditions = self
         //     .conditions
         //     .into_iter()
@@ -79,21 +78,44 @@ impl Monster {
         self.conditions.iter().any(|c| c.name == condition_name)
     }
 
-    pub fn damage(&mut self, time: Time, damage: super::Damage) {
-        match damage {
-            super::Damage::Damage { amount } => {
-                self.hp = self.hp.saturating_sub(amount as i32);
-            }
-            super::Damage::HalfDamage { amount } => {
-                self.hp = self.hp.saturating_sub((amount / 2) as i32);
-            }
-            super::Damage::DoubleDamage { amount } => {
-                self.hp = self.hp.saturating_sub((amount * 2) as i32);
-            }
-            super::Damage::Kill => {
+    pub fn set_action(&mut self, action: Action, available: bool) -> Result<(), ()> {
+        match action {
+            Action::Standard => self.action = available,
+            Action::Bonus => self.bonus_action = available,
+            Action::Reaction => self.reaction = available,
+            Action::Legendary { index } => self.legendary_actions[index] = available,
+        }
+
+        Ok(())
+    }
+
+    pub fn damage(&mut self, time: Time, damage: Damage) {
+        let damage_amount = match damage {
+            Damage::Damage { amount } => amount as i32,
+            Damage::HalfDamage { amount } => (amount / 2) as i32,
+            Damage::DoubleDamage { amount } => (amount * 2) as i32,
+            Damage::Kill => {
                 self.hp = 0;
+                self.temp_hp = 0;
+                if !self.has_condition(conditions::BLOODIED) {
+                    self.conditions.push(Condition::bloodied(time));
+                }
+                if !self.has_condition(conditions::DEAD) {
+                    self.conditions.push(Condition::dead(time));
+                }
+                return;
             }
         };
+
+        let remaining = if self.temp_hp > 0 {
+            let temp_damage = damage_amount.min(self.temp_hp);
+            self.temp_hp -= temp_damage;
+            damage_amount - temp_damage
+        } else {
+            damage_amount
+        };
+
+        self.hp = self.hp.saturating_sub(remaining);
 
         if self.hp <= self.max_hp / 2 && !self.has_condition(conditions::BLOODIED) {
             self.conditions.push(Condition::bloodied(time));

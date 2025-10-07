@@ -1,9 +1,6 @@
-use std::path::PathBuf;
-
-use rand::Rng;
 use serde::{Deserialize, Serialize};
 
-use super::{conditions::Condition, Class, Stats};
+use crate::game::{conditions::Condition, Action, Class, Stats};
 
 #[derive(Debug, Clone)]
 pub struct PlayerDef {
@@ -62,5 +59,16 @@ impl Player {
         //     .into_iter()
         //     .filter_map(|c| c.end_turn())
         //     .collect();
+    }
+
+    pub fn set_action(&mut self, action: Action, available: bool) -> Result<(), ()> {
+        match action {
+            Action::Standard => self.action = available,
+            Action::Bonus => self.bonus_action = available,
+            Action::Reaction => self.reaction = available,
+            Action::Legendary { .. } => return Err(()),
+        }
+
+        Ok(())
     }
 }
