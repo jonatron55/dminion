@@ -1,12 +1,12 @@
 use std::vec;
 
-use tauri::{AppHandle, Emitter};
+use tauri::{AppHandle, Emitter, State as TauriState};
 
 use crate::game::{Action, Damage, Game, Healing, Participant};
 use crate::state::AppStateMutex;
 
 #[tauri::command]
-pub async fn get_game(state: tauri::State<'_, AppStateMutex>) -> Result<Game, String> {
+pub async fn get_game(state: TauriState<'_, AppStateMutex>) -> Result<Game, String> {
     let state = state.lock().await;
     match state.gamestate.undo_stack.last() {
         Some(game) => Ok(game.clone()),
@@ -15,10 +15,7 @@ pub async fn get_game(state: tauri::State<'_, AppStateMutex>) -> Result<Game, St
 }
 
 #[tauri::command]
-pub async fn new_game(
-    app: AppHandle,
-    state: tauri::State<'_, AppStateMutex>,
-) -> Result<(), String> {
+pub async fn new_game(app: AppHandle, state: TauriState<'_, AppStateMutex>) -> Result<(), String> {
     let mut state = state.lock().await;
     state.gamestate.undo_stack = vec![Game::new()];
     state.gamestate.redo_stack.clear();
@@ -27,10 +24,7 @@ pub async fn new_game(
 }
 
 #[tauri::command]
-pub async fn next_turn(
-    app: AppHandle,
-    state: tauri::State<'_, AppStateMutex>,
-) -> Result<(), String> {
+pub async fn next_turn(app: AppHandle, state: TauriState<'_, AppStateMutex>) -> Result<(), String> {
     let mut state = state.lock().await;
     state
         .gamestate
@@ -45,7 +39,7 @@ pub async fn next_turn(
 #[tauri::command]
 pub async fn damage(
     app: AppHandle,
-    state: tauri::State<'_, AppStateMutex>,
+    state: TauriState<'_, AppStateMutex>,
     target: u32,
     damage: Damage,
 ) -> Result<(), String> {
@@ -73,7 +67,7 @@ pub async fn damage(
 #[tauri::command]
 pub async fn heal(
     app: AppHandle,
-    state: tauri::State<'_, AppStateMutex>,
+    state: TauriState<'_, AppStateMutex>,
     target: u32,
     healing: Healing,
 ) -> Result<(), String> {
@@ -98,7 +92,7 @@ pub async fn heal(
 }
 
 #[tauri::command]
-pub async fn undo(app: AppHandle, state: tauri::State<'_, AppStateMutex>) -> Result<(), String> {
+pub async fn undo(app: AppHandle, state: TauriState<'_, AppStateMutex>) -> Result<(), String> {
     let mut state = state.lock().await;
     if state.gamestate.undo_stack.len() > 1 {
         let game = state.gamestate.undo_stack.pop().unwrap();
@@ -111,7 +105,7 @@ pub async fn undo(app: AppHandle, state: tauri::State<'_, AppStateMutex>) -> Res
 }
 
 #[tauri::command]
-pub async fn redo(app: AppHandle, state: tauri::State<'_, AppStateMutex>) -> Result<(), String> {
+pub async fn redo(app: AppHandle, state: TauriState<'_, AppStateMutex>) -> Result<(), String> {
     let mut state = state.lock().await;
     if let Some(game) = state.gamestate.redo_stack.pop() {
         state.gamestate.undo_stack.push(game.clone());
@@ -125,7 +119,7 @@ pub async fn redo(app: AppHandle, state: tauri::State<'_, AppStateMutex>) -> Res
 #[tauri::command]
 pub async fn set_action(
     app: AppHandle,
-    state: tauri::State<'_, AppStateMutex>,
+    state: TauriState<'_, AppStateMutex>,
     target: u32,
     action: Action,
     available: bool,
@@ -138,7 +132,8 @@ pub async fn set_action(
                 return Err(format!("No participant found with id {target}"));
             };
 
-            participant.set_action(action, available)
+            participant
+                .set_action(action, available)
                 .map_err(|_| "Invalid action for this participant type".to_string())?;
 
             Ok(())

@@ -32,8 +32,8 @@
     <button class="toolbar" on:click={gameCommands.nextTurn}>⏩ Next</button>
   </span>
   <span data-tauri-drag-region class="titlebar details">
-    <span data-tauri-drag-region class="titlebar round">{game.round}</span>
-    <span data-tauri-drag-region class="titlebar time">{timeStr}</span>
+    <span data-tauri-drag-region class="round">{game.round}</span>
+    <span data-tauri-drag-region class="time">{timeStr}</span>
   </span>
   <span class="participants">
     <button class="toolbar">+ Player</button>
@@ -43,7 +43,8 @@
 
 <style lang="scss">
   .encounter-toolbar {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     justify-content: start;
     align-items: center;
     gap: var(--horizontal-gap);
@@ -89,5 +90,10 @@
       font-style: normal;
       content: "| ";
     }
+  }
+
+  .titlebar {
+    -webkit-app-region: drag;
+    align-self: stretch;
   }
 </style>

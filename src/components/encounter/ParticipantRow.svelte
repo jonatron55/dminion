@@ -343,23 +343,23 @@
     }
 
     .dex {
-      grid-column: 5;
-      grid-row: 2;
-    }
-
-    .con {
-      grid-column: 5;
-      grid-row: 3;
-    }
-
-    .int {
       grid-column: 6;
       grid-row: 1;
     }
 
-    .wis {
+    .con {
+      grid-column: 5;
+      grid-row: 2;
+    }
+
+    .int {
       grid-column: 6;
       grid-row: 2;
+    }
+
+    .wis {
+      grid-column: 5;
+      grid-row: 3;
     }
 
     .cha {

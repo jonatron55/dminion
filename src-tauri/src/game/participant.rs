@@ -5,8 +5,7 @@ use serde::{Deserialize, Serialize};
 use crate::game::{Lair, Monster, Player};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(tag = "type")]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", tag = "type")]
 pub enum Participant {
     Lair(Lair),
     Monster(Monster),

@@ -31,7 +31,7 @@ unnecessary complexity.
 - Search for existing functionality before adding new code.
 - Write clear, self-explanatory code with meaningful names.
 - Document public types and members with complete doc comments following [style guidelines].
-- Update comments and documentation when the code they reference changes.
+- Update comments when the code they reference changes.
 - Follow existing style and conventions in the codebase.
 - Fix compiler warnings and linter issues in the areas you touch.
 
@@ -70,4 +70,4 @@ What's expected
 [backlog]: /docs/process/backlog.md
 [process document]: /docs/process.md
 [project brief]: /docs/project-brief.md
-[style guidelines]: /.github/instructions/md.instructions.md
+[style guidelines]: /.github/instructions/markdown.instructions.md
