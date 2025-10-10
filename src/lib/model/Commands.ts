@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Jonathon B. Cobb
+// Licensed under the MIT License
+
 import { messageBoxStore } from "$lib/MessageBox";
 import { invoke, type InvokeArgs } from "@tauri-apps/api/core";
 import type { Damage, Healing } from "./Damage";

@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Jonathon B. Cobb
+// Licensed under the MIT License
+
 //! Lexical analyzer for dice expressions.
 //!
 //! Dice expressions are broken into tokens according to the following rules:

@@ -1,12 +1,12 @@
 ---
-applyTo: "**/*.{ts,svelte,scss}"
+applyTo: "**/*.{ts,svelte,scss,json}"
 ---
 
 TypeScript, Svelte, and SCSS coding guidelines
 ==============================================
 
 This project uses TypeScript for frontend code and Svelte for UI components. It uses the Tauri framework to interface
-with the Rust backend and `pnpm` for package management (do **not** attempt to use `npm` or `yarn`).
+with the Rust backend and `pnpm` for package management (do **not** use `npm` or `yarn`).
 
 General rules
 -------------
@@ -17,23 +17,23 @@ General rules
 - Do not add `I` prefixes to interface names. Use a descriptive name instead.
 - Avoid explicit or implicit `any` types. Prefer `unknown` if the type is not known.
 - Keep styles within Svelte components focused on layout and positioning. Use classes and variables from the
-  [Styling system](#styling-system) defined below to define appearance.
+  [Styling system](#styling-system) to define appearance.
 - Avoid inline styles. Define styles in the component's `<style>` block instead.
-- Do **not** attempt to use external CSS frameworks (e.g., Bootstrap, Tailwind).
-- Do **not** use explicit color values or hard-coded sizes in styles. Themes and sizing can change, so always use
-  variables or classes from the styling system.
+- Do **not** use external CSS frameworks (e.g., Bootstrap, Tailwind).
+- Do **not** use explicit color values or hard-coded sizes in styles. Themes and sizing can change, so use variables or
+  classes from the styling system.
 
 Styling system
 --------------
 
-A comprehensive styling system is defined in `src/styles/`. You do not need to examine the entire system, but you should
-be familiar with the variables and classes discussed below.
+A comprehensive styling system is defined in `src/styles/`. You do not need to examine the entire system, but
+familiarize yourself with the variables and classes discussed below.
 
-The styling system can be configured for light and dark modes, and supports different color schemes. You should use
-semantic tokens whenever possible, as these will adapt to the current theme and color scheme.
+The styling system supports light and dark modes and different color schemes. Use semantic tokens whenever possible, as
+these adapt to the current theme and color scheme.
 
-In general, this system relies on element selectors first, then classes. Controls such as buttons and inputs do not have
-special components, but are styled using element selectors and classes.
+This system relies on element selectors first, then classes. Controls such as buttons and inputs do not have special
+components, but are styled using element selectors and classes.
 
 ### Classes ###
 
@@ -55,19 +55,20 @@ special components, but are styled using element selectors and classes.
 
 ### Sizing and spacing ###
 
-This project uses monospaced fonts throughout and rem-based sizing. Font sizes are not typically changed, and when they
-are it is only by an integral amount (e.g., `2rem`, `3rem`).
+This project uses monospaced fonts throughout and rem-based sizing. Font sizes are typically unchanged, and when changed
+use integral amounts (e.g., `2rem`, `3rem`).
 
-For most margins, paddings, and gaps, use the `--horizontal-gap` and `--vertical-gap` variables. If larger gaps are
-needed, use either multiples of these variables (e.g., `2 * var(--horizontal-gap)`) or rem values in increments of
-`0.5rem`.
+For most margins, paddings, and gaps, use the `--horizontal-gap` and `--vertical-gap` variables. For larger gaps, use
+multiples of these variables (e.g., `2 * var(--horizontal-gap)`) or rem values in increments of `0.5rem`.
+
+The variables `--ui-hydrate-time` and `--ui-transition-time` define standard durations for UI animations.
 
 ### Color variables ###
 
-Do not attempt to read the entire color palette. It is generated from a palette generator and is quite large. Rely on
-these guidelines for selecting colors.
+Do not read the entire color palette. It is generated from a palette generator and is quite large. Rely on these
+guidelines for selecting colors.
 
-Semantic colors are defined for common UI elements, these should be used in most cases (unless a class can be used
+Semantic colors are defined for common UI elements and should be used in most cases (unless a class can be used
 instead):
 
 - `--primary-foreground`, `--intense-foreground`, `--dim-foreground`
@@ -103,9 +104,9 @@ If no semantic color is appropriate, a color may be selected from the palette us
 Dependencies
 ------------
 
-First, **do not add new dependencies without first asking for approval**. Explain why new dependencies are needed.
+**Do not add new dependencies without approval.** Explain why new dependencies are needed.
 
-Follow these guidelines when adding or modifying dependencies:
+When adding or modifying dependencies:
 
 - Use `pnpm` commands to manage packages. Avoid modifying `package.json` directly.
 - Do not specify package versions unless necessary. Use the latest version.

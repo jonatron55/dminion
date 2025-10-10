@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Jonathon B. Cobb
+// Licensed under the MIT License
+
 use rand::Rng;
 use serde::{Deserialize, Serialize};
 

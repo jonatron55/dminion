@@ -1,3 +1,8 @@
+<!--
+  Copyright (c) 2025 Jonathon B. Cobb
+  Licensed under the MIT License
+-->
+
 <script lang="ts">
   import { type AppMode, appModes, type AppSidebarMode, appSidebarModes } from "$lib/AppMode";
   import type { GameViewModel } from "$lib/viewmodel/GameViewModel";

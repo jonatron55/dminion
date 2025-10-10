@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Jonathon B. Cobb
+// Licensed under the MIT License
+
 //! Abstract Syntax Tree (AST) for dice expressions.
 //!
 //! This module defines the nodes that make up the AST for dice expressions.

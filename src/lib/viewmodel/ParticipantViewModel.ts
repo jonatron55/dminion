@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Jonathon B. Cobb
+// Licensed under the MIT License
+
 import type { Condition } from "$lib/model/Condition";
 
 export abstract class ParticipantViewModel {

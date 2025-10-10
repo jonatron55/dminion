@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Jonathon B. Cobb
+// Licensed under the MIT License
+
 import type { Game } from "$lib/model/Game";
 import type { ParticipantViewModel } from "./ParticipantViewModel";
 import { createParticipantViewModel } from "./ParticipantViewModelFactory";

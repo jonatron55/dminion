@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Jonathon B. Cobb
+// Licensed under the MIT License
+
 //! This module contains an evaluator for dice expressions that traverses an
 //! AST and returns the result of the expression.
 

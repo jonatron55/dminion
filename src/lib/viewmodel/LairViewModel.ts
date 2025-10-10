@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Jonathon B. Cobb
+// Licensed under the MIT License
+
 import { gameCommands } from "$lib/model/Commands";
 import type { Condition } from "$lib/model/Condition";
 import type { Action, Lair } from "$lib/model/Participant";

@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Jonathon B. Cobb
+// Licensed under the MIT License
+
 import type { Participant } from "$lib/model/Participant";
 import { isLair, isMonster, isPlayer } from "$lib/model/Participant";
 import { LairViewModel } from "./LairViewModel";

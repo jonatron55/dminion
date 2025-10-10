@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Jonathon B. Cobb
+// Licensed under the MIT License
+
 //! This module parses and evaluates dice expressions using typical notation
 //! such as `3d8 + 2`. The normal arithmetic  operations `+`, `-`, `*`, and `/`
 //! are supported with `×` and `÷` recognized as alternate forms of `*` and `/`.

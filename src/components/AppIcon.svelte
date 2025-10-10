@@ -1,3 +1,8 @@
+<!--
+  Copyright (c) 2025 Jonathon B. Cobb
+  Licensed under the MIT License
+-->
+
 <script lang="ts">
   import { currentTheme } from "$lib/theme";
   import alticon from "../images/alticon.svg";

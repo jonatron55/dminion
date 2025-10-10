@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Jonathon B. Cobb
+// Licensed under the MIT License
+
 //! This module contains a pretty-printer for the dice expressions that
 //! traverses an AST and outputs a string representation of the expression.
 

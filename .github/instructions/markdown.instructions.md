@@ -46,8 +46,11 @@ Formatting
   **Example:**
 
   ```markdown
-  See the [installation guide][install].
-  [install]: https://example.com/install
+  See the [installation guide].
+
+  ...
+
+  [installation guide]: https://example.com/install
   ```
 
 Consistency

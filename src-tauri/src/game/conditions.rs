@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Jonathon B. Cobb
+// Licensed under the MIT License
+
 #![allow(unused)]
 
 use std::fmt::{Debug, Display, Formatter, Result as FmtResult};

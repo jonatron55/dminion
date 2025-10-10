@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Jonathon B. Cobb
+// Licensed under the MIT License
+
 /// A lookahead over an iterator that allows peeking at the next item without
 /// consuming it.
 pub struct Lookahead<TIter: Iterator<Item: Clone>> {
