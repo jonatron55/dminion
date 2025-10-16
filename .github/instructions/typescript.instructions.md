@@ -71,19 +71,19 @@ guidelines for selecting colors.
 Semantic colors are defined for common UI elements and should be used in most cases (unless a class can be used
 instead):
 
-- `--primary-foreground`, `--intense-foreground`, `--dim-foreground`
-- `--content-background`, `--card-background`, `--page-background`
-- `--selection-background`, `--dim-selection-background`
-- `--chrome-foreground`, `--chrome-high`, `--chrome`, `--chrome-low`, `--chrome-background`, `--chrome-shadow`,
-  `--caption-foreground`
-- `--link(-hover|-active|-disabled)?`
-- `--label(-hover|-active|-disabled)?`
-- `--control(-hover|-active|-disabled)?-(foreground|background)`
-- `--secondary-control(-hover|-active|-disabled)?-(foreground|background)`
-- `--ok(-hover|-active|-disabled)?-(foreground|background)`
-- `--caution(-hover|-active|-disabled)?-(foreground|background)`
-- `--danger(-hover|-active|-disabled)?-(foreground|background)`
-- `--input(-hover|-active)?-(border|background)`
+- Texts: `--primary-foreground`, `--intense-foreground`, `--dim-foreground`
+- Backgrounds: `--content-background`, `--card-background`, `--page-background`
+- Selection backgrounds: `--selection-background`, `--dim-selection-background`
+- Chrome (noninteractive borders and dividers): `--chrome-foreground`, `--chrome-high`, `--chrome`, `--chrome-low`,
+  `--chrome-background`, `--chrome-shadow`, `--caption-foreground`
+- Hyperlinks: `--link(-hover|-active|-disabled)?`
+- Labels: `--label(-hover|-active|-disabled)?`
+- Interactive UI: `--control(-hover|-active|-disabled)?-(foreground|background)`
+- Secondary interactive UI: `--secondary-control(-hover|-active|-disabled)?-(foreground|background)`
+- Affirmative UI or successes: `--ok(-hover|-active|-disabled)?-(foreground|background)`
+- Cautionary UI or warnings: `--caution(-hover|-active|-disabled)?-(foreground|background)`
+- Dangerous UI or errors: `--danger(-hover|-active|-disabled)?-(foreground|background)`
+- Input fields: `--input(-hover|-active)?-(border|background)`
 
 If no semantic color is appropriate, a color may be selected from the palette using the form
 `--<intensity>-<hue>-<shade>` where:
@@ -91,8 +91,9 @@ If no semantic color is appropriate, a color may be selected from the palette us
 - `intensity` is one of: `muted`, `base`, or `intense`.
 - `hue` may be:
   - A color index: `color-[1-6]`. Where `1` is the typical foreground color, `6` the typical background color, and
-    others are various accent colors.
-  - A color temperature: `cold`, `cool`, `coolish`, `warmish`, `warm`, `hot`.
+    others are accent colors.
+  - A color temperature: `cold`, `cool`, `coolish`, `warmish`, `warm`, `hot`. Use these carefully, as they do not change
+    with warm and cool modes.
   - A primary color name: `red`, `green`, `blue`, `cyan`, `purple`, `yellow`. These are not exact matches to standard
     colors, but instead the closest match in the palette.
 - `shade` may be:
@@ -109,5 +110,5 @@ Dependencies
 When adding or modifying dependencies:
 
 - Use `pnpm` commands to manage packages. Avoid modifying `package.json` directly.
-- Do not specify package versions unless necessary. Use the latest version.
+- Do not specify package versions unless necessary. Use `pnpm` to resolve the latest version.
 - Review existing dependencies before adding new ones. Avoid duplicating functionality.

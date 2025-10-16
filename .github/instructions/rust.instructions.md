@@ -39,7 +39,7 @@ Propagate errors using `Result<T, E>`. Use the `thiserror` crate to define error
 to be handled with the `?` operator. Use functions like `map_err()` and `and_then()` or constructions like `if let ...`
 and `let ... else` to simplify error handling.
 
-Avoid silently handling errors with inaction. If a function's contract is not met, modify the function to return a
+Don't silently handle errors with inaction. If a function's contract is not met, modify the function to return a
 `Result`. Do not use `panic!()`, `unwrap()`, or `expect()` outside the situations described below.
 
 ### When to panic ###
@@ -63,5 +63,5 @@ Dependencies
 When adding or modifying dependencies:
 
 - Use `cargo` commands to manage crates. Avoid modifying `Cargo.toml` directly.
-- Do not specify crate versions unless necessary. Use the latest version.
+- Do not specify crate versions unless necessary. Use `cargo` to resolve the latest version.
 - Review existing dependencies before adding new ones. Avoid duplicating functionality.

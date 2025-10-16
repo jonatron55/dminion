@@ -82,7 +82,7 @@
   .card {
     z-index: 1001;
     position: fixed;
-    top: 30%;
+    top: 15%;
     margin: 0 auto;
   }
 </style>

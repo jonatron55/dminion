@@ -8,9 +8,8 @@ Documentation style guide
 Audience
 --------
 
-- Assume readers are **software developers** with technical background.
-- Skip basic computer literacy explanations.
-- Focus on what they need to do, not on teaching fundamentals.
+Your readers are **software developers** with technical background. However, don’t assume they have any context on this
+specific project.
 
 Writing style
 -------------
@@ -33,7 +32,7 @@ Structure
 Formatting
 ----------
 
-- Use **sentence case** in all headings.
+- Use **sentence case** in all headings. Capitalize only the first word and proper nouns.
 - Use **setext style** (`===` or `---`) for level 1 and 2 headings.
 - Use **ATX closed style** (`### Heading ###`) for levels 3 and deeper.
 - Ensure there are blank lines *before* and *after*:
@@ -53,6 +52,15 @@ Formatting
   [installation guide]: https://example.com/install
   ```
 
+Diagrams
+--------
+
+- Use diagrams when you need to clarify complex concepts or workflows.
+- Use Mermaid syntax for diagrams in a code block with `mermaid` specified.
+- Don’t apply color to Mermaid diagrams. It will not adapt to different themes.
+- Don’t use ASCII art or other text-based diagrams.
+- Use external SVG images when Mermaid is insufficient.
+
 Consistency
 -----------
 
@@ -65,6 +73,9 @@ Accessibility and inclusivity
 - Use neutral, inclusive language.
 - Avoid idioms, jokes, or culture-specific references.
 - Write descriptive link text (*“View API guide”* not *“click here”*).
+- Provide alternate text for images.
+- Don’t use hexadecimal colors or CSS styling in Markdown documents. Use only plain text and ordinary Markdown
+  formatting.
 
 Troubleshooting
 ---------------
@@ -82,15 +93,17 @@ Do’s
 Don’ts
 ------
 
-- Don’t write long introductions.
+- Don’t write long introductions or summaries.
 - Don’t repeat the same instruction in multiple ways.
 - Don’t use filler phrases (“It is important to note that”).
+- Use HTML tags instead of Markdown syntax.
 
 Example rewrite
 ---------------
 
 Wordy (avoid):
-> In order to successfully configure the environment, you must first ensure that all required dependencies have been installed.
+> In order to successfully configure the environment, you must first ensure that all required dependencies have been
+> installed.
 
 Concise (preferred):
 > Install dependencies before configuring the environment.

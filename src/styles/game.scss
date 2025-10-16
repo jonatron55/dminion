@@ -33,6 +33,14 @@ $fast-alert: 300ms;
     color: var(--intense-red-medium-midground);
     border-color: var(--intense-red-medium-midground);
   }
+
+  --label: var(--intense-red-medium-foreground);
+  --label-hover: var(--intense-red-high-foreground);
+  --label-active: var(--intense-red-low-foreground);
+
+  --control-background: var(--intense-red-medium);
+  --control-hover-background: var(--intense-red-medium-high);
+  --control-active-background: var(--intense-red-medium-low);
 }
 
 @keyframes charmed {
@@ -51,14 +59,31 @@ $fast-alert: 300ms;
     border-color: var(--base-purple-low-foreground);
   }
 
+  --label: var(--base-purple-medium-foreground);
+  --label-hover: var(--base-purple-high-foreground);
+  --label-active: var(--base-purple-low-foreground);
+
+  --control-background: var(--base-purple-medium);
+  --control-hover-background: var(--base-purple-medium-high);
+  --control-active-background: var(--base-purple-medium-low);
+
   animation: charmed $slow-alert infinite alternate ease-in-out;
 }
+
 
 .concentrating {
   &.badge {
     color: var(--base-cyan-low-foreground);
     border-color: var(--base-cyan-low-foreground);
   }
+
+  --label: var(--base-cyan-medium-foreground);
+  --label-hover: var(--base-cyan-high-foreground);
+  --label-active: var(--base-cyan-low-foreground);
+
+  --control-background: var(--base-cyan-medium);
+  --control-hover-background: var(--base-cyan-medium-high);
+  --control-active-background: var(--base-cyan-medium-low);
 
   animation: concentrating $slow-alert infinite alternate ease-in-out;
 }
@@ -72,6 +97,14 @@ $fast-alert: 300ms;
   &.portrait {
     filter: grayscale(100%) brightness(0.6667) !important;
   }
+
+  --label: var(--muted-red-medium-foreground);
+  --label-hover: var(--muted-red-high-foreground);
+  --label-active: var(--muted-red-low-foreground);
+
+  --control-background: var(--muted-red-medium);
+  --control-hover-background: var(--muted-red-medium-high);
+  --control-active-background: var(--muted-red-medium-low);
 
   --chrome: var(--muted-red-low-midground);
   animation: none !important;
@@ -90,6 +123,14 @@ $fast-alert: 300ms;
     color: var(--base-yellow-low-foreground);
     border-color: var(--base-yellow-low-foreground);
   }
+
+  --label: var(--base-yellow-medium-foreground);
+  --label-hover: var(--base-yellow-high-foreground);
+  --label-active: var(--base-yellow-low-foreground);
+
+  --control-background: var(--base-yellow-medium);
+  --control-hover-background: var(--base-yellow-medium-high);
+  --control-active-background: var(--base-yellow-medium-low);
 }
 
 .incapacitated {
@@ -97,6 +138,14 @@ $fast-alert: 300ms;
     color: var(--base-yellow-low-foreground);
     border-color: var(--base-yellow-low-foreground);
   }
+
+  --label: var(--base-yellow-medium-foreground);
+  --label-hover: var(--base-yellow-high-foreground);
+  --label-active: var(--base-yellow-low-foreground);
+
+  --control-background: var(--base-yellow-medium);
+  --control-hover-background: var(--base-yellow-medium-high);
+  --control-active-background: var(--base-yellow-medium-low);
 }
 
 .invisible {
@@ -104,6 +153,14 @@ $fast-alert: 300ms;
     color: var(--muted-cyan-low-foreground);
     border-color: var(--muted-cyan-low-foreground);
   }
+
+  --label: var(--muted-cyan-medium-foreground);
+  --label-hover: var(--muted-cyan-high-foreground);
+  --label-active: var(--muted-cyan-low-foreground);
+
+  --control-background: var(--muted-cyan-medium);
+  --control-hover-background: var(--muted-cyan-medium-high);
+  --control-active-background: var(--muted-cyan-medium-low);
 }
 
 .marked {
@@ -111,6 +168,14 @@ $fast-alert: 300ms;
     color: var(--base-green-low-foreground);
     border-color: var(--base-green-low-foreground);
   }
+
+  --label: var(--base-green-medium-foreground);
+  --label-hover: var(--base-green-high-foreground);
+  --label-active: var(--base-green-low-foreground);
+
+  --control-background: var(--base-green-medium);
+  --control-hover-background: var(--base-green-medium-high);
+  --control-active-background: var(--base-green-medium-low);
 
   --chrome: var(--base-green-high-midground);
 }
@@ -121,6 +186,14 @@ $fast-alert: 300ms;
     color: var(--muted-purple-low-foreground);
     border-color: var(--muted-purple-low-foreground);
   }
+
+  --label: var(--muted-purple-medium-foreground);
+  --label-hover: var(--muted-purple-high-foreground);
+  --label-active: var(--muted-purple-low-foreground);
+
+  --control-background: var(--muted-purple-medium);
+  --control-hover-background: var(--muted-purple-medium-high);
+  --control-active-background: var(--muted-purple-medium-low);
 }
 
 .petrified {}
@@ -130,6 +203,14 @@ $fast-alert: 300ms;
     color: var(--base-green-medium-foreground);
     border-color: var(--base-green-medium-foreground);
   }
+
+  --label: var(--base-green-medium-foreground);
+  --label-hover: var(--base-green-high-foreground);
+  --label-active: var(--base-green-low-foreground);
+
+  --control-background: var(--base-green-medium);
+  --control-hover-background: var(--base-green-medium-high);
+  --control-active-background: var(--base-green-medium-low);
 
   --chrome: var(--base-green-medium-midground);
 }
@@ -154,6 +235,14 @@ $fast-alert: 300ms;
     border-color: var(--muted-cyan-high-foreground);
   }
 
+  --label: var(--muted-cyan-medium-foreground);
+  --label-hover: var(--muted-cyan-high-foreground);
+  --label-active: var(--muted-cyan-low-foreground);
+
+  --control-background: var(--muted-cyan-medium);
+  --control-hover-background: var(--muted-cyan-medium-high);
+  --control-active-background: var(--muted-cyan-medium-low);
+
   animation: general-alert $fast-alert infinite alternate ease-in-out;
 }
 
@@ -162,6 +251,14 @@ $fast-alert: 300ms;
     color: var(--muted-blue-high-foreground);
     border-color: var(--muted-blue-high-foreground);
   }
+
+  --label: var(--muted-blue-medium-foreground);
+  --label-hover: var(--muted-blue-high-foreground);
+  --label-active: var(--muted-blue-low-foreground);
+
+  --control-background: var(--muted-blue-medium);
+  --control-hover-background: var(--muted-blue-medium-high);
+  --control-active-background: var(--muted-blue-medium-low);
 }
 
 .unconscious {
@@ -169,4 +266,12 @@ $fast-alert: 300ms;
     color: var(--muted-blue-low-foreground);
     border-color: var(--muted-blue-low-foreground);
   }
+
+  --label: var(--muted-blue-medium-foreground);
+  --label-hover: var(--muted-blue-high-foreground);
+  --label-active: var(--muted-blue-low-foreground);
+
+  --control-background: var(--muted-blue-medium);
+  --control-hover-background: var(--muted-blue-medium-high);
+  --control-active-background: var(--muted-blue-medium-low);
 }

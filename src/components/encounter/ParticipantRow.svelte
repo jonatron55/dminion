@@ -10,6 +10,7 @@
   import { MonsterViewModel } from "$lib/viewmodel/MonsterViewModel";
   import { ParticipantViewModel } from "$lib/viewmodel/ParticipantViewModel";
   import { PlayerViewModel } from "$lib/viewmodel/PlayerViewModel";
+  import ConditionDialog from "./ConditionDialog.svelte";
   import DamageDialog from "./DamageDialog.svelte";
   import HealDialog from "./HealDialog.svelte";
   import Stat from "./Stat.svelte";
@@ -22,6 +23,7 @@
   let player: PlayerViewModel = participant as PlayerViewModel;
   let lair: LairViewModel = participant as LairViewModel;
 
+  let conditionDialogRef: ConditionDialog;
   let healDialogRef: HealDialog;
   let damageDialogRef: DamageDialog;
 
@@ -63,7 +65,7 @@
         </span>
       {/if}
       <span class="decorations">
-        <button class="toolbar">+ Condition</button>
+        <button class="toolbar" on:click={conditionDialogRef.open}>+ Condition</button>
         <button class="toolbar">Edit…</button>
         <button class="toolbar danger">&#x2715;</button>
       </span>
@@ -100,9 +102,9 @@
 
         {#each monster.legendaryActions as legendaryAction, i}
           <div class="legendary">
-            <input 
-              type="checkbox" 
-              id="{monster.name}-legendary-{i}" 
+            <input
+              type="checkbox"
+              id="{monster.name}-legendary-{i}"
               checked={!legendaryAction}
               on:change={(e) => monster.setLegendaryAction(i, !e.currentTarget.checked)}
             />
@@ -183,6 +185,7 @@
   </div>
 </div>
 
+<ConditionDialog {participant} {game} bind:this={conditionDialogRef} />
 <HealDialog bind:monster bind:this={healDialogRef} />
 <DamageDialog bind:monster bind:this={damageDialogRef} />
 
