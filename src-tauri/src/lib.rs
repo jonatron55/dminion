@@ -152,6 +152,7 @@ pub fn run() {
             game_commands::redo,
             game_commands::damage,
             game_commands::heal,
+            game_commands::add_conditions,
             game_commands::set_action,
         ])
         .run(tauri::generate_context!())

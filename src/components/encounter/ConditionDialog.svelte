@@ -4,7 +4,9 @@
 -->
 
 <script lang="ts">
+  import { gameCommands } from "$lib/model/Commands";
   import { conditionNames } from "$lib/model/Condition";
+  import { ConditionDialogViewModel } from "$lib/viewmodel/ConditionDialogViewModel";
   import type { GameViewModel } from "$lib/viewmodel/GameViewModel";
   import type { ParticipantViewModel } from "$lib/viewmodel/ParticipantViewModel";
   import DialogBox from "../DialogBox.svelte";
@@ -13,49 +15,41 @@
   export let game: GameViewModel;
 
   let isOpen: boolean = false;
-  let conditionName: string = "";
+  let selectedConditions: string[] = [];
   let customConditionName: string = "";
   let instigatorId: number | null = null;
   let isConcentrating: boolean = false;
   let durationType: "untilRemoved" | "elapsed" | "startTurn" | "endTurn" = "untilRemoved";
   let elapsedDuration: number = 1;
   let elapsedUnit: "seconds" | "minutes" | "hours" = "minutes";
-  let turnParticipantId: number | null = null;
+  let turnParticipantId: number = participant.id;
+  let turnParticipantName: string = participant.name;
+  let viewModel: ConditionDialogViewModel;
 
   export function open() {
     // Reset form state
-    conditionName = "";
+    selectedConditions = [];
     customConditionName = "";
     isConcentrating = false;
     durationType = "untilRemoved";
     elapsedDuration = 1;
     elapsedUnit = "minutes";
-    turnParticipantId = null;
-
-    // Set default instigator
-    if (participant.id === game.activeParticipantId) {
-      instigatorId = null;
-    } else {
-      instigatorId = game.activeParticipantId ?? null;
-    }
+    instigatorId = viewModel.getDefaultInstigatorId();
 
     isOpen = true;
   }
 
   async function apply() {
-    // Use custom condition name if "other" is selected
-    const finalConditionName = conditionName === "other" ? customConditionName : conditionName;
-
-    // TODO: Call participant.addCondition or similar with the collected data
-    console.log("Apply condition:", {
-      conditionName: finalConditionName,
-      instigatorId,
-      isConcentrating,
+    const conditions = viewModel.buildConditions({
+      selectedConditions,
+      customConditionName,
       durationType,
       elapsedDuration,
       elapsedUnit,
-      turnParticipantId,
+      instigatorId,
     });
+
+    await gameCommands.addConditions({ target: participant.id, conditions });
     isOpen = false;
   }
 
@@ -63,16 +57,17 @@
     isOpen = false;
   }
 
-  $: participants = Object.values(game.participants);
+  $: viewModel = new ConditionDialogViewModel(game, participant);
+  $: participants = viewModel.participants;
   $: hasInstigator = instigatorId !== null;
-  $: showElapsedInputs = durationType === "elapsed";
-  $: showTurnParticipant = durationType === "startTurn" || durationType === "endTurn";
-  $: isCustomCondition = conditionName === "other";
+  $: turnParticipantId = viewModel.getTurnParticipantId(instigatorId);
+  $: turnParticipantName = viewModel.getParticipantName(turnParticipantId);
+  $: isCustomCondition = selectedConditions.includes("other");
 </script>
 
 {#if isOpen}
   <DialogBox
-    title="Add Condition to {participant.name}"
+    title="Add Conditions to {participant.name}"
     affirmative="Apply"
     cancel="Cancel"
     severity=""
@@ -82,22 +77,16 @@
     <div class="condition-dialog">
       <!-- Left Column: Conditions -->
       <div class="left-column">
-        <h2>Condition</h2>
+        <h2>Conditions</h2>
         <div class="condition-options">
           {#each conditionNames as condition}
             <span class={condition}>
-              <input
-                type="radio"
-                name="condition"
-                id="condition-{condition}"
-                value={condition}
-                bind:group={conditionName}
-              />
+              <input type="checkbox" id="condition-{condition}" value={condition} bind:group={selectedConditions} />
               <label for="condition-{condition}" class="condition-label">{condition}</label>
             </span>
           {/each}
           <span>
-            <input type="radio" name="condition" id="condition-other" value="other" bind:group={conditionName} />
+            <input type="checkbox" id="condition-other" value="other" bind:group={selectedConditions} />
             <label for="condition-other" class="condition-label">Other:</label>
           </span>
           {#if isCustomCondition}
@@ -117,24 +106,22 @@
         <!-- Instigator -->
         <div class="section">
           <h2><label for="instigator">Instigator</label></h2>
-          <select id="instigator" bind:value={instigatorId}>
-            <option value={null}>None</option>
-            {#each participants as p}
-              <option value={p.id}>{p.name}</option>
-            {/each}
-          </select>
+          <span class="checkbox-row">
+            <select id="instigator" bind:value={instigatorId}>
+              <option value={null}>None</option>
+              {#each participants as p}
+                <option value={p.id}>{p.name}</option>
+              {/each}
+            </select>
 
-          {#if hasInstigator}
-            <span class="checkbox-row">
-              <input type="checkbox" id="concentrating" bind:checked={isConcentrating} />
-              <label for="concentrating">Instigator is concentrating</label>
-            </span>
-          {/if}
+            <input type="checkbox" id="concentrating" bind:checked={isConcentrating} disabled={!hasInstigator} />
+            <label for="concentrating">Concentrating</label>
+          </span>
         </div>
 
         <!-- Duration -->
         <div class="section">
-          <h2>Duration</h2>
+          <h2>Expires</h2>
           <div class="duration-options">
             <span>
               <input
@@ -144,30 +131,8 @@
                 value="untilRemoved"
                 bind:group={durationType}
               />
-              <label for="duration-until-removed">Until removed</label>
+              <label for="duration-until-removed">When removed</label>
             </span>
-
-            <span>
-              <input type="radio" name="duration" id="duration-elapsed" value="elapsed" bind:group={durationType} />
-              <label for="duration-elapsed">Elapsed time</label>
-            </span>
-
-            {#if showElapsedInputs}
-              <div class="elapsed-inputs">
-                <input
-                  type="number"
-                  id="elapsed-duration"
-                  bind:value={elapsedDuration}
-                  min="1"
-                  placeholder="Duration"
-                />
-                <select id="elapsed-unit" bind:value={elapsedUnit}>
-                  <option value="seconds">seconds</option>
-                  <option value="minutes">minutes</option>
-                  <option value="hours">hours</option>
-                </select>
-              </div>
-            {/if}
 
             <span>
               <input
@@ -177,31 +142,33 @@
                 value="startTurn"
                 bind:group={durationType}
               />
-              <label for="duration-start-turn">Start of turn</label>
+              <label for="duration-start-turn">Start of {turnParticipantName}’s next turn</label>
+            </span>
+            <span>
+              <input type="radio" name="duration" id="duration-end-turn" value="endTurn" bind:group={durationType} />
+              <label for="duration-end-turn">End of {turnParticipantName}’s next turn</label>
             </span>
 
             <span>
-              <input type="radio" name="duration" id="duration-end-turn" value="endTurn" bind:group={durationType} />
-              <label for="duration-end-turn">End of turn</label>
+              <input type="radio" name="duration" id="duration-elapsed" value="elapsed" bind:group={durationType} />
+              <label for="duration-elapsed">After</label>
             </span>
 
-            {#if showTurnParticipant}
-              <div class="turn-participant">
-                <select id="turn-participant" bind:value={turnParticipantId}>
-                  <option value={null}>Select participant</option>
-                  {#if hasInstigator}
-                    <option value={instigatorId}>
-                      {participants.find((p) => p.id === instigatorId)?.name} (instigator)
-                    </option>
-                  {/if}
-                  {#each participants as p}
-                    {#if p.id !== instigatorId}
-                      <option value={p.id}>{p.name}</option>
-                    {/if}
-                  {/each}
-                </select>
-              </div>
-            {/if}
+            <div class="elapsed-inputs">
+              <input
+                type="number"
+                id="elapsed-duration"
+                bind:value={elapsedDuration}
+                min="1"
+                placeholder="Duration"
+                disabled={durationType !== "elapsed"}
+              />
+              <select id="elapsed-unit" bind:value={elapsedUnit} disabled={durationType !== "elapsed"}>
+                <option value="seconds">seconds</option>
+                <option value="minutes">minutes</option>
+                <option value="hours">hours</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -282,23 +249,18 @@
         display: flex;
         flex-direction: row;
         gap: var(--horizontal-gap);
-        padding-left: calc(var(--horizontal-gap) * 2);
+        padding-left: 3.5rem;
+        align-items: center;
 
         input[type="number"] {
           flex: 1;
           min-width: 5rem;
+          max-width: 6rem;
         }
 
         select {
           flex: 1;
-        }
-      }
-
-      .turn-participant {
-        padding-left: calc(var(--horizontal-gap) * 2);
-
-        select {
-          width: 100%;
+          margin: auto 0;
         }
       }
     }

@@ -25,7 +25,7 @@
   });
 </script>
 
-<dialog bind:this={dialogRef}>
+<dialog bind:this={dialogRef} oncancel={onCancel} onsubmit={onAffirmative} onabort={onNegative}>
   <div class="overlay">
     <div class="card {severity}">
       <h1 class="caption">{title}</h1>

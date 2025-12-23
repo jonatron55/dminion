@@ -38,7 +38,7 @@ impl Time {
 }
 
 impl Duration {
-    pub fn from_rounds(rounds: i32) -> Self {
+    pub fn _from_rounds(rounds: i32) -> Self {
         Duration { rounds }
     }
 

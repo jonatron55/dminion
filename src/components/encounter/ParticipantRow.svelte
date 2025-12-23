@@ -10,6 +10,7 @@
   import { MonsterViewModel } from "$lib/viewmodel/MonsterViewModel";
   import { ParticipantViewModel } from "$lib/viewmodel/ParticipantViewModel";
   import { PlayerViewModel } from "$lib/viewmodel/PlayerViewModel";
+  import ConditionBadge from "./ConditionBadge.svelte";
   import ConditionDialog from "./ConditionDialog.svelte";
   import DamageDialog from "./DamageDialog.svelte";
   import HealDialog from "./HealDialog.svelte";
@@ -55,17 +56,14 @@
       {#if participant.conditions.length > 0}
         <span class="conditions">
           {#each participant.conditions as condition}
-            <span class="{condition.name} badge">
-              {condition.name}
-              {#if condition.duration}
-                <span class="count">{condition.startTime! + condition.duration - game.time}s</span>
-              {/if}
-            </span>
+            <ConditionBadge {condition} {game} />
           {/each}
         </span>
       {/if}
       <span class="decorations">
-        <button class="toolbar" on:click={conditionDialogRef.open}>+ Condition</button>
+        {#if !(participant instanceof LairViewModel)}
+          <button class="toolbar" on:click={conditionDialogRef.open}>+ Condition</button>
+        {/if}
         <button class="toolbar">Edit…</button>
         <button class="toolbar danger">&#x2715;</button>
       </span>

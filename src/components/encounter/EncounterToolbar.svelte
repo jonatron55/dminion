@@ -5,15 +5,10 @@
 
 <script lang="ts">
   import { gameCommands } from "$lib/model/Commands";
+  import { formatTime } from "$lib/Time";
   import type { GameViewModel } from "$lib/viewmodel/GameViewModel";
 
   export let game: GameViewModel;
-
-  $: timeStr = (() => {
-    const minutes = Math.floor(game.time / 60);
-    const seconds = game.time % 60;
-    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-  })();
 
   function handleKeydown(event: KeyboardEvent) {
     const modifier = event.ctrlKey || event.metaKey; // Ctrl on Windows/Linux, Cmd on Mac
@@ -32,13 +27,14 @@
 
 <div class="encounter-toolbar">
   <span class="actions">
-    <button class="toolbar" on:click={gameCommands.undo}>↺ Undo</button>
-    <button class="toolbar" on:click={gameCommands.redo}>↻ Redo</button>
     <button class="toolbar" on:click={gameCommands.nextTurn}>⏩ Next</button>
+    <span class="dim">|</span>
+    <button class="toolbar" on:click={gameCommands.undo}>↺</button>
+    <button class="toolbar" on:click={gameCommands.redo}>↻</button>
   </span>
   <span data-tauri-drag-region class="titlebar details">
     <span data-tauri-drag-region class="round">{game.round}</span>
-    <span data-tauri-drag-region class="time">{timeStr}</span>
+    <span data-tauri-drag-region class="time">{formatTime(game.round)}</span>
   </span>
   <span class="participants">
     <button class="toolbar">+ Player</button>
@@ -61,6 +57,10 @@
     flex: 1;
     display: flex;
     justify-content: start;
+    align-items: center;
+    button.toolbar {
+      min-width: 0;
+    }
   }
 
   .details {

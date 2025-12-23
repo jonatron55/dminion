@@ -20,6 +20,11 @@ export class GameViewModel {
     return this._model.turn;
   }
 
+  public get initiative(): number {
+    const activeId = this.activeParticipantId;
+    return this._participants[activeId]?.initiative ?? 0;
+  }
+
   public get time(): number {
     return this._model.round * 6;
   }

@@ -5,7 +5,8 @@ import { messageBoxStore } from "$lib/MessageBox";
 import { invoke, type InvokeArgs } from "@tauri-apps/api/core";
 import type { Damage, Healing } from "./Damage";
 import type { Game } from "./Game";
-import type { Action, } from "./Participant";
+import type { Action } from "./Participant";
+import type { Condition } from "./Condition";
 
 export namespace gameCommands {
   export interface DamageArgs {
@@ -27,6 +28,12 @@ export namespace gameCommands {
     available: boolean
   }
 
+  export interface AddConditionsArgs {
+    [key: string]: unknown;
+    target: number;
+    conditions: Condition[];
+  }
+
   export const newGame = async (): Promise<void> => await tryInvoke("new_game");
   export const getGame = async (): Promise<Game> => await tryInvoke("get_game");
   export const nextTurn = async (): Promise<void> => await tryInvoke("next_turn");
@@ -35,10 +42,15 @@ export namespace gameCommands {
   export const damage = async (args: DamageArgs): Promise<void> => await tryInvoke("damage", args);
   export const heal = async (args: HealArgs): Promise<void> => await tryInvoke("heal", args);
   export const setAction = async (args: SetActionArgs): Promise<void> => await tryInvoke("set_action", args);
+  export const addConditions = async (args: AddConditionsArgs): Promise<void> =>
+    await tryInvoke("add_conditions", args);
 
   async function tryInvoke(command: string, args?: InvokeArgs): Promise<any> {
     try {
-      return await invoke(command, args);
+      console.trace(`Invoke: ${command}(${JSON.stringify(args, null, 2)})`);
+      const result = await invoke(command, args);
+      console.trace(` ${command} result: ${JSON.stringify(result, null, 2)}`);
+      return result;
     } catch (e) {
       messageBoxStore.show({
         title: `Failed to execute ${command}`,

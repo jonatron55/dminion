@@ -11,3 +11,8 @@ export interface Game {
   gameStarted: Date;
   turnStarted: Date;
 }
+
+export interface GameTime {
+  round: number;
+  initiative: number;
+}

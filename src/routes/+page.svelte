@@ -27,6 +27,7 @@
   });
 
   listen("game-updated", (event: Event<Game>) => {
+    console.trace(`game-updated ${JSON.stringify(event.payload, null, 2)}`);
     game = event.payload;
   });
 

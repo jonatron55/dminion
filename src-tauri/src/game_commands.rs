@@ -3,9 +3,10 @@
 
 use std::vec;
 
+use serde::Deserialize;
 use tauri::{AppHandle, Emitter, State as TauriState};
 
-use crate::game::{Action, Damage, Game, Healing, Participant};
+use crate::game::{Action, Condition, Damage, Expiry, Game, Healing, Participant, ParticipantId};
 use crate::state::AppStateMutex;
 
 #[tauri::command]
@@ -43,7 +44,7 @@ pub async fn next_turn(app: AppHandle, state: TauriState<'_, AppStateMutex>) -> 
 pub async fn damage(
     app: AppHandle,
     state: TauriState<'_, AppStateMutex>,
-    target: u32,
+    target: ParticipantId,
     damage: Damage,
 ) -> Result<(), String> {
     let mut state = state.lock().await;
@@ -71,7 +72,7 @@ pub async fn damage(
 pub async fn heal(
     app: AppHandle,
     state: TauriState<'_, AppStateMutex>,
-    target: u32,
+    target: ParticipantId,
     healing: Healing,
 ) -> Result<(), String> {
     let mut state = state.lock().await;
@@ -87,6 +88,34 @@ pub async fn heal(
             };
 
             monster.heal(healing);
+
+            Ok(())
+        })
+        .await?;
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn add_conditions(
+    app: AppHandle,
+    state: TauriState<'_, AppStateMutex>,
+    target: ParticipantId,
+    conditions: Vec<Condition>,
+) -> Result<(), String> {
+    let mut state = state.lock().await;
+    state
+        .gamestate
+        .mutate(app, |game| {
+            let time = game.time();
+            let Some(participant) = game.participants.get_mut(&target) else {
+                return Err(format!("No participant found with id {target}"));
+            };
+
+            match participant {
+                Participant::Monster(monster) => monster.conditions.extend(conditions),
+                Participant::Player(player) => player.conditions.extend(conditions),
+                Participant::Lair(_) => return Err("Lairs may not have conditions".into()),
+            }
 
             Ok(())
         })
@@ -123,7 +152,7 @@ pub async fn redo(app: AppHandle, state: TauriState<'_, AppStateMutex>) -> Resul
 pub async fn set_action(
     app: AppHandle,
     state: TauriState<'_, AppStateMutex>,
-    target: u32,
+    target: ParticipantId,
     action: Action,
     available: bool,
 ) -> Result<(), String> {

@@ -1,7 +1,11 @@
 // Copyright (c) 2025 Jonathon B. Cobb
 // Licensed under the MIT License
 
-use std::{collections::HashMap, vec};
+use std::{
+    collections::HashMap,
+    fmt::{Display, Formatter, Result as FmtResult},
+    vec,
+};
 
 use chrono::{DateTime, Utc};
 use rand::{rngs::StdRng, SeedableRng};
@@ -11,11 +15,16 @@ use crate::game::time::Time;
 
 use super::Participant;
 
+#[derive(
+    Default, Debug, Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize,
+)]
+pub struct ParticipantId(u32);
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Game {
-    pub participants: HashMap<u32, Participant>,
-    pub order: Vec<u32>,
+    pub participants: HashMap<ParticipantId, Participant>,
+    pub order: Vec<ParticipantId>,
     pub round: u32,
     pub turn: u32,
     pub game_started: DateTime<Utc>,
@@ -25,7 +34,7 @@ pub struct Game {
     pub rng: StdRng,
 
     #[serde(skip)]
-    next_id: u32,
+    next_id: ParticipantId,
 }
 
 impl Game {
@@ -33,7 +42,7 @@ impl Game {
         Self {
             order: vec![],
             participants: HashMap::new(),
-            next_id: 1,
+            next_id: ParticipantId(1),
             round: 0,
             turn: 0,
             game_started: Utc::now(),
@@ -52,11 +61,11 @@ impl Game {
                 .partial_cmp(self.participants.get(b).unwrap())
                 .unwrap_or(std::cmp::Ordering::Equal)
         });
-        self.next_id += 1;
-        self.next_id - 1
+        self.next_id.0 = self.next_id.0 + 1;
+        self.next_id.0 - 1
     }
 
-    pub fn despawn(&mut self, id: u32) {
+    pub fn despawn(&mut self, id: ParticipantId) {
         self.participants.remove(&id);
         self.order.retain(|&x| x != id);
         self.turn = self.turn.min((self.order.len() as u32).saturating_sub(1));
@@ -179,7 +188,13 @@ impl Default for Game {
             game_started: Utc::now(),
             turn_started: Utc::now(),
             rng: StdRng::from_entropy(),
-            next_id: 1,
+            next_id: ParticipantId(1),
         }
+    }
+}
+
+impl Display for ParticipantId {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
+        write!(f, "ParticipantId({})", self.0)
     }
 }

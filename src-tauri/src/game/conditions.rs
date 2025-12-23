@@ -7,9 +7,10 @@ use std::fmt::{Debug, Display, Formatter, Result as FmtResult};
 
 use serde::{Deserialize, Serialize};
 
-use crate::game::time::{Duration, Time};
-
-use super::Expiry;
+use crate::game::{
+    time::{Duration, Time},
+    Expiry, ParticipantId,
+};
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -17,7 +18,8 @@ pub struct Condition {
     pub name: String,
     pub start_time: Time,
     pub expiry: Expiry,
-    pub instigator: Option<String>,
+    #[serde(default)]
+    pub instigator: Option<ParticipantId>,
 }
 
 pub const BLINDED: &'static str = "blinded";
@@ -55,7 +57,7 @@ impl Condition {
         self
     }
 
-    pub fn with_instigator(mut self, instigator: String) -> Self {
+    pub fn with_instigator(mut self, instigator: ParticipantId) -> Self {
         self.instigator = Some(instigator);
         self
     }

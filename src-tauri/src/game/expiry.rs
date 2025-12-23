@@ -7,6 +7,7 @@ use std::{cmp::Ordering, time::Duration as StdDuration};
 use crate::game::time::Duration;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase", tag = "type")]
 pub enum Expiry {
     None,
     NextTurnStart,
