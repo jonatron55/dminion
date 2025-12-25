@@ -11,7 +11,6 @@ $control-shadow-blur: 3px;
 
 // Base theme
 :root {
-  --base-font: MonoFont;
   --base-line-height: 1.19;
   --ui-border-width: 2px;
   --ui-border-radius: 3px;
@@ -24,6 +23,8 @@ $control-shadow-blur: 3px;
 
   --ui-hydrate-time: 180ms;
   --ui-transition-time: 60ms;
+
+  --sidebar-width: 24rem;
 
   // Overridden by platform (Android and Apple reverse this order)
   --primary-button-order: 1;

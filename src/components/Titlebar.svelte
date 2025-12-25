@@ -66,17 +66,17 @@
     {/if}
   </div>
   <div class="caption sidebar-select">
-    {#each appSidebarModes as m}
+    {#each appSidebarModes as mode}
       <input
         type="radio"
         name="sidebarMode"
         class="toolbar button"
-        id={m}
-        value={m}
-        bind:group={sidebarMode}
-        on:change={() => onSidebarModeChange(m)}
+        id={mode}
+        value={mode}
+        checked={sidebarMode === mode}
+        on:click={() => onSidebarModeChange(sidebarMode === mode ? undefined : mode)}
       />
-      <label for={m}>{m!.charAt(0).toUpperCase() + m!.slice(1)}</label>
+      <label for={mode}>{mode!.charAt(0).toUpperCase() + mode!.slice(1)}</label>
     {/each}
   </div>
   {#if decorationStyle === "windows"}

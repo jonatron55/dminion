@@ -65,7 +65,7 @@ Objective 5
 ***As a DM, I can use a dice calculator for complex rolls.***
 
 - [ ] Design dice calculator UI component
-  - [ ] Create sidebar panel or dialog for dice calculator
+  - [x] Create sidebar panel or dialog for dice calculator
   - [ ] Add input field for dice expressions
   - [ ] Design result display area
   - [ ] Add roll history display
@@ -75,9 +75,9 @@ Objective 5
   - [ ] Show breakdown of roll components (individual dice, modifiers)
   - [ ] Display parse errors clearly when expression is invalid
 - [ ] Add dice calculator to sidebar or toolbar
-  - [ ] Add button/icon to open dice calculator
-  - [ ] Implement show/hide toggle
-  - [ ] Position calculator appropriately in layout
+  - [x] Add button/icon to open dice calculator
+  - [x] Implement show/hide toggle
+  - [x] Position calculator appropriately in layout
 - [ ] Add common dice presets
   - [ ] Quick buttons for d20, d12, d10, d8, d6, d4
   - [ ] Advantage/disadvantage buttons for d20 rolls

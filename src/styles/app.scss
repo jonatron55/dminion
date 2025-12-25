@@ -11,13 +11,31 @@
 @use "scrollbar.scss";
 @use "select.scss";
 @use "textinput.scss";
-@use "themes/dawn.scss";
-@use "themes/dusk.scss";
-@use "themes/night.scss";
-@use "themes/noon.scss";
 @use "toolbar.scss";
 @use "ui.scss";
 
+@use "themes/arcane-dawn.scss";
+@use "themes/arcane-dusk.scss";
+@use "themes/arcane-night.scss";
+@use "themes/arcane-noon.scss";
+@use "themes/dungeoneer-dawn.scss";
+@use "themes/dungeoneer-dusk.scss";
+@use "themes/dungeoneer-night.scss";
+@use "themes/dungeoneer-noon.scss";
+@use "themes/high-contrast-dark.scss";
+@use "themes/high-contrast-light.scss";
+@use "themes/intrepid-dawn.scss";
+@use "themes/intrepid-dusk.scss";
+@use "themes/intrepid-night.scss";
+@use "themes/intrepid-noon.scss";
+@use "themes/mountain-mist-dawn.scss";
+@use "themes/mountain-mist-dusk.scss";
+@use "themes/mountain-mist-night.scss";
+@use "themes/mountain-mist-noon.scss";
+@use "themes/woodland-dawn.scss";
+@use "themes/woodland-dusk.scss";
+@use "themes/woodland-night.scss";
+@use "themes/woodland-noon.scss";
 
 * {
   box-sizing: border-box;
@@ -59,16 +77,17 @@ body {
   background-attachment: fixed;
   background-size: cover;
   background-color: var(--page-background);
-  background-image: url("images/background.jpg");
 
-  &.dusk,
-  &.night {
+  &:not(.high-contrast) {
+    background-image: url("images/background.jpg");
+  }
+
+  &.dark:not(.high-contrast) {
     -webkit-backdrop-filter: grayscale(100%) contrast(80%) brightness(33%);
     backdrop-filter: grayscale(100%) contrast(80%) brightness(33%);
   }
 
-  &.dawn,
-  &.noon {
+  &.light:not(.high-contrast) {
     -webkit-backdrop-filter: grayscale(100%) contrast(33%) brightness(180%);
     backdrop-filter: grayscale(100%) contrast(33%) brightness(180%);
   }

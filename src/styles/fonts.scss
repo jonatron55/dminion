@@ -31,32 +31,60 @@
   font-weight: bold;
 }
 
-// Monospace fonts
+// Body fonts
 
 @font-face {
-  font-family: MonoFont;
+  font-family: SerifBodyFont;
   font-style: normal;
   src: url("fonts/IosevkaArcane-Regular.ttf");
   font-weight: normal;
 }
 
 @font-face {
-  font-family: MonoFont;
+  font-family: SerifBodyFont;
   font-style: normal;
   src: url("fonts/IosevkaArcane-Bold.ttf");
   font-weight: bold;
 }
 
 @font-face {
-  font-family: MonoFont;
+  font-family: SerifBodyFont;
   font-style: italic;
   src: url("fonts/IosevkaArcane-Italic.ttf");
   font-weight: normal;
 }
 
 @font-face {
-  font-family: MonoFont;
+  font-family: SerifBodyFont;
   font-style: italic;
   src: url("fonts/IosevkaArcane-BoldItalic.ttf");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: SansBodyFont;
+  font-style: normal;
+  src: url("fonts/IosevkaIntrepid-Regular.ttf");
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: SansBodyFont;
+  font-style: normal;
+  src: url("fonts/IosevkaIntrepid-Bold.ttf");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: SansBodyFont;
+  font-style: italic;
+  src: url("fonts/IosevkaIntrepid-Italic.ttf");
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: SansBodyFont;
+  font-style: italic;
+  src: url("fonts/IosevkaIntrepid-BoldItalic.ttf");
   font-weight: bold;
 }

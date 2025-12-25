@@ -3,10 +3,10 @@
 
 import { messageBoxStore } from "$lib/MessageBox";
 import { invoke, type InvokeArgs } from "@tauri-apps/api/core";
+import type { Condition } from "./Condition";
 import type { Damage, Healing } from "./Damage";
 import type { Game } from "./Game";
 import type { Action } from "./Participant";
-import type { Condition } from "./Condition";
 
 export namespace gameCommands {
   export interface DamageArgs {
@@ -44,22 +44,42 @@ export namespace gameCommands {
   export const setAction = async (args: SetActionArgs): Promise<void> => await tryInvoke("set_action", args);
   export const addConditions = async (args: AddConditionsArgs): Promise<void> =>
     await tryInvoke("add_conditions", args);
+}
 
-  async function tryInvoke(command: string, args?: InvokeArgs): Promise<any> {
-    try {
-      console.trace(`Invoke: ${command}(${JSON.stringify(args, null, 2)})`);
-      const result = await invoke(command, args);
-      console.trace(` ${command} result: ${JSON.stringify(result, null, 2)}`);
-      return result;
-    } catch (e) {
-      messageBoxStore.show({
-        title: `Failed to execute ${command}`,
-        content: `${e}`,
-        severity: "danger",
-        affirmativeButton: { label: "OK" }
-      });
+export namespace diceCommands {
+  export interface DieRoll {
+    sides: number;
+    result: number;
+    keep: boolean;
+  }
 
-      throw e;
-    }
+  export interface Roll {
+    value: number;
+    dice: DieRoll[];
+  }
+
+  export interface RollArgs {
+    [key: string]: unknown;
+    expr: string;
+  }
+
+  export const roll = async (args: RollArgs): Promise<Roll> => await tryInvoke("roll", args);
+}
+
+async function tryInvoke(command: string, args?: InvokeArgs): Promise<any> {
+  try {
+    console.trace(`Invoke: ${command}(${JSON.stringify(args, null, 2)})`);
+    const result = await invoke(command, args);
+    console.trace(` ${command} result: ${JSON.stringify(result, null, 2)}`);
+    return result;
+  } catch (e) {
+    messageBoxStore.show({
+      title: `Failed to execute ${command}`,
+      content: `${e}`,
+      severity: "danger",
+      affirmativeButton: { label: "OK" }
+    });
+
+    throw e;
   }
 }
