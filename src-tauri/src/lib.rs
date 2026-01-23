@@ -16,6 +16,7 @@ mod dice;
 mod dice_commands;
 mod game;
 mod game_commands;
+mod preferences;
 mod state;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]

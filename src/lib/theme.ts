@@ -3,7 +3,7 @@
 
 import { get, writable } from "svelte/store";
 
-export type Theme = "Arcane" | "Dungeoneer" | "High Contrast" | "Intrepid" | "Mountain Mist" | "Woodland";
+export type Theme = "Arcane" | "Dungeoneer" | "High Contrast" | "Intrepid" | "Mystic" | "Woodland";
 export type ThemeMode = "Dawn" | "Dusk" | "Noon" | "Night" | "Dark" | "Light";
 export type FontSize = "Small" | "Medium" | "Large";
 export type FontStyle = "Serif" | "Sans";
@@ -13,7 +13,7 @@ export const themes = [
   "Dungeoneer",
   "High Contrast",
   "Intrepid",
-  "Mountain Mist",
+  "Mystic",
   "Woodland",
 ];
 export const modes = [

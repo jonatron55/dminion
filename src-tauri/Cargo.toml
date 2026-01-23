@@ -24,3 +24,4 @@ tauri-plugin-os = "2.0.1"
 tauri-plugin-dialog = "2.0.4"
 thiserror = "2.0.12"
 sqlx = { version = "0.8.6", features = ["macros", "runtime-tokio", "sqlite"] }
+toml = "0.9.10"
