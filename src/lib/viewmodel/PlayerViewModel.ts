@@ -12,6 +12,10 @@ export class PlayerViewModel extends ParticipantViewModel {
     super();
   }
 
+  get model(): Player {
+    return this._model;
+  }
+
   get id(): number {
     return this._id;
   }

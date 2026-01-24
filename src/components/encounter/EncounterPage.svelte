@@ -5,9 +5,12 @@
 
 <script lang="ts">
   import type { GameViewModel } from "$lib/viewmodel/GameViewModel";
+  import DifficultyGauge from "./DifficultyGauge.svelte";
   import ParticipantRow from "./ParticipantRow.svelte";
 
   export let game: GameViewModel;
+
+  $: participantList = Object.values(game.participants).map((vm) => vm.model);
 </script>
 
 <main>
@@ -18,10 +21,12 @@
       <ParticipantRow {participant} {game} isActive={game.activeParticipantId === participant.id} />
     {/each}
   </div>
+  <DifficultyGauge participants={participantList} />
 </main>
 
 <style lang="scss">
   main {
+    height: 100%;
     display: grid;
     grid-template-rows: 1fr auto;
     overflow: hidden;
@@ -32,7 +37,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--vertical-gap);
-    overflow-y: scroll;
+    overflow-y: auto;
     padding: 0 var(--horizontal-gap);
   }
 </style>

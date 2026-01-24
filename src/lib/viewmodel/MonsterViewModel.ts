@@ -13,6 +13,10 @@ export class MonsterViewModel extends ParticipantViewModel {
     super();
   }
 
+  get model(): Monster {
+    return this._model;
+  }
+
   get id(): number {
     return this._id;
   }

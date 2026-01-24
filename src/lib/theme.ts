@@ -7,6 +7,7 @@ export type Theme = "Arcane" | "Dungeoneer" | "High Contrast" | "Intrepid" | "My
 export type ThemeMode = "Dawn" | "Dusk" | "Noon" | "Night" | "Dark" | "Light";
 export type FontSize = "Small" | "Medium" | "Large";
 export type FontStyle = "Serif" | "Sans";
+export type RulesVersion = "srd51" | "srd52";
 
 export const themes = [
   "Arcane",
@@ -32,6 +33,7 @@ export const currentTheme = writable<Theme>("Dungeoneer");
 export const currentThemeMode = writable<ThemeMode>("Dusk");
 export const currentFontSize = writable<FontSize>("Medium");
 export const currentFontStyle = writable<FontStyle>("Serif");
+export const currentRulesVersion = writable<RulesVersion>("srd51");
 
 export function toId(name: string): string {
   return name.toLowerCase().replace(" ", "-");

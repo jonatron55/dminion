@@ -21,10 +21,9 @@ something we can deliver with a clear definition of done. The reason should expl
 
 | Objective | Description | Readiness | Priority |
 | --------- | ----------- | --------- | -------- |
+| As a user, my preferences are saved between sessions. | Persist UI and game settings (theme, font, rules version, monster HP mode) to disk and restore on app launch. Backend foundation exists in `preferences.rs`. | now | high |
 | As a DM, I can manage a monster library with custom entries. | Create, edit, and organize monsters with full stat blocks and abilities using in-app forms. | now | high |
 | As a DM, I can save and restore encounter states. | Create savepoints for encounters separately from the main campaign database. | now | high |
-| As an engineering team, we have a SQLite data model supporting campaigns. | One database per campaign with tables for monsters, encounters, items, and players. | now | high |
-| As an engineering team, we have stable Rust-to-SvelteKit contracts. | Define and document data structures passed between backend and frontend. | now | high |
 | As a DM, I can create and manage campaigns. | Initialize new campaign databases and switch between existing campaigns. | now | high |
 | As a DM, I can display maps to players on a separate window. | Show configured maps with basic display controls in a player-facing window. | later | med |
 | As a DM, I can highlight and mark areas on maps. | Add visual indicators and markers to maps visible in the player window. | later | med |
@@ -35,6 +34,12 @@ something we can deliver with a clear definition of done. The reason should expl
 | As a DM, I can customize themes and display settings. | Configure appearance and multi-monitor setup preferences. | later | low |
 | As an engineering team, we can handle database schema evolution. | Implement migration strategy for safe schema changes across versions. | later | med |
 
+### Bugs ###
+
+- Title bar does not resize elegantly when window is smaller than the toolbar's minimum width. The toolbar needs to be
+  more responsive and clip when overflowing instead of attempting to wrap. In any case, the window decorations should
+  never clip and should always be fully visible.
+
 Doing
 -----
 
@@ -43,13 +48,15 @@ objectives are:
 
 - As a DM, I can run encounters with initiative, health, and condition tracking.
 - As a DM, I can undo and redo actions during encounters.
-- As a DM, I can use a dice calculator for complex rolls.
+- As an engineering team, we have a SQLite data model supporting campaigns.
+- As an engineering team, we have stable Rust-to-SvelteKit contracts.
 
 Done
 ----
 
 | Objective | Link to completion log |
 | --------- | ---------------------- |
+| As a DM, I can use a dice calculator for complex rolls. | [2026-01-23](./completion-logs/2026-01-23-dice-calculator.md) |
 | As an engineering team, we have a clearly documented understanding of the project's goals and high-level design decisions so that we can break down work into key deliverables. | [2025-10-04](./completion-logs/2025-10-04-project-documentation.md) |
 | As an engineering team, we have an adaptable and agile process for managing work so that we can execute efficiently. | [2025-10-04](./completion-logs/2025-10-04-development-process.md) |
 

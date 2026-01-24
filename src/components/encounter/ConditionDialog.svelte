@@ -62,7 +62,7 @@
   $: hasInstigator = instigatorId !== null;
   $: turnParticipantId = viewModel.getTurnParticipantId(instigatorId);
   $: turnParticipantName = viewModel.getParticipantName(turnParticipantId);
-  $: isCustomCondition = selectedConditions.includes("other");
+  $: customCondition = selectedConditions.includes("other");
 </script>
 
 {#if isOpen}
@@ -89,7 +89,7 @@
             <input type="checkbox" id="condition-other" value="other" bind:group={selectedConditions} />
             <label for="condition-other" class="condition-label">Other:</label>
           </span>
-          {#if isCustomCondition}
+          {#if customCondition}
             <input
               type="text"
               id="custom-condition-name"
@@ -205,6 +205,7 @@
       .custom-input {
         margin-left: calc(var(--horizontal-gap) * 2);
         margin-top: var(--vertical-gap);
+        grid-column: span 2;
       }
     }
 

@@ -4,7 +4,7 @@
 -->
 
 <script lang="ts">
-  import { currentFontSize, currentFontStyle, fontSizes, fontStyles } from "$lib/theme";
+  import { currentFontSize, currentFontStyle, currentRulesVersion, fontSizes, fontStyles } from "$lib/theme";
   import AboutDialog from "../AboutDialog.svelte";
   import ThemeSelector from "./ThemeSelector.svelte";
 
@@ -40,10 +40,10 @@
     {/each}
   </div>
   <div class="options">
-    <h2>Rules</h2>
-    <input type="radio" id="rules-510" name="rules" value="srd510" checked />
+    <h2>Rules Version</h2>
+    <input type="radio" id="rules-510" name="rules" value="srd51" bind:group={$currentRulesVersion} />
     <label for="rules-510">SRD 5.1</label>
-    <input type="radio" id="rules-521" name="rules" value="srd521" />
+    <input type="radio" id="rules-521" name="rules" value="srd52" bind:group={$currentRulesVersion} />
     <label for="rules-521">SRD 5.2.1</label>
   </div>
   <div class="options">

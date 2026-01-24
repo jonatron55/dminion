@@ -2,8 +2,10 @@
 // Licensed under the MIT License
 
 import type { Condition } from "$lib/model/Condition";
+import type { Participant } from "$lib/model/Participant";
 
 export abstract class ParticipantViewModel {
+  abstract get model(): Participant;
   abstract get name(): string;
   abstract get smallPortrait(): string;
   abstract get fullPortrait(): string;

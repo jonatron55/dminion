@@ -11,6 +11,10 @@ export class LairViewModel extends ParticipantViewModel {
     super();
   }
 
+  get model(): Lair {
+    return this._model;
+  }
+
   get id(): number {
     return this._id;
   }

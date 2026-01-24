@@ -103,8 +103,8 @@
       "titlebar"
       "main";
     gap: var(--vertical-gap) var(--horizontal-gap);
-    height: calc(100vh - 2 * var(--vertical-gap));
-    max-height: calc(100vh - 2 * var(--vertical-gap));
+    height: 100vh;
+    max-height: 100vh;
     overflow: hidden;
   }
 
