@@ -7,7 +7,6 @@ Follow these steps when all tasks for an objective are complete:
    - Navigate to `docs/process/completion-logs/`.
    - Create a new file named `YYYY-MM-DD-objective-name.md` (e.g., `2025-10-04-project-documentation.md`).
    - Use lowercase with hyphens for the objective name portion.
-   - If multiple objectives completed on the same day, append `-01`, `-02`, etc. to distinguish them.
 
 2. **Document what was completed in the log.**
    - Start with a heading using the full objective statement.

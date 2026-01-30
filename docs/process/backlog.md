@@ -21,6 +21,7 @@ something we can deliver with a clear definition of done. The reason should expl
 
 | Objective | Description | Readiness | Priority |
 | --------- | ----------- | --------- | -------- |
+| As an engineering team, Views route commands through ViewModels. | Refactor Svelte components to call ViewModel methods instead of `gameCommands.*` directly. Centralizes error handling and keeps Views focused on presentation. | now | med |
 | As a user, my preferences are saved between sessions. | Persist UI and game settings (theme, font, rules version, monster HP mode) to disk and restore on app launch. Backend foundation exists in `preferences.rs`. | now | high |
 | As a DM, I can manage a monster library with custom entries. | Create, edit, and organize monsters with full stat blocks and abilities using in-app forms. | now | high |
 | As a DM, I can save and restore encounter states. | Create savepoints for encounters separately from the main campaign database. | now | high |

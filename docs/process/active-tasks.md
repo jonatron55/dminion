@@ -3,7 +3,8 @@ Active tasks
 
 This document breaks down current work in progress into smaller tasks. Once a task is complete, check it off the list.
 When all active tasks are complete, we can create a log in [completion-logs] folder with learnings and reflections,
-reset this list, and review the [backlog]. You may encounter new tasks during implementation; extend this list as needed.
+reset this list, and review the [backlog]. You may encounter new tasks during implementation; extend this list as
+needed.
 
 Objective 3
 -----------
@@ -85,29 +86,39 @@ Objective 5
 
 ***As an engineering team, we have a SQLite data model supporting campaigns.***
 
+- [ ] Implement campaign folder and settings management
+  - [ ] Create `config/paths.rs` for `ProjectDirs` integration and campaign folder resolution
+  - [ ] Create `config/campaign_settings.rs` for per-campaign `settings.toml` (name, schema version, created date,
+        theme, rules version)
+  - [ ] Create `config/app_settings.rs` for app-wide `settings.toml` in `preference_dir`
+  - [ ] Implement campaign folder creation with subfolders (`saves/`, `portraits/`, `maps/`)
+  - [ ] Implement folder naming (snake-case, 16-char limit, numeric suffix for disambiguation)
 - [ ] Define campaign database schema
   - [ ] Create `schema.sql` with all core tables (extend existing draft in `src-tauri/src/game/schema.sql`)
-  - [ ] Add `Campaign` table with name, creation date, and metadata
-  - [ ] Add `Maps` table for map images and metadata
+  - [ ] Add `Maps` table for map metadata (image path references external file)
   - [ ] Add `Items` table for item library entries
-  - [ ] Add `EncounterSnapshots` table for savepoint storage
-  - [ ] Document table relationships and constraints
+  - [ ] Update `portrait` field to store base name only (resolution handled by service)
+  - [ ] Document table relationships and constraints with `ON DELETE` behavior
 - [ ] Integrate SQLite with Tauri app
   - [ ] Add `sqlx` crate with SQLite feature to `Cargo.toml`
-  - [ ] Create database connection management in a new `db.rs` module
-  - [ ] Implement campaign file creation (one `.db` file per campaign)
-  - [ ] Add database path resolution using Tauri's app data directory
+  - [ ] Create `db/connection.rs` for `SqlitePool` management per campaign
+  - [ ] Implement campaign open/close lifecycle (load settings, open DB, release on close)
+  - [ ] Add database path resolution using campaign folder path
+- [ ] Implement portrait resolution service
+  - [ ] Create `services/portrait.rs` with prioritized search (campaign → app → placeholder)
+  - [ ] Support `.small` and `.full` size variants
+  - [ ] Handle missing files and broken symlinks gracefully
+- [ ] Implement encounter savepoint service
+  - [ ] Create `services/savepoint.rs` for TOML serialization of complete encounter state
+  - [ ] Implement periodic savepoint writes to `saves/turn-NNN.toml`
+  - [ ] Implement savepoint restoration on app startup if encounter was in progress
 - [ ] Implement core CRUD operations for monsters
   - [ ] Create `db/monsters.rs` module with query functions
   - [ ] Implement `insert_monster`, `get_monster`, `list_monsters`, `update_monster`, `delete_monster`
   - [ ] Add proper error handling and return types
-- [ ] Implement core CRUD operations for encounters
-  - [ ] Create `db/encounters.rs` module with query functions
-  - [ ] Implement encounter persistence including participant snapshots
-  - [ ] Support encounter savepoint creation and restoration
 - [ ] Add database migration support
   - [ ] Create `migrations/` folder structure
-  - [ ] Implement version tracking table
+  - [ ] Read schema version from `settings.toml`, run migrations, update version
   - [ ] Add migration runner for schema updates
 
 Objective 6
@@ -145,7 +156,7 @@ Working notes
 *Use this section for learnings, discoveries, implementation details, and new work identified during the course of
 completing active tasks.*
 
-### Objective 5 baseline
+### Objective 5 baseline ###
 
 Existing draft schema at `src-tauri/src/game/schema.sql` provides a starting point with:
 
@@ -154,20 +165,173 @@ Existing draft schema at `src-tauri/src/game/schema.sql` provides a starting poi
 - `Encounters`, `EncounterMonsters` tables for encounter composition
 - `TradeItems` table for trade system
 
-Needs additions: `Campaign` metadata table, `Maps` table, `Items` library table, `EncounterSnapshots` for savepoints, and proper foreign key constraints with `ON DELETE` behavior.
+Needs additions: `Maps` table (metadata only, images stored externally), `Items` library table, and proper foreign key
+constraints with `ON DELETE` behavior. Portrait fields should store base name only.
 
-### Fixes applied for Objective 3 (objectives 2 and 3)
+### Architecture decisions for Objective 5 ###
 
-**Timer reactivity issue**: The timer in `EncounterToolbar.svelte` was not reactive. Changed from a function call `time()` to a reactive statement `$: timeStr = (() => {...})()` so it updates when `game.round` changes.
+**Campaign metadata**: Stored in `settings.toml` per campaign folder, not in the database. This keeps DB files portable
+and allows campaign inspection without opening the database.
 
-**Damage ignoring temporary HP**: The `damage()` function in `monster.rs` was directly subtracting from HP without checking temp HP first. Updated to:
+**Single schema version**: One version in `settings.toml` covers both folder layout and database schema. On startup:
+read version → run migrations → update version.
+
+**Savepoints**: Stored as complete encounter state in `saves/turn-NNN.toml` files, not in the database. High-frequency
+writes that are discarded after encounter ends. Full snapshots enable recovery if app closes unexpectedly.
+
+**Portrait resolution**: Database stores only the base name (e.g., `goblin`). A service resolves the actual file using
+prioritized search:
+
+1. Campaign `portraits/` folder: exact match for requested size (`.small` or `.full`)
+2. Campaign `portraits/` folder: alternate size as fallback
+3. App installation `portraits/` folder: same search order
+4. Built-in placeholder image if no match found
+
+**One campaign at a time**: Only one campaign is open per app instance. Simplifies state management.
+
+**Undo/redo**: Full encounter snapshots in memory. Acceptable for typical encounter sizes and aligns with savepoint
+strategy.
+
+**Backend layering**:
+
+- `commands/` — Thin Tauri command handlers (validate, delegate, emit)
+- `domain/` — Pure types, no I/O (encounter participants, conditions, damage)
+- `services/` — Business logic (encounter state, undo/redo, portrait resolution, savepoints)
+- `db/` — Data access layer (sqlx queries)
+- `config/` — Settings and path resolution
+
+### Settings file formats ###
+
+**Campaign settings** (`<campaign>/settings.toml`):
+
+```toml
+# Campaign metadata
+name = "Dragon Heist"
+created = 2026-01-15T10:30:00Z
+schema_version = "1.0.0"  # Semver for folder + DB schema
+
+# Rules configuration
+[rules]
+version = "5.1"           # "5.1" or "5.2"
+monster_hp = "rolled"     # "rolled" or "fixed"
+# Future: variant rules, homebrew toggles
+
+# UI preferences (per-campaign for different "feels")
+[ui]
+theme = "arcane"
+theme_mode = "dusk"
+font_size = "medium"
+```
+
+**App-wide settings** (`<preference_dir>/settings.toml`):
+
+```toml
+# Recently opened campaigns (most recent first)
+recent_campaigns = [
+  "C:/Users/dm/AppData/Local/dungeon-minion/dragon-heist",
+  "C:/Users/dm/AppData/Local/dungeon-minion/inn-at-the-crossroads",
+]
+
+# Window state persistence
+[window.main]
+x = 100
+y = 100
+width = 1280
+height = 720
+maximized = false
+
+[window.player]
+x = 1400
+y = 100
+width = 800
+height = 600
+maximized = false
+
+# Savepoint behavior
+[savepoints]
+trigger = "turn"          # "turn" or "round"
+max_count = 50            # Older savepoints pruned when exceeded
+
+# Future: storage paths, backup settings, etc.
+```
+
+### Schema versioning ###
+
+Use semver (`major.minor.patch`) for schema versions:
+
+- **Major**: Breaking changes requiring data migration (e.g., table restructure)
+- **Minor**: Additive changes (new tables, new nullable columns)
+- **Patch**: Non-structural fixes (index changes, constraint tweaks)
+
+Use `semver` crate in Rust for parsing and comparison. Migration runner checks current version against target and runs
+appropriate migrations in order.
+
+### Savepoint strategy ###
+
+- **Trigger**: Configurable in app settings (`turn` or `round`)
+- **Limit**: `max_count` setting; prune oldest when exceeded
+- **Format**: Complete encounter state as TOML (not deltas)
+- **Naming**: `turn-NNN.toml` where NNN is zero-padded turn number
+- **Restoration**: On app startup, check for savepoints; prompt user to restore if found
+
+### Error handling ###
+
+Use `thiserror` for component-focused error types:
+
+```rust
+// config/error.rs
+#[derive(Debug, thiserror::Error)]
+pub enum ConfigError {
+    #[error("failed to read settings: {0}")]
+    Read(#[from] std::io::Error),
+    #[error("invalid settings format: {0}")]
+    Parse(#[from] toml::de::Error),
+    #[error("campaign folder already exists: {0}")]
+    FolderExists(PathBuf),
+}
+
+// db/error.rs
+#[derive(Debug, thiserror::Error)]
+pub enum DbError {
+    #[error("database error: {0}")]
+    Sqlx(#[from] sqlx::Error),
+    #[error("monster not found: {0}")]
+    MonsterNotFound(i64),
+}
+
+// services/error.rs
+#[derive(Debug, thiserror::Error)]
+pub enum EncounterError {
+    #[error("participant not found: {0}")]
+    ParticipantNotFound(usize),
+    #[error("invalid action for participant type")]
+    InvalidAction,
+}
+```
+
+Commands convert these to `String` for Tauri's error handling, or use a unified `AppError` if needed.
+
+### Template databases ###
+
+Deferred to a later iteration. For now, campaigns start with an empty database created from `schema.sql`. When ready,
+template databases (`srd-5.1.sqlite3`, `srd-5.2.1.sqlite3`) will be created by converting the official SRD documents,
+which are licensed CC-BY.
+
+### Fixes applied for Objective 3 (objectives 2 and 3) ###
+
+**Timer reactivity issue**: The timer in `EncounterToolbar.svelte` was not reactive. Changed from a function call
+`time()` to a reactive statement `$: timeStr = (() => {...})()` so it updates when `game.round` changes.
+
+**Damage ignoring temporary HP**: The `damage()` function in `monster.rs` was directly subtracting from HP without
+checking temp HP first. Updated to:
 
 1. Calculate total damage amount based on damage type
 2. Apply damage to temp HP first if available
 3. Apply remaining damage to regular HP
 4. Properly handle the `Kill` damage type to clear both HP and temp HP
 
-**Action checkbox logic inverted**: The checkboxes were bound directly to the action boolean, but they should show as checked when the action has been used (i.e., when `action` is `false`). Changed from `bind:checked={monster.action}` to:
+**Action checkbox logic inverted**: The checkboxes were bound directly to the action boolean, but they should show as
+checked when the action has been used (i.e., when `action` is `false`). Changed from `bind:checked={monster.action}` to:
 
 - `checked={!monster.action}` to invert the display
 - `on:change={(e) => monster.action = !e.currentTarget.checked}` to invert the value on change
@@ -178,10 +342,12 @@ Needs additions: `Campaign` metadata table, `Maps` table, `Items` library table,
 1. Created `Action` enum in `participant.rs` (moved from `damage.rs` as it's participant-related)
    - Variants: `Standard`, `Bonus`, `Reaction`, `Legendary { index: usize }`
 2. Added `legendary_actions: Vec<bool>` to Monster to track individual legendary action usage
-3. Added `set_action(action: Action, available: bool) -> Result<(), ()>` methods to Monster, Player, Lair, and Participant
+3. Added `set_action(action: Action, available: bool) -> Result<(), ()>` methods to Monster, Player, Lair, and
+   Participant
    - Returns `Err(())` for invalid action types (e.g., Legendary for Players/Lairs)
 4. Created `set_action` Tauri command in `game_commands.rs` with proper error handling
-5. Updated TypeScript `Action` type as discriminated union: `{ type: "standard" }`, `{ type: "bonus" }`, `{ type: "reaction" }`, `{ type: "legendary", index: number }`
+5. Updated TypeScript `Action` type as discriminated union: `{ type: "standard" }`, `{ type: "bonus" }`,
+   `{ type: "reaction" }`, `{ type: "legendary", index: number }`
 6. Updated MonsterViewModel, PlayerViewModel, and LairViewModel:
    - Changed setters to use Action objects (e.g., `{ type: "standard" }`)
    - Added `setLegendaryAction(index: number, value: boolean)` to MonsterViewModel
@@ -190,11 +356,13 @@ Needs additions: `Campaign` metadata table, `Maps` table, `Items` library table,
 
 Action state now properly syncs between UI and Rust backend through undo/redo system with type-safe error handling.
 
-All three fixes tested and working. Actions now properly reset at the beginning of a participant's turn via the existing `begin_turn()` implementation.
+All three fixes tested and working. Actions now properly reset at the beginning of a participant's turn via the existing
+`begin_turn()` implementation.
 
-### Difficulty gauge SRD 5.1 vs 5.2 implementation
+### Difficulty gauge SRD 5.1 vs 5.2 implementation ###
 
-`DifficultyGauge.svelte` supports both SRD 5.1 and SRD 5.2 difficulty calculations, switching based on `currentRulesVersion`.
+`DifficultyGauge.svelte` supports both SRD 5.1 and SRD 5.2 difficulty calculations, switching based on
+`currentRulesVersion`.
 
 **SRD 5.1 (2014 rules)**:
 
@@ -210,7 +378,8 @@ All three fixes tested and working. Actions now properly reset at the beginning 
 - Uses *total XP* directly without encounter multiplier
 - Gauge fills based on total XP relative to high threshold
 
-The component uses type guards (`is51Thresholds`) to safely access the different threshold structures and renders appropriate labels/markers for each rules version.
+The component uses type guards (`is51Thresholds`) to safely access the different threshold structures and renders
+appropriate labels/markers for each rules version.
 
 [backlog]: /docs/process/backlog.md
 [completion-logs]: /docs/process/completion-logs.md

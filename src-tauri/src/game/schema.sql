@@ -24,6 +24,11 @@ CREATE TABLE Classes (
     level INTEGER NOT NULL
 );
 
+CREATE TABLE Parties (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL
+);
+
 CREATE TABLE Monsters (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
@@ -44,24 +49,6 @@ CREATE TABLE Monsters (
     notes TEXT
 );
 
-CREATE TABLE Parties (
-    id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL
-);
-
-CREATE TABLE EncounterMonsters (
-    id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL,
-    encounter_id INTEGER NOT NULL REFERENCES Encounters(id),
-    monster_id INTEGER NOT NULL REFERENCES Monsters(id)
-);
-
-CREATE TABLE Encounters (
-    id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL,
-    has_lair BOOLEAN NOT NULL,
-    notes TEXT
-);
 
 -- Trade
 
