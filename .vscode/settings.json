@@ -17,6 +17,7 @@
   "[svelte][sveltekit]": {
     "editor.defaultFormatter": "svelte.svelte-vscode"
   },
+  "chat.useAgentSkills": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.fixAll.tslint": "explicit",

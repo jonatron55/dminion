@@ -1,21 +1,21 @@
 Getting started
 ===============
 
-1. Read the [project brief] to understand what we’re building and why.
-2. Review the [process document] to learn how work flows through the system.
-3. Check [active tasks] to see what’s currently in progress.
-4. Skim the [backlog] to understand priorities and upcoming work.
+1. Read the [Project brief] to understand what we’re building and why.
+2. Review the [Process document] to learn how work flows through the system.
+3. Check [Active tasks] to see what’s currently in progress.
+4. Skim the [Backlog] to understand priorities and upcoming work.
 
 **Ensure you have read and understood the above documents before proceeding.**
 
 Working on tasks
 ================
 
-1. Pick an unchecked task from [active tasks]. If your instructions seem to refer to something not in the document, ask
+1. Pick an unchecked task from [Active tasks]. If your instructions seem to refer to something not in the document, ask
    for clarification.
 2. Complete the work according to [coding standards](#coding-standards).
 3. Check off the task.
-4. Add discoveries or context to “Working notes” in [active tasks].
+4. Add discoveries or context to “Working notes” in [Active tasks].
 
 Coding standards
 ================
@@ -30,7 +30,7 @@ unnecessary complexity.
 - Introduce new items at the narrowest scope possible.
 - Search for existing functionality before adding new code.
 - Write clear, self-explanatory code with meaningful names.
-- Document public types and members with complete doc comments following [style guidelines].
+- Document public types and members with complete doc comments following [Style guidelines].
 - Update comments when the code they reference changes.
 - Follow existing style and conventions in the codebase.
 - Fix compiler warnings and linter issues in the areas you touch.
@@ -51,7 +51,7 @@ Maintaining documentation
 **Critical**: Keep documentation current as you work. You should imagine that you might at any point need to hand off
 work to someone new who has no context nor explanation apart from the documents mentioned here.
 
-- Update [active tasks] immediately when tasks are completed or new details emerge.
+- Update [Active tasks] immediately when tasks are completed or new details emerge.
 - Follow the same standards you see in existing documents (formatting, level of detail, tone).
 - Ask questions if anything is unclear; better to clarify than guess.
 
@@ -66,8 +66,8 @@ What’s expected
   material.
 - **Keep it tactical**: Focus on what to do, not extensive explanation.
 
-[active tasks]: /docs/process/active-tasks.md
-[backlog]: /docs/process/backlog.md
-[process document]: /docs/process.md
-[project brief]: /docs/project-brief.md
-[style guidelines]: /.github/instructions/markdown.instructions.md
+[Active tasks]: /docs/process/active-tasks.md
+[Backlog]: /docs/process/backlog.md
+[Process document]: /docs/process.md
+[Project brief]: /docs/project-brief.md
+[Style guidelines]: /.github/instructions/markdown.instructions.md

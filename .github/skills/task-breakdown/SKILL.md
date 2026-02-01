@@ -1,3 +1,8 @@
+---
+name: task-breakdown
+description: Instructions for breaking down objectives into actionable tasks and updating the backlog. Use when moving items from backlog to active work.
+---
+
 Task breakdown instructions
 ============================
 

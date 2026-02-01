@@ -1,3 +1,8 @@
+---
+name: objective-complete
+description: Instructions for completing an objective and documenting the process. Use after all tasks for an objective are done.
+---
+
 Objective completion instructions
 ==================================
 
