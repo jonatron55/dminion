@@ -9,9 +9,11 @@ use crate::{
         time::{Duration, Time},
         Class, Condition, Game, Lair, Monster, Player, Stats,
     },
-    state::{AppState, AppStateMutex, GameState},
+    state::{AppState, AppStateMutex, EncounterState},
 };
 
+mod config;
+mod db;
 mod dice;
 mod dice_commands;
 mod game;
@@ -131,8 +133,15 @@ pub fn run() {
         .into(),
     );
 
+    // Initialize application paths and settings
+    let paths = config::AppPaths::new().expect("failed to determine application directories");
+    let app_settings = config::AppSettings::load(paths.preference_dir());
+
     let state = AppStateMutex::new(AppState {
-        gamestate: GameState {
+        paths,
+        app_settings,
+        campaign: None,
+        encounter: EncounterState {
             undo_stack: vec![game],
             redo_stack: vec![],
         },

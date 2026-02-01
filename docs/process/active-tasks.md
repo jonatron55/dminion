@@ -86,24 +86,25 @@ Objective 5
 
 ***As an engineering team, we have a SQLite data model supporting campaigns.***
 
-- [ ] Implement campaign folder and settings management
-  - [ ] Create `config/paths.rs` for `ProjectDirs` integration and campaign folder resolution
-  - [ ] Create `config/campaign_settings.rs` for per-campaign `settings.toml` (name, schema version, created date,
+- [x] Implement campaign folder and settings management
+  - [x] Create `config/paths.rs` for `ProjectDirs` integration and campaign folder resolution
+  - [x] Create `config/campaign_settings.rs` for per-campaign `settings.toml` (name, schema version, created date,
         theme, rules version)
-  - [ ] Create `config/app_settings.rs` for app-wide `settings.toml` in `preference_dir`
-  - [ ] Implement campaign folder creation with subfolders (`saves/`, `portraits/`, `maps/`)
-  - [ ] Implement folder naming (snake-case, 16-char limit, numeric suffix for disambiguation)
+  - [x] Create `config/app_settings.rs` for app-wide `settings.toml` in `preference_dir`
+  - [x] Implement campaign folder creation with subfolders (`saves/`, `portraits/`, `maps/`)
+  - [x] Implement folder naming (kebab-case, 16-char limit including suffix, numeric disambiguation)
 - [ ] Define campaign database schema
-  - [ ] Create `schema.sql` with all core tables (extend existing draft in `src-tauri/src/game/schema.sql`)
+  - [x] Create initial migration with core tables in `migrations/` folder
   - [ ] Add `Maps` table for map metadata (image path references external file)
   - [ ] Add `Items` table for item library entries
-  - [ ] Update `portrait` field to store base name only (resolution handled by service)
+  - [x] Update `portrait` field to store base name only (resolution handled by service)
   - [ ] Document table relationships and constraints with `ON DELETE` behavior
 - [ ] Integrate SQLite with Tauri app
-  - [ ] Add `sqlx` crate with SQLite feature to `Cargo.toml`
-  - [ ] Create `db/connection.rs` for `SqlitePool` management per campaign
+  - [x] Add `sqlx` crate with SQLite feature to `Cargo.toml`
+  - [x] Create `db/connection.rs` for `SqlitePool` management per campaign
+  - [x] Create `db/error.rs` for `DbError` enum with `thiserror`
   - [ ] Implement campaign open/close lifecycle (load settings, open DB, release on close)
-  - [ ] Add database path resolution using campaign folder path
+  - [ ] Add campaign commands (`create_campaign`, `open_campaign`, `close_campaign`, `list_campaigns`)
 - [ ] Implement portrait resolution service
   - [ ] Create `services/portrait.rs` with prioritized search (campaign → app → placeholder)
   - [ ] Support `.small` and `.full` size variants
@@ -117,7 +118,7 @@ Objective 5
   - [ ] Implement `insert_monster`, `get_monster`, `list_monsters`, `update_monster`, `delete_monster`
   - [ ] Add proper error handling and return types
 - [ ] Add database migration support
-  - [ ] Create `migrations/` folder structure
+  - [x] Create `migrations/` folder structure with initial schema
   - [ ] Read schema version from `settings.toml`, run migrations, update version
   - [ ] Add migration runner for schema updates
 
@@ -380,6 +381,64 @@ All three fixes tested and working. Actions now properly reset at the beginning 
 
 The component uses type guards (`is51Thresholds`) to safely access the different threshold structures and renders
 appropriate labels/markers for each rules version.
+
+### Config module implementation (2026-01-30) ###
+
+Implemented the `config` module with four files:
+
+- `config/mod.rs` — Module exports
+- `config/error.rs` — `ConfigError` enum with `thiserror`
+- `config/paths.rs` — `AppPaths` for `ProjectDirs` integration, folder creation, name normalization
+- `config/campaign_settings.rs` — `CampaignSettings` with rules and UI settings
+- `config/app_settings.rs` — `AppSettings` with window state, recent campaigns, savepoint config
+
+**Dependencies added**: `directories` (for `ProjectDirs`), `semver` with serde feature (for schema versioning).
+
+**Key implementation details**:
+
+- Folder names normalized to kebab-case, max 16 chars including suffix, with numeric disambiguation
+- `CampaignSettings` uses semver `Version` type for `schema_version`
+- `RulesVersion` serializes as `"5.1"` or `"5.2"` (not kebab-case)
+- `AppSettings` tracks up to 10 recent campaigns, with most recent first
+- Savepoint config includes `trigger` (turn/round) and `max_count` (default 50)
+- All 6 unit tests pass
+
+### Database module implementation (2026-01-30) ###
+
+Implemented the `db` module:
+
+- `db/mod.rs` — Module exports for `CampaignDb` and `DbError`
+- `db/error.rs` — `DbError` enum with `thiserror` (Sqlx, Migration, NotFound variants)
+- `db/connection.rs` — `CampaignDb` struct wrapping `SqlitePool` with `open`, `open_existing`, `migrate`, `close`
+
+Created initial migration at `migrations/20260130000000_initial_schema.sql` with:
+
+- `Party`, `Player`, `PlayerClass` tables for party management
+- `Monster` table with full stat block and single `portrait` field
+- `Encounter`, `EncounterMonster`, `EncounterPlayer` tables
+- `Map` table (metadata only, `image_path` references external file)
+- `Item` table for item library
+- Proper indexes and foreign key constraints with `ON DELETE CASCADE`
+
+### State refactoring (2026-01-30) ###
+
+Refactored `state.rs` to support the new campaign architecture:
+
+- Renamed `GameState` to `EncounterState` (clearer naming)
+- Added `Campaign` struct with `path`, `settings`, and `db` fields
+- Expanded `AppState` to include `paths`, `app_settings`, `campaign`, and `encounter`
+
+Updated `lib.rs` to initialize the new state structure:
+
+- Creates `AppPaths` on startup (panics if directories unavailable)
+- Loads `AppSettings` from preference directory
+- Starts with no campaign open (`campaign: None`)
+- Encounter state initialized with empty undo/redo stacks
+
+Updated `game_commands.rs` to use `state.encounter` instead of `state.gamestate`.
+
+**Next steps**: Implement campaign commands (`create_campaign`, `open_campaign`, `close_campaign`, `list_campaigns`) to
+complete the campaign lifecycle integration.
 
 [backlog]: /docs/process/backlog.md
 [completion-logs]: /docs/process/completion-logs.md

@@ -136,7 +136,7 @@ preferred external serialization format is TOML unless JSON is specifically need
 Savepoints for the active encounter are stored as separate files within the campaign folder since these are written
 frequently and become unneeded once the encounter ends. Images for portraits and maps are also stored externally to
 avoid bloating the database file. Based on user preferences, map and portrait images can be copied into the campaign
-folder or symlinked from their original location. Names are normalized to `snake-case` and limited to filesystem-safe
+folder or symlinked from their original location. Names are normalized to kebab-case and limited to filesystem-safe
 characters.
 
 Data entry is primarily supported through in-app forms that map directly to the underlying data model. Bulk operations
@@ -145,9 +145,9 @@ files directly when needed.
 
 ### Campaign folders ###
 
-Campaign folders use the snake-cased campaign name, limited to 16 characters. If a campaign with the same folder name
-already exists, a numeric suffix is appended (e.g., `dragon-heist`, `dragon-heist-2`). The display name stored in
-`settings.toml` is not subject to this limit.
+Campaign folders use the kebab-cased campaign name, limited to 16 characters including any numeric suffix. If a campaign
+with the same folder name already exists, a numeric suffix is appended (e.g., `dragon-heist`, `dragon-heist-2`). The
+display name stored in `settings.toml` is not subject to this limit.
 
 ### Schema versioning ###
 
@@ -172,7 +172,7 @@ default; the app always requests a specific size.
 
 ```plaintext
 <ProjectDirs.data_local_dir()>/
-  ├─ dragon-heist/        # Folder name derived from campaign name (snake-case, max 16 chars).
+  ├─ dragon-heist/        # Folder name derived from campaign name (kebab-case, max 16 chars).
   │ ├─ settings.toml      # Campaign metadata (name, schema version, creation date) and user preferences
   │ │                     # (theme, rules version). Schema version covers both folder layout and DB schema.
   │ │
