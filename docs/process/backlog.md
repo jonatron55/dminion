@@ -23,9 +23,11 @@ something we can deliver with a clear definition of done. The reason should expl
 | --------- | ----------- | --------- | -------- |
 | As an engineering team, Views route commands through ViewModels. | Refactor Svelte components to call ViewModel methods instead of `gameCommands.*` directly. Centralizes error handling and keeps Views focused on presentation. | now | med |
 | As a user, my preferences are saved between sessions. | Persist UI and game settings (theme, font, rules version, monster HP mode) to disk and restore on app launch. Backend foundation exists in `preferences.rs`. | now | high |
-| As a DM, I can manage a monster library with custom entries. | Create, edit, and organize monsters with full stat blocks and abilities using in-app forms. | now | high |
+| As a DM, I can manage a player and monster library with custom entries. | Create, edit, and organize players and monsters with full stat blocks and abilities using in-app forms. | now | high |
+| As a DM, I can manage an encounter library with custom entries. | Create, edit, and organize encounter configurations using in-app forms. | now | high |
 | As a DM, I can save and restore encounter states. | Create savepoints for encounters separately from the main campaign database. | now | high |
 | As a DM, I can create and manage campaigns. | Initialize new campaign databases and switch between existing campaigns. | now | high |
+| As a DM, I can test full encounter workflows end-to-end. | Comprehensive testing: create encounters, add participants, run multiple rounds with damage/healing/conditions, verify undo/redo through complex state changes. | now | med |
 | As a DM, I can display maps to players on a separate window. | Show configured maps with basic display controls in a player-facing window. | later | med |
 | As a DM, I can highlight and mark areas on maps. | Add visual indicators and markers to maps visible in the player window. | later | med |
 | As a DM, I can manage a trade interface with pricing. | Track buy/sell transactions with item lists, quantities, and price adjustments. | later | med |
@@ -47,9 +49,7 @@ Doing
 See [active tasks] for a detailed breakdown of current work in progress. Current high-level
 objectives are:
 
-- As a DM, I can run encounters with initiative, health, and condition tracking.
 - As a DM, I can undo and redo actions during encounters.
-- As an engineering team, we have a SQLite data model supporting campaigns.
 - As an engineering team, we have stable Rust-to-SvelteKit contracts.
 
 Done
@@ -57,6 +57,8 @@ Done
 
 | Objective | Link to completion log |
 | --------- | ---------------------- |
+| As a DM, I can run encounters with initiative, health, and condition tracking. | [2026-02-02](./completion-logs/2026-02-02-encounter-tracking.md) |
+| As an engineering team, we have a SQLite data model supporting campaigns. | [2026-02-02](./completion-logs/2026-02-02-sqlite-data-model.md) |
 | As a DM, I can use a dice calculator for complex rolls. | [2026-01-23](./completion-logs/2026-01-23-dice-calculator.md) |
 | As an engineering team, we have a clearly documented understanding of the project's goals and high-level design decisions so that we can break down work into key deliverables. | [2025-10-04](./completion-logs/2025-10-04-project-documentation.md) |
 | As an engineering team, we have an adaptable and agile process for managing work so that we can execute efficiently. | [2025-10-04](./completion-logs/2025-10-04-development-process.md) |
