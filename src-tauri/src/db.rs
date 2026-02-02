@@ -10,6 +10,12 @@
 
 mod connection;
 mod error;
+mod monsters;
+mod parties;
+mod players;
 
 pub use connection::CampaignDb;
 pub use error::DbError;
+pub use monsters::{MonsterData, MonsterRecord};
+pub use parties::{PartyData, PartyRecord};
+pub use players::{PlayerClassData, PlayerClassRecord, PlayerData, PlayerRecord};

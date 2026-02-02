@@ -5,18 +5,6 @@ use serde::{Deserialize, Serialize};
 
 use crate::game::{conditions::Condition, Action, Class, Stats};
 
-#[derive(Debug, Clone)]
-pub struct PlayerDef {
-    pub name: String,
-    pub classes: Vec<Class>,
-    pub stats: Stats,
-    pub ac: u32,
-    pub initiative_bonus: u32,
-    pub small_portrait: Option<String>,
-    pub full_portrait: Option<String>,
-    pub notes: String,
-}
-
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Player {
@@ -38,13 +26,11 @@ pub struct Player {
     pub conditions: Vec<Condition>,
 }
 
-impl PlayerDef {
+impl Player {
     pub fn total_level(&self) -> u32 {
         self.classes.iter().map(|c| c.level).sum()
     }
-}
 
-impl Player {
     pub fn begin_turn(&mut self) {
         self.action = true;
         self.reaction = true;

@@ -37,10 +37,6 @@ impl Stats {
     }
 }
 
-pub fn modifer(score: u32) -> i32 {
-    if score >= 10 {
-        ((score as i32) - 10) / 2
-    } else {
-        ((score as i32) - 11) / 2
-    }
+pub fn modifier(score: u32) -> i32 {
+    (score as i32 - 10) / 2
 }

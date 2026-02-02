@@ -93,34 +93,45 @@ Objective 5
   - [x] Create `config/app_settings.rs` for app-wide `settings.toml` in `preference_dir`
   - [x] Implement campaign folder creation with subfolders (`saves/`, `portraits/`, `maps/`)
   - [x] Implement folder naming (kebab-case, 16-char limit including suffix, numeric disambiguation)
-- [ ] Define campaign database schema
+- [x] Define campaign database schema
   - [x] Create initial migration with core tables in `migrations/` folder
-  - [ ] Add `Maps` table for map metadata (image path references external file)
-  - [ ] Add `Items` table for item library entries
+  - [x] Add `Maps` table for map metadata (image path references external file)
+  - [x] Add `Items` table for item library entries
   - [x] Update `portrait` field to store base name only (resolution handled by service)
-  - [ ] Document table relationships and constraints with `ON DELETE` behavior
-- [ ] Integrate SQLite with Tauri app
+  - [x] Document table relationships and constraints with `ON DELETE` behavior
+- [x] Integrate SQLite with Tauri app
   - [x] Add `sqlx` crate with SQLite feature to `Cargo.toml`
   - [x] Create `db/connection.rs` for `SqlitePool` management per campaign
   - [x] Create `db/error.rs` for `DbError` enum with `thiserror`
-  - [ ] Implement campaign open/close lifecycle (load settings, open DB, release on close)
-  - [ ] Add campaign commands (`create_campaign`, `open_campaign`, `close_campaign`, `list_campaigns`)
-- [ ] Implement portrait resolution service
-  - [ ] Create `services/portrait.rs` with prioritized search (campaign → app → placeholder)
-  - [ ] Support `.small` and `.full` size variants
-  - [ ] Handle missing files and broken symlinks gracefully
-- [ ] Implement encounter savepoint service
-  - [ ] Create `services/savepoint.rs` for TOML serialization of complete encounter state
-  - [ ] Implement periodic savepoint writes to `saves/turn-NNN.toml`
-  - [ ] Implement savepoint restoration on app startup if encounter was in progress
-- [ ] Implement core CRUD operations for monsters
-  - [ ] Create `db/monsters.rs` module with query functions
-  - [ ] Implement `insert_monster`, `get_monster`, `list_monsters`, `update_monster`, `delete_monster`
-  - [ ] Add proper error handling and return types
-- [ ] Add database migration support
+  - [x] Implement campaign open/close lifecycle (load settings, open DB, release on close)
+  - [x] Add campaign commands (`create_campaign`, `open_campaign`, `close_campaign`, `list_campaigns`)
+- [x] Implement portrait resolution service
+  - [x] Create `services/portrait.rs` with prioritized search (campaign → app → placeholder)
+  - [x] Support `.small` and `.full` size variants
+  - [x] Handle missing files and broken symlinks gracefully
+- [x] Implement encounter savepoint service
+  - [x] Create `services/savepoint.rs` for TOML serialization of complete encounter state
+  - [x] Implement periodic savepoint writes to `saves/turn-NNN.toml`
+  - [x] Implement savepoint restoration on app startup if encounter was in progress
+- [x] Implement core CRUD operations for monsters
+  - [x] Create `db/monsters.rs` module with query functions
+  - [x] Implement `insert_monster`, `get_monster`, `list_monsters`, `update_monster`, `delete_monster`
+  - [x] Add proper error handling and return types
+- [x] Implement core CRUD operations for players
+  - [x] Create `db/players.rs` module with query functions
+  - [x] Implement `insert_player`, `get_player`, `list_players`, `update_player`, `delete_player`
+  - [x] Add proper error handling and return types
+  - [x] Implement player class operations (`add_player_class`, `list_player_classes`, `update_player_class`,
+    `delete_player_class`)
+  - [x] Add `list_players_in_party` query function
+- [x] Implement core CRUD operations for parties
+  - [x] Create `db/parties.rs` module with query functions
+  - [x] Implement `insert_party`, `get_party`, `list_parties`, `update_party`, `delete_party`
+  - [x] Add proper error handling and return types
+- [x] Add database migration support
   - [x] Create `migrations/` folder structure with initial schema
-  - [ ] Read schema version from `settings.toml`, run migrations, update version
-  - [ ] Add migration runner for schema updates
+  - [x] Use sqlx built-in migration system (runs automatically on campaign open)
+  - [x] Schema version in `settings.toml` for documentation; sqlx tracks versions internally
 
 Objective 6
 -----------
@@ -200,6 +211,47 @@ strategy.
 - `services/` — Business logic (encounter state, undo/redo, portrait resolution, savepoints)
 - `db/` — Data access layer (sqlx queries)
 - `config/` — Settings and path resolution
+
+### Objective 5 follow-ups ###
+
+- Add player CRUD operations in `db/players.rs`.
+- Add party CRUD operations in `db/parties.rs`.
+
+### Player and party CRUD implementation (2026-02-02) ###
+
+Created `db/players.rs` with complete player and player class operations:
+
+**Player operations**:
+
+- `insert_player` — Inserts a new player, returns ID
+- `get_player` — Gets a player by ID with proper error handling
+- `list_players` — Lists all players sorted by name
+- `list_players_in_party` — Lists all players in a specific party
+- `update_player` — Updates an existing player
+- `delete_player` — Deletes a player (cascades to PlayerClass entries)
+
+**Player class operations** (for multiclass support):
+
+- `add_player_class` — Adds a class to a player, returns ID
+- `list_player_classes` — Lists all classes for a player
+- `update_player_class` — Updates a class entry
+- `delete_player_class` — Deletes a class entry
+
+Types: `PlayerRecord` (DB row with party_id), `PlayerData` (for insert/update), `PlayerClassRecord` (DB row),
+`PlayerClassData` (for insert/update). All use `camelCase` serde rename.
+
+Created `db/parties.rs` with simple party management:
+
+- `insert_party` — Creates a new party, returns ID
+- `get_party` — Gets a party by ID
+- `list_parties` — Lists all parties sorted by name
+- `update_party` — Updates a party name
+- `delete_party` — Deletes a party (sets player party_id to NULL via ON DELETE SET NULL)
+
+Types: `PartyRecord` (DB row), `PartyData` (for insert/update).
+
+All operations follow the same pattern as monsters with proper error handling and type safety. Database uses i64
+for primary/foreign keys, i32 for gameplay values.
 
 ### Settings file formats ###
 
@@ -439,6 +491,54 @@ Updated `game_commands.rs` to use `state.encounter` instead of `state.gamestate`
 
 **Next steps**: Implement campaign commands (`create_campaign`, `open_campaign`, `close_campaign`, `list_campaigns`) to
 complete the campaign lifecycle integration.
+
+### Campaign commands implementation (2026-02-02) ###
+
+Created `campaign_commands.rs` with full campaign lifecycle management:
+
+- `list_campaigns` — Lists all campaigns in the data directory with name and created date
+- `create_campaign` — Creates campaign folder, settings.toml, and database with migrations
+- `open_campaign` — Opens a campaign (closes any existing), loads settings, opens DB, runs migrations
+- `close_campaign` — Saves settings and closes database connection
+- `get_current_campaign` — Returns info about the currently open campaign
+
+All commands registered in `lib.rs` invoke handler.
+
+### Monster CRUD implementation (2026-02-02) ###
+
+Created `db/monsters.rs` with complete CRUD operations:
+
+- `insert_monster` — Inserts a new monster, returns ID
+- `get_monster` — Gets a monster by ID with proper error handling
+- `list_monsters` — Lists all monsters sorted by name
+- `update_monster` — Updates an existing monster
+- `delete_monster` — Deletes a monster by ID
+
+Types: `MonsterRecord` (DB row), `NewMonster` (for inserts), `UpdateMonster` (for updates). All use `camelCase` serde
+rename for TypeScript compatibility. Field `str` renamed to `str_` to avoid Rust keyword conflict.
+
+### Services implementation (2026-02-02) ###
+
+Created `services/` module with two services:
+
+**Portrait service** (`services/portrait.rs`):
+
+- `PortraitSize` enum with `Small` and `Full` variants
+- `PortraitService` resolves portrait base names to file paths
+- Search order: campaign portraits → app portraits → placeholder
+- Supports fallback to alternate size within each location
+- File extensions: webp, png, jpg, jpeg (in priority order)
+
+**Savepoint service** (`services/savepoint.rs`):
+
+- `SavepointService` manages encounter state snapshots
+- `write()` saves complete game state to `saves/turn-NNNNN.toml`
+- `read_latest()` loads the most recent savepoint
+- `clear()` removes all savepoints (after encounter ends normally)
+- Automatic pruning when savepoint count exceeds `max_count`
+- Turn number calculated as `round * participants + turn` for monotonic ordering
+
+All services tested with unit tests (11 total, all passing).
 
 [backlog]: /docs/process/backlog.md
 [completion-logs]: /docs/process/completion-logs.md

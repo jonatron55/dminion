@@ -3,28 +3,15 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    dice::DiceExpr,
-    game::{conditions, time::Time, Action, Damage, Healing},
-};
+use crate::dice::DiceExpr;
+use crate::game::{conditions, time::Time, Action, Damage, Healing};
 
 use super::{Condition, Stats};
 
-#[derive(Debug, Clone)]
-pub struct MonsterDef {
-    pub name: String,
-    pub subtype: String,
-    pub stats: Stats,
-    pub cr: u32,
-    pub ac: u32,
-    pub initiative_bonus: u32,
-    pub hit_dice: DiceExpr,
-    pub legendary_actions: u32,
-    pub small_portrait: Option<String>,
-    pub full_portrait: Option<String>,
-    pub notes: String,
-}
-
+/// A live monster instance in an encounter.
+///
+/// Created from a database `MonsterRecord` with rolled HP and initiative.
+/// Tracks runtime state like current HP, conditions, and action usage.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Monster {
@@ -53,8 +40,6 @@ pub struct Monster {
     pub conditions: Vec<Condition>,
     pub is_hostile: bool,
 }
-
-impl MonsterDef {}
 
 impl Monster {
     pub fn begin_turn(&mut self) {

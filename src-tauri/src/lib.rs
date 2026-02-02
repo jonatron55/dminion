@@ -12,6 +12,7 @@ use crate::{
     state::{AppState, AppStateMutex, EncounterState},
 };
 
+mod campaign_commands;
 mod config;
 mod db;
 mod dice;
@@ -19,6 +20,7 @@ mod dice_commands;
 mod game;
 mod game_commands;
 mod preferences;
+mod services;
 mod state;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -154,6 +156,11 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
+            campaign_commands::list_campaigns,
+            campaign_commands::create_campaign,
+            campaign_commands::open_campaign,
+            campaign_commands::close_campaign,
+            campaign_commands::get_current_campaign,
             dice_commands::roll,
             game_commands::new_game,
             game_commands::get_game,
