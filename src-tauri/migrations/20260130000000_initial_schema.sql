@@ -83,9 +83,6 @@ CREATE TABLE IF NOT EXISTS Map (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
     image_path TEXT NOT NULL,
-    width INTEGER,
-    height INTEGER,
-    grid_size INTEGER,
     notes TEXT
 );
 

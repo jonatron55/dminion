@@ -1,9 +1,6 @@
 Dungeon Minion project brief
 ===========================
 
-Summary
--------
-
 Dungeon Minion is a desktop assistant for dungeon masters running Dungeons & Dragons 5e. The app runs locally, targets
 power users, and is strictly a DM tool—players do not interact with it directly. The DM manages the game without
 requiring player accounts, character sheet access, or any shared system that might impose trust overhead. Documentation
@@ -12,34 +9,91 @@ and plans will evolve iteratively for collaborative development and future open 
 Core objectives
 ---------------
 
+### Goals ###
+
 - Deliver a private, interactive DM window with complete game details alongside a player-facing window that mirrors
   the DM view with only player-appropriate information.
 - Keep the entire experience offline first with local storage only.
 - Prioritize the encounter perspective before other views.
 - Enable power-user workflows with minimal friction.
 
-Perspectives
-------------
+### Non-goals ###
+
+- Bulk data operations such as mass imports or exports; users can leverage external SQLite tools to manipulate the
+  database files directly when needed.
+- Player accounts, character sheets, or any shared system that might impose trust overhead.
+- Online multiplayer or cloud sync.
+
+User interface
+--------------
+
+The UI is organized into four perspectives for key DM workflows: Map, Encounter, Trade, and Library. A persistent
+sidebar provides access to a dice calculator, name generator, and settings. The layout is as follows:
+
+```plaintext
+┌───────────────────────────────────┬─────────────────────────────────────────┬────────────────────────────────────────┐
+│ [App menu] [Perspective selector] │ Toolbar (specific to each perspective)  │ [Sidebar selector] [Window decoration] │
+├───────────────────────────────────┴─────────────────────────────────────────┴────────────────────────────────────────┤
+│                                                                               ┌─────────────────────────────────────┐│
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                              Main content area                                │          Sidebar content            ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               │                                     ││
+│                                                                               └─────────────────────────────────────┘│
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+The window renders its own title bar and the app menu, perspective selector, and toolbar are placed in the title bar
+area. As such, the app is responsible for rendering its own window decorations (close, minimize, and maximize). These
+are handled in a platform-consistent manner (appearing as traffic lights on the left on Apple platforms and icons on the
+right elsewhere).
+
+### Perspectives ###
+
+Each perspective occupies the main content area and has its own toolbar for context-specific actions.
 
 - Map: Display configured maps to players, highlight areas, add markers, and pursue routefinding as a stretch goal.
 - Encounter: Track initiative, conditions, health, and lair actions; support undo, redo, and state saves.
 - Trade: Manage buy and sell flows with totals, discounts, and curated item lists.
-- Library: Organize campaign data, including maps, monsters, encounters, items, and player information.
+- Library: Organize campaign data, including maps, monsters, encounters, items, and player information in a forms over
+  tables approach.
 
-Sidebar utilities
------------------
+### Sidebar utilities ###
+
+The sidebar can switch between three utility views or be collapsed to maximize main content area space.
 
 - Dice calculator for complex rolls.
 - Name generator for NPCs, monsters, and locations.
 - Settings for global themes, displays, and data management.
 
-Architecture decisions
-----------------------
+Architecture
+------------
 
-- Use Tauri with SvelteKit for cross-platform delivery.
-- Maintain multiple windows in one process, do not overcomplicate window management with multiple apps.
-- Implement the shared data model in Rust with `sqlx` for SQLite access.
-- Favor forms-on-tables UI patterns for data entry.
+The application will use Tauri with SvelteKit for cross-platform desktop delivery. The architecture emphasizes clear
+separation of concerns between frontend and backend, with a shared data model implemented in Rust with `sqlx` and
+accessed via typed Tauri commands. The frontend follows an MVVM pattern to isolate UI components from business logic and
+data access.
 
 ### Frontend architecture (MVVM) ###
 
@@ -56,16 +110,20 @@ The frontend follows Model-View-ViewModel separation:
   serde to matching TypeScript interfaces in `src/lib/model/` (e.g., `Participant.ts`). Commands in `Commands.ts`
   provide typed wrappers around `invoke()`.
 
-```plaintext
-┌─────────────────────────────────────────────────────────────┐
-│  Svelte (View)                                              │
-│    ↓ binds to                                              │
-│  TypeScript ViewModel                                       │
-│    ↓ calls                                                 │
-│  Commands.ts ─── invoke() ───→ Tauri ───→ Rust backend    │
-│    ↑ returns                                               │
-│  TypeScript Model interfaces ←── serde ←── Rust structs   │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+sequenceDiagram
+  participant Svelte view
+  participant TypeScript viewmodel
+  participant TypeScript model interfaces
+  participant Commands.ts
+  participant Rust backend
+
+  Svelte view->>TypeScript viewmodel: property bindings
+  TypeScript viewmodel->>Commands.ts: call command method
+  Commands.ts->>Rust backend: Tauri invoke()
+  Rust backend-->>TypeScript model interfaces: serialized model data
+  TypeScript model interfaces-->>TypeScript viewmodel: deserialized model data
+  TypeScript viewmodel-->>Svelte view: property bindings
 ```
 
 This separation keeps Views focused on presentation, centralizes command error handling in ViewModels, and allows the
@@ -75,7 +133,7 @@ Rust↔TypeScript contract to evolve independently of UI concerns.
 
 The Rust backend is organized into four layers:
 
-```
+```plaintext
 src-tauri/src/
 ├── commands/         # Tauri command handlers (thin wrappers)
 ├── domain/           # Core types (pure, no I/O)
@@ -101,13 +159,13 @@ from `settings.toml`.
 ### Application state ###
 
 ```rust
-AppState {
+struct AppState {
     app_settings: AppSettings,           // From preference_dir/settings.toml
     active_campaign: Option<Campaign>,   // Currently open campaign (one at a time)
     encounter: EncounterService,         // In-memory encounter with undo/redo
 }
 
-Campaign {
+struct Campaign {
     settings: CampaignSettings,          // From campaign/settings.toml
     db: SqlitePool,                      // Connection to campaign/db.sqlite3
     path: PathBuf,                       // Campaign folder path
@@ -172,23 +230,23 @@ default; the app always requests a specific size.
 
 ```plaintext
 <ProjectDirs.data_local_dir()>/
-  ├─ dragon-heist/        # Folder name derived from campaign name (kebab-case, max 16 chars).
-  │ ├─ settings.toml      # Campaign metadata (name, schema version, creation date) and user preferences
+  ├── dragon-heist/        # Folder name derived from campaign name (kebab-case, max 16 chars).
+  │ ├── settings.toml      # Campaign metadata (name, schema version, creation date) and user preferences
   │ │                     # (theme, rules version). Schema version covers both folder layout and DB schema.
   │ │
-  │ ├─ db.sqlite3         # Database includes monsters, players, encounter configuration, items, maps, etc.
+  │ ├── db.sqlite3         # Database includes monsters, players, encounter configuration, items, maps, etc.
   │ │
-  │ ├─ saves/             # Savepoints for the active encounter to persist it across sessions.
+  │ ├── saves/             # Savepoints for the active encounter to persist it across sessions.
   │ │ ├─ turn-001.toml
   │ │ ├─ turn-002.toml
   │ │ └─ etc.
   │ │
-  │ ├─ portraits/         # Portrait images. Stored externally to avoid bloating the database.
+  │ ├── portraits/         # Portrait images. Stored externally to avoid bloating the database.
   │ │ ├─ <name>.small.{png,jpg,etc.}
   │ │ ├─ <name>.full.{png,jpg,etc.}
   │ │ └─ etc.
   │ │
-  │ └─ maps/              # Map images. Stored externally to avoid bloating the database.
+  │ └── maps/              # Map images. Stored externally to avoid bloating the database.
   │   ├─ <name>.{png,jpg,etc.}
   │   └─ etc.
   │
@@ -214,6 +272,11 @@ default; the app always requests a specific size.
 
 ```mermaid
 erDiagram
+  Party {
+    INTEGER id PK
+    TEXT name
+  }
+
   Player {
     INTEGER id PK
     INTEGER party_id FK
@@ -237,6 +300,12 @@ erDiagram
     INTEGER level
   }
 
+  Encounter {
+    INTEGER id PK
+    TEXT name
+    TEXT notes
+  }
+
   Monster {
     INTEGER id PK
     TEXT name
@@ -256,7 +325,43 @@ erDiagram
     TEXT notes
   }
 
-  Player ||--o{ PlayerClass: has
+
+  EncounterMonster {
+    INTEGER id PK
+    INTEGER encounter_id FK
+    INTEGER monster_id FK
+    INTEGER count
+  }
+
+  EncounterPlayer {
+    INTEGER id PK
+    INTEGER encounter_id FK
+    INTEGER player_id FK
+  }
+
+  Map {
+    INTEGER id PK
+    TEXT name
+    TEXT image_path
+    TEXT notes
+  }
+
+  Item {
+    INTEGER id PK
+    TEXT name
+    TEXT description
+    TEXT category
+    REAL weight
+    INTEGER price
+    TEXT notes
+  }
+
+  Party ||--o{ Player : contains
+  Player ||--o{ PlayerClass : has
+  Player ||--o{ EncounterPlayer : included_in
+  Encounter ||--o{ EncounterMonster : includes
+  Monster ||--o{ EncounterMonster : included_in
+  Encounter ||--o{ EncounterPlayer : includes
 ```
 
 Encounter workflow focus
