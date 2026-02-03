@@ -4,7 +4,6 @@
 -->
 
 <script lang="ts">
-  import { gameCommands } from "$lib/model/Commands";
   import { conditionNames } from "$lib/model/Condition";
   import { ConditionDialogViewModel } from "$lib/viewmodel/ConditionDialogViewModel";
   import type { GameViewModel } from "$lib/viewmodel/GameViewModel";
@@ -49,7 +48,7 @@
       instigatorId,
     });
 
-    await gameCommands.addConditions({ target: participant.id, conditions });
+    await participant.addConditions(conditions);
     isOpen = false;
   }
 

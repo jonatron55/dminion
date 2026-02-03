@@ -64,3 +64,15 @@ Working notes
 
 *Use this section for learnings, discoveries, implementation details, and new work identified during the course of
 completing active tasks.*
+
+1. **GameViewModel.ts** - Added `nextTurn()`, `undo()`, `redo()` methods
+2. **ParticipantViewModel.ts** - Added `addConditions()` method (base class)
+3. **DiceViewModel.ts** - New ViewModel with `roll()` method and `history` property
+
+Architecture benefits:
+
+- Centralized command invocation through ViewModels
+- Consistent error handling via Commands.ts `tryInvoke()`
+- Views are now purely presentational, calling ViewModel methods
+- Easier to test ViewModels independently
+- Clear separation between UI logic and backend communication

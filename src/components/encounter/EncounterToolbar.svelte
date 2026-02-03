@@ -4,7 +4,6 @@
 -->
 
 <script lang="ts">
-  import { gameCommands } from "$lib/model/Commands";
   import { formatTime } from "$lib/Time";
   import type { GameViewModel } from "$lib/viewmodel/GameViewModel";
 
@@ -15,10 +14,10 @@
 
     if (modifier && !event.shiftKey && event.key === "z") {
       event.preventDefault();
-      gameCommands.undo();
+      game.undo();
     } else if (modifier && (event.key === "y" || (event.shiftKey && event.key === "Z"))) {
       event.preventDefault();
-      gameCommands.redo();
+      game.redo();
     }
   }
 </script>
@@ -27,10 +26,10 @@
 
 <div class="encounter-toolbar">
   <span class="actions">
-    <button class="toolbar" on:click={gameCommands.nextTurn}>⏩ Next</button>
+    <button class="toolbar" on:click={() => game.nextTurn()}>⏩ Next</button>
     <span class="dim">|</span>
-    <button class="toolbar" on:click={gameCommands.undo}>↺</button>
-    <button class="toolbar" on:click={gameCommands.redo}>↻</button>
+    <button class="toolbar" on:click={() => game.undo()}>↺</button>
+    <button class="toolbar" on:click={() => game.redo()}>↻</button>
   </span>
   <span data-tauri-drag-region class="titlebar details">
     <span data-tauri-drag-region class="round">{game.round}</span>

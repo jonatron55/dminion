@@ -4,14 +4,9 @@
 -->
 
 <script lang="ts">
-  import { diceCommands, type diceCommands as DiceCommands } from "$lib/model/Commands";
+  import { DiceViewModel, type HistoryItem } from "$lib/viewmodel/DiceViewModel";
 
-  type HistoryItem = {
-    expression: string;
-    roll?: DiceCommands.Roll;
-    error?: string;
-  };
-
+  const diceViewModel = new DiceViewModel();
   let expression = "";
   let history: HistoryItem[] = [];
 
@@ -51,14 +46,12 @@
     expression = "";
 
     try {
-      const roll = await diceCommands.roll({ expr });
-      history.push({ expression: expr, roll });
+      await diceViewModel.roll(expr);
+      history = diceViewModel.history;
     } catch (e) {
-      history.push({ expression: expr, error: `${e}` });
+      // Error already captured in history by ViewModel
+      history = diceViewModel.history;
     }
-
-    // Refresh the view
-    history = history;
 
     requestAnimationFrame(() => {
       const lastEntry = document.querySelector<HTMLElement>(".dice-panel .history .entry:last-child");

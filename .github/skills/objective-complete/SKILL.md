@@ -57,3 +57,9 @@ Follow these steps when all tasks for an objective are complete:
    - Consider if priorities or readiness have changed based on what was learned.
    - Update the backlog table if needed to reflect new understanding.
    - This is a natural checkpoint to reassess direction.
+
+9. **Update any related documentation.**
+   - If the completed objective impacted project documentation, update those files.
+   - If any of your learnings are broadly applicable, consider adding them to the [Project brief].
+
+[Project brief]: /docs/project-brief.md

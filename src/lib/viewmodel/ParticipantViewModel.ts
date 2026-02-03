@@ -1,6 +1,7 @@
 // Copyright (c) 2025 Jonathon B. Cobb
 // Licensed under the MIT License
 
+import { gameCommands } from "$lib/model/Commands";
 import type { Condition } from "$lib/model/Condition";
 import type { Participant } from "$lib/model/Participant";
 
@@ -12,6 +13,13 @@ export abstract class ParticipantViewModel {
   abstract get initiative(): number;
   abstract get conditions(): Condition[];
   abstract get id(): number;
+
+  async addConditions(conditions: Condition[]): Promise<void> {
+    await gameCommands.addConditions({
+      target: this.id,
+      conditions
+    });
+  }
 }
 
 export const conditionPriorities: Record<Condition["name"], number> = {

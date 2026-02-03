@@ -1,6 +1,7 @@
 // Copyright (c) 2025 Jonathon B. Cobb
 // Licensed under the MIT License
 
+import { gameCommands } from "$lib/model/Commands";
 import type { Game } from "$lib/model/Game";
 import type { ParticipantViewModel } from "./ParticipantViewModel";
 import { createParticipantViewModel } from "./ParticipantViewModelFactory";
@@ -39,5 +40,17 @@ export class GameViewModel {
         ([id, participant]) => [Number(id), createParticipantViewModel(Number(id), participant)]
       )
     );
+  }
+
+  async nextTurn(): Promise<void> {
+    await gameCommands.nextTurn();
+  }
+
+  async undo(): Promise<void> {
+    await gameCommands.undo();
+  }
+
+  async redo(): Promise<void> {
+    await gameCommands.redo();
   }
 }
