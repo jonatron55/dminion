@@ -2,8 +2,8 @@
 // Licensed under the MIT License
 
 import { gameCommands } from "$lib/model/Commands";
-import type { Condition } from "$lib/model/Condition";
-import type { Participant } from "$lib/model/Participant";
+import type { Condition } from "$lib/model/gen/Condition";
+import type { Participant } from "$lib/model/gen/Participant";
 
 export abstract class ParticipantViewModel {
   abstract get model(): Participant;

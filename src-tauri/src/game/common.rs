@@ -3,22 +3,41 @@
 
 use rand::Rng;
 use serde::{Deserialize, Serialize};
+use ts_rs::TS;
 
 use crate::dice::{roll, DiceExpr};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+/// Represents a set of character ability scores.
+#[derive(Debug, Clone, Serialize, Deserialize, TS)]
+#[ts(export)]
 pub struct Stats {
+    /// Strength score.
     pub str: u32,
+
+    /// Dexterity score.
     pub dex: u32,
+
+    /// Constitution score.
     pub con: u32,
+
+    /// Intelligence score.
     pub int: u32,
+
+    /// Wisdom score.
     pub wis: u32,
+
+    /// Charisma score.
     pub cha: u32,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+/// Represents a character class and its level.
+#[derive(Debug, Clone, Serialize, Deserialize, TS)]
+#[ts(export)]
 pub struct Class {
+    /// Name of the class.
     pub name: String,
+
+    /// Level in the class.
     pub level: u32,
 }
 

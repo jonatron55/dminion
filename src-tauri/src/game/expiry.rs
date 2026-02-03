@@ -3,15 +3,25 @@
 
 use serde::{Deserialize, Serialize};
 use std::{cmp::Ordering, time::Duration as StdDuration};
+use ts_rs::TS;
 
 use crate::game::time::Duration;
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+/// Options for when a condition or effect expires.
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize, TS)]
+#[ts(export)]
 #[serde(rename_all = "camelCase", tag = "type")]
 pub enum Expiry {
+    /// Does not expire.
     None,
+
+    /// Expires at the start of the instigator's next turn.
     NextTurnStart,
+
+    /// Expires at the end of the instigator's next turn.
     NextTurnEnd,
+
+    /// Expires after a certain number of rounds.
     Duration(Duration),
 }
 
@@ -48,5 +58,28 @@ impl TryInto<StdDuration> for Expiry {
             Expiry::NextTurnEnd => Err(()),
             Expiry::Duration(duration) => Ok(StdDuration::from_secs(duration.total_secs() as u64)),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_expiry_serialization() {
+        let expiry_none = Expiry::None;
+        let expiry_next_turn_start = Expiry::NextTurnStart;
+        let expiry_next_turn_end = Expiry::NextTurnEnd;
+        let expiry_duration = Expiry::Duration(Duration::from_secs(30));
+
+        let json_none = serde_json::to_string(&expiry_none).unwrap();
+        let json_next_turn_start = serde_json::to_string(&expiry_next_turn_start).unwrap();
+        let json_next_turn_end = serde_json::to_string(&expiry_next_turn_end).unwrap();
+        let json_duration = serde_json::to_string(&expiry_duration).unwrap();
+
+        assert_eq!(json_none, r#"{"type":"none"}"#);
+        assert_eq!(json_next_turn_start, r#"{"type":"nextTurnStart"}"#);
+        assert_eq!(json_next_turn_end, r#"{"type":"nextTurnEnd"}"#);
+        assert_eq!(json_duration, r#"{"type":"duration","rounds":5}"#);
     }
 }

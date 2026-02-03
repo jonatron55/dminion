@@ -106,9 +106,17 @@ The frontend follows Model-View-ViewModel separation:
   expose computed properties for display, and mediate all Tauri command invocations. Views call ViewModel methods;
   ViewModels call commands.
 
-- **Models** are the Rust↔TypeScript contract. Rust structs in `src-tauri/src/` (e.g., `participant.rs`) serialize via
-  serde to matching TypeScript interfaces in `src/lib/model/` (e.g., `Participant.ts`). Commands in `Commands.ts`
-  provide typed wrappers around `invoke()`.
+- **Models** are the Rust↔TypeScript contract. Rust structs serialize to TypeScript via `ts-rs`. Add
+  `#[derive(Serialize, Deserialize, TS)]` with `#[ts(export)]` to generate types automatically. Run `cd src-tauri &&
+  cargo test export_bindings` to regenerate after changes. Generated types appear in `src/lib/model/gen/`.
+
+**Serialization rules:**
+
+- Use `#[serde(rename_all = "camelCase")]` on structs to match TypeScript conventions
+- Use `#[serde(tag = "type")]` on enums to create discriminated unions
+- Skip non-serializable fields with `#[ts(skip)]`
+
+Commands in `Commands.ts` provide typed wrappers around `invoke()`.
 
 ```mermaid
 sequenceDiagram

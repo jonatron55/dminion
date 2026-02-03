@@ -1,14 +1,8 @@
 // Copyright (c) 2025 Jonathon B. Cobb
 // Licensed under the MIT License
 
-export interface Stats {
-  str: number,
-  dex: number,
-  con: number,
-  int: number,
-  wis: number,
-  cha: number,
-}
+// Re-export from generated types
+export type { Stats } from "./gen/Stats";
 
 export function modifer(score: number): number {
   if (score >= 10) {

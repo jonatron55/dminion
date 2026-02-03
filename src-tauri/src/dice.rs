@@ -70,6 +70,7 @@ use std::{
 use eval::DieRoll;
 use rand::{rngs::StdRng, Rng};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
+use ts_rs::TS;
 
 pub mod ast;
 pub mod eval;
@@ -88,7 +89,8 @@ pub enum Error {
 
 pub type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, TS)]
+#[ts(export)]
 pub struct Roll {
     pub value: i32,
     pub dice: Vec<DieRoll>,

@@ -30,33 +30,6 @@ Objective 4
   - [ ] Note that history is in-memory only (cleared on app restart)
   - [ ] Document that undo/redo is encounter-specific
 
-Objective 6
------------
-
-***As an engineering team, we have stable Rust-to-SvelteKit contracts.***
-
-- [ ] Audit and document existing data contracts
-  - [ ] Review all Tauri commands in `game_commands.rs` and `dice_commands.rs`
-  - [ ] Review all TypeScript types in `src/lib/model/`
-  - [ ] Identify mismatches between Rust structs and TypeScript interfaces
-  - [ ] Document current command signatures and return types
-- [ ] Establish contract documentation standards
-  - [ ] Create `docs/reference/contracts.md` documenting all commands
-  - [ ] Define naming conventions (snake_case Rust → camelCase TS)
-  - [ ] Document serialization rules (serde rename attributes)
-- [ ] Align Rust and TypeScript types
-  - [ ] Ensure all Rust types have `#[derive(Serialize)]` with consistent `rename_all`
-  - [ ] Create TypeScript interfaces matching each serialized Rust struct
-  - [ ] Add discriminated unions for enums (e.g., `Action`, `Damage`, `Condition`)
-- [ ] Add type generation or validation
-  - [ ] Evaluate `ts-rs` crate for TypeScript type generation from Rust
-  - [ ] If using `ts-rs`: add derive macros and configure output path
-  - [ ] If manual: create checklist for keeping types in sync
-- [ ] Refactor command layer for consistency
-  - [ ] Standardize error handling across all commands
-  - [ ] Use consistent argument naming (`target` vs `participantId`)
-  - [ ] Document expected error responses in TypeScript
-
 ---
 
 Working notes
@@ -64,15 +37,3 @@ Working notes
 
 *Use this section for learnings, discoveries, implementation details, and new work identified during the course of
 completing active tasks.*
-
-1. **GameViewModel.ts** - Added `nextTurn()`, `undo()`, `redo()` methods
-2. **ParticipantViewModel.ts** - Added `addConditions()` method (base class)
-3. **DiceViewModel.ts** - New ViewModel with `roll()` method and `history` property
-
-Architecture benefits:
-
-- Centralized command invocation through ViewModels
-- Consistent error handling via Commands.ts `tryInvoke()`
-- Views are now purely presentational, calling ViewModel methods
-- Easier to test ViewModels independently
-- Clear separation between UI logic and backend communication

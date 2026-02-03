@@ -2,27 +2,60 @@
 // Licensed under the MIT License
 
 use serde::{Deserialize, Serialize};
+use ts_rs::TS;
 
 use crate::game::{conditions::Condition, Action, Class, Stats};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+/// A player instance in an encounter.
+///
+/// Created from a database [`PlayerRecord`] with rolled initiative. Tracks runtime state like current HP, conditions,
+/// and action usage.
+#[derive(Debug, Clone, Serialize, Deserialize, TS)]
+#[ts(export)]
 #[serde(rename_all = "camelCase")]
 pub struct Player {
+    /// Display name of the player.
     pub name: String,
+
+    /// Character classes and levels.
     pub classes: Vec<Class>,
+
+    /// Player base statistics.
     pub stats: Stats,
+
+    /// Armor class.
     pub ac: u32,
+
+    /// Any bonuses to initiative beyond the Dexterity modifier.
     pub initiative_bonus: u32,
+
+    /// Path to small portrait image file.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub small_portrait: Option<String>,
+
+    /// Path to full portrait image file.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub full_portrait: Option<String>,
+
+    /// Rolled initiative for this encounter.
     pub initiative: u32,
-    pub action: bool,
-    pub reaction: bool,
-    pub bonus_action: bool,
-    pub notes: String,
+
+    /// Tiebreaker value for initiative ties.
     pub tiebreaker: i32,
+
+    /// Whether the player's standard action is available.
+    pub action: bool,
+
+    /// Whether the player's reaction is available.
+    pub reaction: bool,
+
+    /// Whether the player's bonus action is available.
+    pub bonus_action: bool,
+
+    /// Free-form notes about the player.
+    pub notes: String,
+
+    /// Active conditions affecting the player.
     pub conditions: Vec<Condition>,
 }
 

@@ -1,74 +1,21 @@
 // Copyright (c) 2025 Jonathon B. Cobb
 // Licensed under the MIT License
 
-import type { Condition } from "./Condition";
-import type { Stats } from "./Stats";
+import type { Lair } from "./gen/Lair";
+import type { Monster } from "./gen/Monster";
+import type { Participant } from "./gen/Participant";
+import type { Player } from "./gen/Player";
 
-export interface Monster {
-  type: "monster",
-  name: string,
-  subtype: string,
-  stats: Stats,
-  cr: number,
-  ac: number,
-  initiativeBonus: number,
-  smallPortrait?: string,
-  fullPortrait?: string,
-  hitDice: string,
-  initiative: number,
-  action: boolean,
-  hp: number,
-  tempHp: number,
-  maxHp: number,
-  reaction: boolean,
-  bonusAction: boolean,
-  legendaryActions: boolean[],
-  legendaryActionCount: number,
-  notes: string,
-  tiebreaker: number,
-  conditions: Condition[],
-}
-
-export interface Player {
-  type: "player",
-  name: string,
-  classes: { class: string, level: number }[],
-  stats: Stats,
-  ac: number,
-  initiativeBonus: number,
-  smallPortrait?: string,
-  fullPortrait?: string,
-  initiative: number,
-  action: boolean,
-  reaction: boolean,
-  bonusAction: boolean,
-  notes: string,
-  tiebreaker: number,
-  conditions: Condition[],
-}
-
-export interface Lair {
-  type: "lair",
-  name: string,
-  action: boolean,
-  notes: string,
-  smallPortrait?: string,
-  fullPortrait?: string,
-}
-
-export type Participant = Monster | Player | Lair;
-
-export type Action = { type: "standard" } | { type: "bonus" } | { type: "reaction" } | { type: "legendary", index: number };
-
-export function isMonster(participant: Participant): participant is Monster {
+// Type guards
+export function isMonster(participant: Participant): participant is Monster & { type: "monster" } {
   return participant.type === "monster";
 }
 
-export function isPlayer(participant: Participant): participant is Player {
+export function isPlayer(participant: Participant): participant is Player & { type: "player" } {
   return participant.type === "player";
 }
 
-export function isLair(participant: Participant): participant is Lair {
+export function isLair(participant: Participant): participant is Lair & { type: "lair" } {
   return participant.type === "lair";
 }
 

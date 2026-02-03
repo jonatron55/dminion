@@ -1,27 +1,9 @@
 // Copyright (c) 2025 Jonathon B. Cobb
 // Licensed under the MIT License
 
-import type { GameTime } from "./Game";
+import type { Condition } from "./gen/Condition";
 
-export interface Condition {
-  name: string;
-  startTime: GameTime,
-  expiry: Expiry,
-  instigator?: number,
-}
-
-export type Expiry = {
-  type: "none";
-} | {
-  type: "nextTurnStart";
-} | {
-  type: "nextTurnEnd";
-} | {
-  type: "duration";
-  rounds: number;
-}
-
-export const conditionNames: Condition["name"][] = [
+export const conditionNames: string[] = [
   "blinded",
   "bloodied",
   "charmed",

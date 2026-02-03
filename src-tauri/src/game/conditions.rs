@@ -6,18 +6,28 @@
 use std::fmt::{Debug, Display, Formatter, Result as FmtResult};
 
 use serde::{Deserialize, Serialize};
+use ts_rs::TS;
 
 use crate::game::{
     time::{Duration, Time},
     Expiry, ParticipantId,
 };
 
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+/// A condition affecting a participant in the game.
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, TS)]
+#[ts(export)]
 #[serde(rename_all = "camelCase")]
 pub struct Condition {
+    /// The name of the condition.
     pub name: String,
+
+    /// Point in game time when the condition started.
     pub start_time: Time,
+
+    /// When the condition expires.
     pub expiry: Expiry,
+
+    /// The participant who caused the condition, if it was not self-inflicted.
     #[serde(default)]
     pub instigator: Option<ParticipantId>,
 }

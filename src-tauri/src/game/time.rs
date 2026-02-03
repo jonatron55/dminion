@@ -7,55 +7,71 @@ use std::{
 };
 
 use serde::{Deserialize, Serialize};
+use ts_rs::TS;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+/// A specific point in game time measured in rounds and initiative.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, TS)]
+#[ts(export)]
 pub struct Time {
     round: u32,
     initiative: u32,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+/// An interval of game time measured in rounds.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, TS)]
+#[ts(export)]
 pub struct Duration {
     rounds: i32,
 }
 
 impl Time {
+    /// Creates a new `Time` instant.
     pub fn new(round: u32, initiative: u32) -> Self {
         Time { round, initiative }
     }
 
+    /// Returns the total number of seconds represented by this instant.
     pub fn total_secs(&self) -> u32 {
         self.round * 6
     }
 
+    /// Returns the number of whole minutes represented by this instant.
     pub fn mins(&self) -> u32 {
         self.total_secs() / 60
     }
 
+    /// Returns the number of remaining seconds (less than a minute) represented by this instant.
     pub fn secs(&self) -> u32 {
         self.total_secs() % 60
     }
 }
 
 impl Duration {
-    pub fn _from_rounds(rounds: i32) -> Self {
+    /// Creates a new `Duration` from a number of rounds.
+    pub fn from_rounds(rounds: i32) -> Self {
         Duration { rounds }
     }
 
+    /// Creates a new `Duration` from a number of seconds.
+    ///
+    /// Each round is considered to be 6 seconds and any fractional rounds are truncated.
     pub fn from_secs(seconds: i32) -> Self {
         Duration {
             rounds: seconds / 6,
         }
     }
 
+    /// Returns the total number of seconds represented by this duration.
     pub fn total_secs(&self) -> i32 {
         self.rounds * 6
     }
 
+    /// Returns the number of whole minutes represented by this duration.
     pub fn mins(&self) -> i32 {
         self.total_secs() / 60
     }
 
+    /// Returns the number of remaining seconds (less than a minute) represented by this duration.
     pub fn secs(&self) -> i32 {
         (self.total_secs() % 60).abs()
     }

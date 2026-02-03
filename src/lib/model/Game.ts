@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Jonathon B. Cobb
 // Licensed under the MIT License
 
-import type { Participant } from "./Participant";
+import type { Participant } from "./gen/Participant";
 
 export interface Game {
   participants: Record<number, Participant>;

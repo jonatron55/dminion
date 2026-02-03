@@ -4,10 +4,12 @@
 use std::cmp::Ordering;
 
 use serde::{Deserialize, Serialize};
+use ts_rs::TS;
 
 use crate::game::{Lair, Monster, Player};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, TS)]
+#[ts(export)]
 #[serde(rename_all = "camelCase", tag = "type")]
 pub enum Participant {
     Lair(Lair),
@@ -15,7 +17,8 @@ pub enum Participant {
     Player(Player),
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, TS)]
+#[ts(export)]
 #[serde(rename_all = "camelCase", tag = "type")]
 pub enum Action {
     Standard,

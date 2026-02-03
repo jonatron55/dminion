@@ -2,42 +2,91 @@
 // Licensed under the MIT License
 
 use serde::{Deserialize, Serialize};
+use ts_rs::TS;
 
-use crate::dice::DiceExpr;
 use crate::game::{conditions, time::Time, Action, Damage, Healing};
 
 use super::{Condition, Stats};
 
-/// A live monster instance in an encounter.
+/// A monster instance in an encounter.
 ///
-/// Created from a database `MonsterRecord` with rolled HP and initiative.
-/// Tracks runtime state like current HP, conditions, and action usage.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+/// Created from a database [`MonsterRecord`] with rolled HP and initiative. Tracks runtime state like current HP,
+/// conditions, and action usage.
+#[derive(Debug, Clone, Serialize, Deserialize, TS)]
+#[ts(export)]
 #[serde(rename_all = "camelCase")]
 pub struct Monster {
+    /// Display name of the monster, including a possible instance number.
     pub name: String,
+
+    /// Monster size and type, e.g. "Large beast".
     pub subtype: String,
+
+    /// Monster base statistics.
     pub stats: Stats,
+
+    /// Challenge rating index.
+    ///
+    /// Maps as follows:
+    /// - 0 => 0
+    /// - 1 => ⅛
+    /// - 2 => ¼
+    /// - 3 => ½
+    /// - 4 => 1
+    /// - etc.
     pub cr: u32,
+
+    /// Armor class.
     pub ac: u32,
+
+    /// Any bonuses to initiative beyond the Dexterity modifier.
     pub initiative_bonus: u32,
+
+    /// Path to small portrait image file.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub small_portrait: Option<String>,
+
+    /// Path to full portrait image file.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub full_portrait: Option<String>,
-    pub hit_dice: DiceExpr,
+
+    /// Rolled initiative for this encounter.
     pub initiative: u32,
-    pub action: bool,
-    pub hp: i32,
-    pub temp_hp: i32,
-    pub max_hp: i32,
-    pub reaction: bool,
-    pub bonus_action: bool,
-    pub legendary_actions: Vec<bool>,
-    pub legendary_action_count: u32,
-    pub notes: String,
+
+    /// Tiebreaker value for initiative ties.
     pub tiebreaker: i32,
+
+    /// Current hit points.
+    pub hp: i32,
+
+    /// Current temporary hit points.
+    pub temp_hp: i32,
+
+    /// Maximum hit points.
+    pub max_hp: i32,
+
+    /// Whether the monster's standard action is available.
+    pub action: bool,
+
+    /// Whether the monster's reaction is available.
+    pub reaction: bool,
+
+    /// Whether the monster's bonus action is available.
+    pub bonus_action: bool,
+
+    /// Availability of legendary actions.
+    pub legendary_actions: Vec<bool>,
+
+    /// Number of legendary actions the monster can take per round.
+    pub legendary_action_count: u32,
+
+    /// Free-form notes about the monster.
+    pub notes: String,
+
+    /// Active conditions affecting the monster.
     pub conditions: Vec<Condition>,
+
+    /// Whether the monster should be counted towards difficulty calculations.
     pub is_hostile: bool,
 }
 

@@ -1,18 +1,28 @@
 // Copyright (c) 2025 Jonathon B. Cobb
 // Licensed under the MIT License
 
-use std::path::PathBuf;
-
 use serde::{Deserialize, Serialize};
+use ts_rs::TS;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+/// A lair instance in an encounter.
+#[derive(Debug, Clone, Serialize, Deserialize, TS)]
+#[ts(export)]
 #[serde(rename_all = "camelCase")]
 pub struct Lair {
+    /// Display name of the lair.
     pub name: String,
+
+    /// Free-form notes about the lair.
     pub notes: String,
+
+    /// Whether the lair's standard action is available.
     pub action: bool,
+
+    /// Path to small portrait image file.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub small_portrait: Option<String>,
+
+    /// Path to full portrait image file.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub full_portrait: Option<String>,
 }

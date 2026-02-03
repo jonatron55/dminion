@@ -49,13 +49,13 @@ See [active tasks] for a detailed breakdown of current work in progress. Current
 objectives are:
 
 - As a DM, I can undo and redo actions during encounters.
-- As an engineering team, we have stable Rust-to-SvelteKit contracts.
 
 Done
 ----
 
 | Objective | Link to completion log |
 | --------- | ---------------------- |
+| As an engineering team, we have stable Rust-to-SvelteKit contracts. | [2026-02-02](./completion-logs/2026-02-02-stable-contracts.md) |
 | As a DM, I can run encounters with initiative, health, and condition tracking. | [2026-02-02](./completion-logs/2026-02-02-encounter-tracking.md) |
 | As an engineering team, Views route commands through ViewModels. | [2026-02-02](./completion-logs/2026-02-02-viewmodel-routing.md) |
 | As an engineering team, we have a SQLite data model supporting campaigns. | [2026-02-02](./completion-logs/2026-02-02-sqlite-data-model.md) |

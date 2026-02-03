@@ -4,7 +4,6 @@
 use tauri::Manager;
 
 use crate::{
-    dice::DiceExpr,
     game::{
         time::{Duration, Time},
         Class, Condition, Game, Lair, Monster, Player, Stats,
@@ -22,6 +21,10 @@ mod game_commands;
 mod preferences;
 mod services;
 mod state;
+
+// Configure ts-rs export path
+#[allow(dead_code)]
+const TS_RS_EXPORT_DIR: &str = "../src/lib/model/gen/";
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -69,7 +72,6 @@ pub fn run() {
             cha: 8,
         },
         initiative_bonus: 0,
-        hit_dice: DiceExpr::parse("3d6").unwrap(),
         initiative: 12,
         tiebreaker: -456,
         hp: 8,
@@ -102,7 +104,6 @@ pub fn run() {
                 cha: 7,
             },
             initiative_bonus: 0,
-            hit_dice: DiceExpr::parse("2d8+2").unwrap(),
             initiative: 19,
             tiebreaker: -456,
             hp: 1234,

@@ -1,18 +1,19 @@
 // Copyright (c) 2025 Jonathon B. Cobb
 // Licensed under the MIT License
 
-import { diceCommands, type diceCommands as DiceCommands } from "$lib/model/Commands";
+import { diceCommands } from "$lib/model/Commands";
+import { type Roll } from "$lib/model/gen/Roll";
 
 export type HistoryItem = {
   expression: string;
-  roll?: DiceCommands.Roll;
+  roll?: Roll;
   error?: string;
 };
 
 export class DiceViewModel {
   public history: HistoryItem[] = [];
 
-  async roll(expr: string): Promise<DiceCommands.Roll> {
+  async roll(expr: string): Promise<Roll> {
     try {
       const roll = await diceCommands.roll({ expr });
       this.history = [...this.history, { expression: expr, roll }];

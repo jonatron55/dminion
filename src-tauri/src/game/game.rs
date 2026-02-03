@@ -10,14 +10,16 @@ use std::{
 use chrono::{DateTime, Utc};
 use rand::{rngs::StdRng, SeedableRng};
 use serde::{Deserialize, Serialize};
+use ts_rs::TS;
 
 use crate::game::time::Time;
 
 use super::Participant;
 
 #[derive(
-    Default, Debug, Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize,
+    Default, Debug, Clone, Copy, Hash, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, TS,
 )]
+#[ts(export)]
 pub struct ParticipantId(u32);
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

@@ -3,10 +3,12 @@
 
 import { messageBoxStore } from "$lib/MessageBox";
 import { invoke, type InvokeArgs } from "@tauri-apps/api/core";
-import type { Condition } from "./Condition";
-import type { Damage, Healing } from "./Damage";
 import type { Game } from "./Game";
-import type { Action } from "./Participant";
+import type { Action } from "./gen/Action";
+import type { Condition } from "./gen/Condition";
+import type { Damage } from "./gen/Damage";
+import type { Healing } from "./gen/Healing";
+import type { Roll } from "./gen/Roll";
 
 export namespace gameCommands {
   export interface DamageArgs {
@@ -47,17 +49,6 @@ export namespace gameCommands {
 }
 
 export namespace diceCommands {
-  export interface DieRoll {
-    sides: number;
-    result: number;
-    keep: boolean;
-  }
-
-  export interface Roll {
-    value: number;
-    dice: DieRoll[];
-  }
-
   export interface RollArgs {
     [key: string]: unknown;
     expr: string;
