@@ -1,3 +1,6 @@
+-- Copyright (c) 2025 Jonathon B. Cobb
+-- Licensed under the MIT License
+
 -- Initial schema for campaign databases.
 -- Creates core tables for players, monsters, parties, encounters, maps, and items.
 --

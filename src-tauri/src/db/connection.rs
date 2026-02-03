@@ -60,6 +60,15 @@ impl CampaignDb {
         Ok(Self { pool })
     }
 
+    /// Populates the database with SRD 5.1 content.
+    pub async fn with_srd51(self) -> Result<Self, DbError> {
+        let mut conn = self.pool.acquire().await?;
+        sqlx::query(include_str!("data/srd-5.1.sql"))
+            .execute(&mut *conn)
+            .await?;
+        Ok(self)
+    }
+
     /// Returns a reference to the underlying connection pool.
     pub fn pool(&self) -> &SqlitePool {
         &self.pool
